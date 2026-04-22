@@ -2,9 +2,10 @@
 
 cd "$(dirname "$0")" || exit
 
+gem5_exists=false
 if [ -d ../gem5 ]; then
-    echo "Directory ../gem5 ($(realpath ../gem5)) already exists. Please save your work and delete it before running this script"
-    exit
+    echo "Directory ../gem5 ($(realpath ../gem5)) already exists. Skipping gem5 copy step."
+    gem5_exists=true
 fi
 
 IMAGE="cs1952y-final:latest"
@@ -26,15 +27,17 @@ done
 echo "Building image $IMAGE (this will take a while)..."
 docker build --build-arg GEM5_REPO="$GEM5_REPO" -t "$IMAGE" . || (echo "Error building image." && exit 1)
 
-echo "Starting docker container to copy over directories"
-cname="cs1952y-final-container-temp"
-docker run -d --name "$cname" "$IMAGE" || exit
+if ! $gem5_exists; then
+    echo "Starting docker container to copy over directories"
+    cname="cs1952y-final-container-temp"
+    docker run -d --name "$cname" "$IMAGE" || exit
 
-echo "Copying over gem5 directory"
-docker cp "$cname:/home/cs1952y-user/gem5" ../gem5 || exit
+    echo "Copying over gem5 directory"
+    docker cp "$cname:/home/cs1952y-user/gem5" ../gem5 || exit
 
-docker stop "$cname"
-docker rm "$cname"
+    docker stop "$cname"
+    docker rm "$cname"
+fi
 
 echo "SUCCESS!"
 echo ""
