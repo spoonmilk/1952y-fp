@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+    - -I/home/cs1952y-user/gem5/src
+    - -I/home/cs1952y-user/gem5/ext
+    - -I/gem5_build
+    - -std=c++17
