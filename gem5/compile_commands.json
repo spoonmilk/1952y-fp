@@ -1,7 +1,7 @@
 [
     {
         "command": "as -o /gem5_build/ext/systemc/src/sysc/qt/md/iX86_64.o ext/systemc/src/sysc/qt/md/iX86_64.s",
-        "directory": "/home/cs1952y-user/gem5",
+        "directory": "/home/cs1952y-user/gem5/1952y-fp/gem5",
         "file": "ext/systemc/src/sysc/qt/md/iX86_64.s",
         "output": "/gem5_build/ext/systemc/src/sysc/qt/md/iX86_64.o"
     }
