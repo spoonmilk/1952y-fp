@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 ARM Limited
+ * Copyright (c) 2012-2018 ARM Limited
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,44 +26,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "mem/cache/solomon-cache.hh"
+#ifndef __MEM_CACHE_HAMMING_CACHE_HH__
+#define __MEM_CACHE_HAMMING_CACHE_HH__
 
-#include "mem/cache/cache_blk.hh"
-#include "mem/request.hh"
-#include "params/Cache.hh"
+#include <cstdint>
+#include <unordered_map>
+#include <vector>
+
+#include "mem/cache/cache.hh"
+#include "mem/packet.hh"
 
 namespace gem5 {
 
-SolomonCache::SolomonCache(const CacheParams &p) : Cache(p) {}
+class CacheBlk;
+struct CacheParams;
 
-void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
-                                   bool has_old_data) {
-  Cache::updateBlockData(blk, cpkt, has_old_data);
-}
+class HammingCache : public Cache {
+public:
+  HammingCache(const CacheParams &p);
 
-bool SolomonCache::operationReadsData(PacketPtr pkt) const {
-  return pkt->isRead();
-}
+  void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
+                       bool has_old_data) override;
 
-bool SolomonCache::operationModifiesData(PacketPtr pkt) const {
-  return pkt->isWrite() || pkt->cmd == MemCmd::SwapReq;
-}
+  struct HammingCode {
+    uint8_t overallParityBit;
+    std::vector<uint8_t> parityBits;
+  };
 
-void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {}
+  int num_parity_bits;
+  std::unordered_map<CacheBlk *, HammingCode> blockECCBits;
+  std::unordered_map<uint8_t, size_t> syndromeToBitLocation;
+  std::unordered_map<size_t, uint8_t> bitLocationToSyndrome;
 
-SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
-  return ECCResult::Clean;
-}
+  enum class ECCResult { Clean, Corrected, Unrecoverable };
 
-void SolomonCache::invalidateBlock(CacheBlk *blk) {
-  blockECCBits.erase(blk);
-  BaseCache::invalidateBlock(blk);
-}
+  bool operationReadsData(PacketPtr pkt) const;
+  bool operationModifiesData(PacketPtr pkt) const;
+  ECCResult checkAndCorrectECC(CacheBlk *blk);
+  void recomputeAndStoreECC(CacheBlk *blk);
 
-void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
-                                  bool deferred_response,
-                                  bool pending_downgrade) {
-  Cache::satisfyRequest(pkt, blk, deferred_response, pending_downgrade);
-}
+  void satisfyRequest(PacketPtr pkt, CacheBlk *blk,
+                      bool deferred_response = false,
+                      bool pending_downgrade = false) override;
+  void invalidateBlock(CacheBlk *blk) override;
+};
 
 } // namespace gem5
+
+#endif // __MEM_CACHE_HAMMING_CACHE_HH__

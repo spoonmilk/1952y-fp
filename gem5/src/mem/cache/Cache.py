@@ -172,11 +172,16 @@ class Cache(BaseCache):
     cxx_header = "mem/cache/cache.hh"
     cxx_class = "gem5::Cache"
 
-# may need to check way to get gem5 to build into a new file
 class HammingCache(Cache):
     type = "HammingCache"
-    cxx_header = "mem/cache/cache.hh"
+    cxx_header = "mem/cache/hamming-cache.hh"
     cxx_class = "gem5::HammingCache"
+
+
+class SolomonCache(Cache):
+    type = "SolomonCache"
+    cxx_header = "mem/cache/solomon-cache.hh"
+    cxx_class = "gem5::SolomonCache"
 
 
 class NoncoherentCache(BaseCache):
