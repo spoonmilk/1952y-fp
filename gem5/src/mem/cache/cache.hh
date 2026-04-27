@@ -170,6 +170,39 @@ class Cache : public BaseCache
      * @return True if the port is waiting for a retry
      */
     bool sendMSHRQueuePacket(MSHR* mshr) override;
+
+    void invalidateBlock(CacheBlk *blk) override {BaseCache::invalidateBlock(blk);}
+};
+
+class HammingCache : public Cache
+{
+  public:
+    HammingCache(const CacheParams &p);
+
+    // reimplement how the BaseCache updates the data in a block to also update the ECC bits
+    void updateBlockData(CacheBlk *blk, const PacketPtr cpkt, bool has_old_data) override;
+
+    struct HammingCode {
+      uint8_t overallParityBit; // overall parity bit for the entire block
+      std::vector<uint8_t> parityBits; // parity bits for each group of data
+    };
+
+    int num_parity_bits;
+    std::unordered_map<CacheBlk*, HammingCode> blockECCBits; // mapping from block to its ECC bits
+    std::unordered_map<uint8_t, size_t> syndromeToBitLocation; // mapping from syndrome to bit error location
+    std::unordered_map<size_t, uint8_t> bitLocationToSyndrome; // mapping from data bit index to its corresponding syndrome value
+
+    enum class ECCResult { Clean, Corrected, Unrecoverable };
+
+    bool operationReadsData(PacketPtr pkt) const;
+    bool operationModifiesData(PacketPtr pkt) const;
+    ECCResult checkAndCorrectECC(CacheBlk *blk);
+    void recomputeAndStoreECC(CacheBlk *blk);
+
+    void satisfyRequest(PacketPtr pkt, CacheBlk *blk,
+                        bool deferred_response = false,
+                        bool pending_downgrade = false) override;
+    void invalidateBlock(CacheBlk *blk) override;
 };
 
 } // namespace gem5

@@ -29,7 +29,7 @@
 Import('*')
 
 SimObject('Cache.py', sim_objects=[
-    'WriteAllocator', 'BaseCache', 'Cache', 'NoncoherentCache'],
+    'WriteAllocator', 'BaseCache', 'Cache', 'NoncoherentCache', 'HammingCache'],
     enums=['Clusivity'])
 
 SimObject('MicroCache.py', sim_objects=['MicroCache'])

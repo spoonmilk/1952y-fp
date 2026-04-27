@@ -614,12 +614,14 @@ class BaseCache : public ClockedObject
      * Update the data contents of a block. When no packet is provided no
      * data will be written to the block, which means that this was likely
      * triggered by an invalidation.
+     * 
+     * EDIT: made virtual to make error correction caches easier to implement
      *
      * @param blk The block being updated.
      * @param cpkt The packet containing the new data.
      * @param has_old_data Whether this block had data previously.
      */
-    void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
+    virtual void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
         bool has_old_data);
 
     /**
@@ -824,7 +826,7 @@ class BaseCache : public ClockedObject
      *
      * @param blk Block to invalidate
      */
-    void invalidateBlock(CacheBlk *blk);
+    virtual void invalidateBlock(CacheBlk *blk);
 
     /**
      * Create a writeback request for the given block.

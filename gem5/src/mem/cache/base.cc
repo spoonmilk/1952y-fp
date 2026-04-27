@@ -768,9 +768,7 @@ BaseCache::functionalAccess(PacketPtr pkt, bool from_cpu_side)
     }
 }
 
-void
-BaseCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
-    bool has_old_data)
+void BaseCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt, bool has_old_data)
 {
     CacheDataUpdateProbeArg data_update(
         regenerateBlkAddr(blk), blk->isSecure(),
@@ -796,6 +794,9 @@ BaseCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
         ppDataUpdate->notify(data_update);
     }
 }
+
+
+
 
 void
 BaseCache::cmpAndSwap(CacheBlk *blk, PacketPtr pkt)
