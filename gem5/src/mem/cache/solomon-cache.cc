@@ -28,17 +28,62 @@
 
 #include "mem/cache/solomon-cache.hh"
 
+#include "base/logging.hh"
+#include "libcorrect/include/correct.h"
 #include "mem/cache/cache_blk.hh"
 #include "mem/request.hh"
 #include "params/Cache.hh"
 
 namespace gem5 {
 
-SolomonCache::SolomonCache(const CacheParams &p) : Cache(p) {}
+SolomonCache::SolomonCache(const CacheParams &p, const int symbolErrors)
+    : Cache(p), num_parity_symbols(2 * symbolErrors), rs_codec(nullptr) {
+  max_data_size = blkSize - num_parity_symbols;
+  if (blkSize > 255) {
+    panic("SolomonCache::SolomonCache; Cannot generate cache w/ blkSize > 255 "
+          "over libcorrect GF(2^8)");
+  }
+  encode_buf.resize(blkSize);
+  decode_buf.resize(blkSize);
+  // TODO: Maybe worth allowing specification of root polynomials through python
+  uint16_t rs_poly = correct_rs_primitive_polynomial_ccsds;
+  // This is a semi-arbitrary choice, from my understanding.
+  // See: https://berthub.eu/articles/posts/reed-solomon-for-programmers/
+  uint8_t rs_first_const_root = 121;
+  uint8_t rs_generator_root_gap = 1;
+  rs_codec = correct_reed_solomon_create(
+      rs_poly, rs_first_const_root, rs_generator_root_gap, num_parity_symbols);
+}
+
+SolomonCache::~SolomonCache() { correct_reed_solomon_destroy(rs_codec); }
 
 void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
                                    bool has_old_data) {
+  if (blk == tempBlock) {
+    Cache::updateBlockData(blk, cpkt, has_old_data);
+    return;
+  }
+
+  CacheDataUpdateProbeArg data_update(regenerateBlkAddr(blk), blk->isSecure(),
+                                      blk->getSrcRequestorId(), accessor);
+  if (ppDataUpdate->hasListeners()) {
+    if (has_old_data) {
+      data_update.oldData = std::vector<uint64_t>(
+          blk->data, blk->data + (blkSize / sizeof(uint64_t)));
+    }
+  }
   Cache::updateBlockData(blk, cpkt, has_old_data);
+}
+
+void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
+  uint8_t *data = blk->data;
+
+  correct_reed_solomon_encode(correct_reed_solomon * rs, const uint8_t *msg,
+                              size_t msg_length, uint8_t *encoded) blk->data
+}
+
+SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
+  return ECCResult::Clean;
 }
 
 bool SolomonCache::operationReadsData(PacketPtr pkt) const {
@@ -49,14 +94,8 @@ bool SolomonCache::operationModifiesData(PacketPtr pkt) const {
   return pkt->isWrite() || pkt->cmd == MemCmd::SwapReq;
 }
 
-void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {}
-
-SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
-  return ECCResult::Clean;
-}
-
 void SolomonCache::invalidateBlock(CacheBlk *blk) {
-  blockECCBits.erase(blk);
+  blockParityBytes.erase(blk);
   BaseCache::invalidateBlock(blk);
 }
 

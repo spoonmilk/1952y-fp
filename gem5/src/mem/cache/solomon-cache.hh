@@ -33,6 +33,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "libcorrect/include/correct.h"
 #include "mem/cache/cache.hh"
 #include "mem/packet.hh"
 
@@ -43,22 +44,21 @@ struct CacheParams;
 
 class SolomonCache : public Cache {
 public:
-  SolomonCache(const CacheParams &p);
+  // symbolErrors = Desired # of correctable symbol errors
+  SolomonCache(const CacheParams &p, const int symbolErrors);
+  ~SolomonCache();
 
   void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
                        bool has_old_data) override;
 
-  struct RSCode {
-    uint32_t symbol_size;
-    uint64_t data_symbols;
-    uint64_t parity_symbols;
+  size_t num_parity_symbols; // 2 * t where t = symbol errors
+  size_t max_data_size;      // Cache block size - parity symbols
+
+  struct RSParity {
     std::vector<uint8_t> parityBits;
   };
 
-  int num_parity_bits;
-  std::unordered_map<CacheBlk *, RSCode> blockECCBits;
-  std::unordered_map<uint8_t, size_t> syndromeToBitLocation;
-  std::unordered_map<size_t, uint8_t> bitLocationToSyndrome;
+  std::unordered_map<CacheBlk *, RSParity> blockParityBytes;
 
   enum class ECCResult { Clean, Corrected, Unrecoverable };
 
@@ -73,9 +73,13 @@ public:
   void invalidateBlock(CacheBlk *blk) override;
 
 private:
-  uint32_t symbol_size;
-  uint64_t data_symbols;
-  uint64_t parity_symbols;
+  // NOTE: It might be a problem to encode all blocks based on the same codec,
+  // but I think this is better than block-specific codecs to avoid regeneration
+  correct_reed_solomon *rs_codec;
+  // bc. of how libcorrect works it's nicer to keep encoding/decoding
+  // buffers with the cache.
+  std::vector<uint8_t> encode_buf;
+  std::vector<uint8_t> decode_buf;
 };
 
 } // namespace gem5

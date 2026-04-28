@@ -1,0 +1,34 @@
+# -*- mode:python -*-
+
+Import('env')
+
+build = Dir('.')
+correct_base = build.srcdir
+correct_include = correct_base.Dir('include')
+correct_src = correct_base.Dir('src')
+
+env.Prepend(CPPPATH=[correct_include])
+env.Append(LIBPATH=[build])
+
+cenv = env.Clone()
+cenv.Append(CPPPATH=[correct_include])
+
+sources = [
+    correct_src.File('reed-solomon/polynomial.c'),
+    correct_src.File('reed-solomon/reed-solomon.c'),
+    correct_src.File('reed-solomon/encode.c'),
+    correct_src.File('reed-solomon/decode.c'),
+    correct_src.File('convolutional/convolutional.c'),
+    correct_src.File('convolutional/bit.c'),
+    correct_src.File('convolutional/encode.c'),
+    correct_src.File('convolutional/decode.c'),
+    correct_src.File('convolutional/error_buffer.c'),
+    correct_src.File('convolutional/history_buffer.c'),
+    correct_src.File('convolutional/lookup.c'),
+    correct_src.File('convolutional/metric.c'),
+    correct_src.File('fec_shim.c'),
+]
+
+libcorrect = cenv.StaticLibrary(target='correct', source=sources)
+
+env.Prepend(LIBS=[libcorrect[0]])
