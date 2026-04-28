@@ -182,6 +182,7 @@ class SolomonCache(Cache):
     type = "SolomonCache"
     cxx_header = "mem/cache/solomon-cache.hh"
     cxx_class = "gem5::SolomonCache"
+    symbol_errors = Param.Int(4, "Number of correctable RS symbol errors")
 
 
 class NoncoherentCache(BaseCache):

@@ -29,22 +29,19 @@
 #include "mem/cache/solomon-cache.hh"
 
 #include "base/logging.hh"
-#include "libcorrect/include/correct.h"
 #include "mem/cache/cache_blk.hh"
 #include "mem/request.hh"
-#include "params/Cache.hh"
 
 namespace gem5 {
 
-SolomonCache::SolomonCache(const CacheParams &p, const int symbolErrors)
-    : Cache(p), num_parity_symbols(2 * symbolErrors), rs_codec(nullptr) {
-  max_data_size = blkSize - num_parity_symbols;
+SolomonCache::SolomonCache(const SolomonCacheParams &p)
+    : Cache(p), num_parity_symbols(2 * p.symbol_errors), rs_codec(nullptr) {
   if (blkSize > 255) {
     panic("SolomonCache::SolomonCache; Cannot generate cache w/ blkSize > 255 "
           "over libcorrect GF(2^8)");
   }
-  encode_buf.resize(blkSize);
-  decode_buf.resize(blkSize);
+  total_msg_size = blkSize + num_parity_symbols;
+  enc_dec_buf.resize(total_msg_size);
   // TODO: Maybe worth allowing specification of root polynomials through python
   uint16_t rs_poly = correct_rs_primitive_polynomial_ccsds;
   // This is a semi-arbitrary choice, from my understanding.
@@ -72,17 +69,43 @@ void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
           blk->data, blk->data + (blkSize / sizeof(uint64_t)));
     }
   }
+
+  if (cpkt) {
+    cpkt->writeDataToBlock(blk->data, blkSize);
+    recomputeAndStoreECC(blk);
+  }
   Cache::updateBlockData(blk, cpkt, has_old_data);
 }
 
 void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
-  uint8_t *data = blk->data;
+  memcpy(enc_dec_buf.data(), blk->data, blkSize);
 
-  correct_reed_solomon_encode(correct_reed_solomon * rs, const uint8_t *msg,
-                              size_t msg_length, uint8_t *encoded) blk->data
+  correct_reed_solomon_encode(rs_codec, enc_dec_buf.data(), total_msg_size,
+                              enc_dec_buf.data());
+
+  uint8_t *parity_bit_start = enc_dec_buf.data() + blkSize;
+  const std::vector<uint8_t> parity_block = std::vector<uint8_t>(
+      parity_bit_start, parity_bit_start + num_parity_symbols);
+  blockParityMap[blk] = parity_block;
 }
 
 SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
+  // Reconstruct the ECC block from cache block and map
+  memcpy(enc_dec_buf.data(), blk->data, blkSize);
+  memcpy(enc_dec_buf.data() + blkSize, blockParityMap[blk].data(),
+         num_parity_symbols);
+
+  ssize_t result = correct_reed_solomon_decode(rs_codec, enc_dec_buf.data(),
+                                               blkSize, enc_dec_buf.data());
+  // NOTE: There is a chance that RS can silently fail, but in that case we have
+  // bigger problems If bad, just mark it as such. If corrected, write back the
+  // corrections.
+  if (result < 0) {
+    return ECCResult::Unrecoverable;
+  } else if (memcmp(enc_dec_buf.data(), blk->data, blkSize) != 0) {
+    memcpy(blk->data, enc_dec_buf.data(), blkSize);
+    return ECCResult::Corrected;
+  }
   return ECCResult::Clean;
 }
 
@@ -95,14 +118,49 @@ bool SolomonCache::operationModifiesData(PacketPtr pkt) const {
 }
 
 void SolomonCache::invalidateBlock(CacheBlk *blk) {
-  blockParityBytes.erase(blk);
+  blockParityMap.erase(blk);
   BaseCache::invalidateBlock(blk);
 }
 
 void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
                                   bool deferred_response,
                                   bool pending_downgrade) {
+
+  if (blk && blk->isValid() && operationReadsData(pkt)) {
+    ECCResult result = checkAndCorrectECC(blk);
+    static int refresh_count = 0;
+    if (result == ECCResult::Unrecoverable) {
+      refresh_count++;
+      std::cerr << "ECC refresh #" << refresh_count << " at tick " << curTick()
+                << "\n";
+      // pull fresh data from memory directly into the block.
+      // build a request packet matching this block's address and use
+      // a functional access to fill it synchronously.
+      Addr blk_addr = regenerateBlkAddr(blk);
+      RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,
+                                                 Request::funcRequestorId);
+      if (blk->isSecure()) {
+        req->setFlags(Request::SECURE);
+      }
+
+      Packet refresh_pkt(req, MemCmd::ReadReq);
+      refresh_pkt.dataStatic(blk->data); // write directly into block
+
+      // functional access: synchronous, bypasses timing
+      memSidePort.sendFunctional(&refresh_pkt);
+
+      // recompute and store fresh ECC for the refreshed data
+      recomputeAndStoreECC(blk);
+
+      // TODO: when doing stats, compute the ecc refresh here
+      // ex. stats.eccRefreshes++;
+    }
+  }
   Cache::satisfyRequest(pkt, blk, deferred_response, pending_downgrade);
+
+  if (blk && blk->isValid() && operationModifiesData(pkt)) {
+    recomputeAndStoreECC(blk);
+  }
 }
 
 } // namespace gem5

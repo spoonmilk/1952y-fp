@@ -33,33 +33,27 @@
 #include <unordered_map>
 #include <vector>
 
+extern "C" {
 #include "libcorrect/include/correct.h"
+}
 #include "mem/cache/cache.hh"
 #include "mem/packet.hh"
+#include "params/SolomonCache.hh"
 
 namespace gem5 {
 
 class CacheBlk;
-struct CacheParams;
 
 class SolomonCache : public Cache {
 public:
-  // symbolErrors = Desired # of correctable symbol errors
-  SolomonCache(const CacheParams &p, const int symbolErrors);
+  SolomonCache(const SolomonCacheParams &p);
   ~SolomonCache();
 
   void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
                        bool has_old_data) override;
 
   size_t num_parity_symbols; // 2 * t where t = symbol errors
-  size_t max_data_size;      // Cache block size - parity symbols
-
-  struct RSParity {
-    std::vector<uint8_t> parityBits;
-  };
-
-  std::unordered_map<CacheBlk *, RSParity> blockParityBytes;
-
+  size_t total_msg_size;     // blkSize + num_parity_symbols
   enum class ECCResult { Clean, Corrected, Unrecoverable };
 
   bool operationReadsData(PacketPtr pkt) const;
@@ -74,12 +68,17 @@ public:
 
 private:
   // NOTE: It might be a problem to encode all blocks based on the same codec,
-  // but I think this is better than block-specific codecs to avoid regeneration
+  // but I think this is better than block-specific codecs to avoid
+  // regeneration
   correct_reed_solomon *rs_codec;
   // bc. of how libcorrect works it's nicer to keep encoding/decoding
   // buffers with the cache.
-  std::vector<uint8_t> encode_buf;
-  std::vector<uint8_t> decode_buf;
+  std::vector<uint8_t> enc_dec_buf;
+  // Despite RS codes co-locating the parity bits and data, I felt a need
+  // to use the map approach because it allows us to preserve a full
+  // block size, and the actual 'reconstruction' of the parity bits and
+  // message can be done in the enc_dec_buf.
+  std::unordered_map<CacheBlk *, std::vector<uint8_t>> blockParityMap;
 };
 
 } // namespace gem5
