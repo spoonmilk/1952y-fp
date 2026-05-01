@@ -177,6 +177,15 @@ class HammingCache(Cache):
     cxx_header = "mem/cache/hamming-cache.hh"
     cxx_class = "gem5::HammingCache"
 
+    # for the novel approach 
+    # scrubbing parameters ->  set scrub_interval_cycles to 0 to disable scrubbing
+    scrub_interval_cycles = Param.Cycles(0,
+        "Cycles between full cache scrub passes (0 disables scrubbing)")
+    cycles_per_block_check = Param.Cycles(1, # change this!!!!
+        "Cycles consumed per block during a scrub pass (for latency accounting)")
+    correction_grace_ticks = Param.Tick(0,
+        "Number of ticks to wait out initialization")
+
 
 class SolomonCache(Cache):
     type = "SolomonCache"

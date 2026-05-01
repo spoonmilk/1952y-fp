@@ -36,7 +36,18 @@
 
 namespace gem5 {
 
-HammingCache::HammingCache(const CacheParams &p) : Cache(p) {
+HammingCache::HammingCache(const HammingCacheParams &p) : Cache(p),
+  scrubIntervalCycles(p.scrub_interval_cycles),
+  cyclesPerBlockCheck(p.cycles_per_block_check),
+  correctionGraceTicks(p.correction_grace_ticks),
+  scrubEvent([this] { this->scrubCache(); }, name() + ".scrubEvent"),
+  hammingStats(this)
+{
+  // Schedule the first scrub event if scrubbing is enabled
+  if (scrubIntervalCycles > 0) {
+      schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+  }
+
   size_t total_data_bits = blkSize * 8;
   num_parity_bits = 0;
   while ((1ULL << num_parity_bits) < (total_data_bits + num_parity_bits + 1)) {
@@ -167,7 +178,7 @@ void HammingCache::recomputeAndStoreECC(CacheBlk *blk) {
 }
 
 HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
-  if (blk == tempBlock) {
+  if (blk == tempBlock || curTick() < correctionGraceTicks) {
     return ECCResult::Clean;
   }
 
@@ -215,6 +226,7 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
   }
 
   if (syndrome != 0 && overall_mismatch) {
+
     // single-bit error in data or parity bit
     auto loc_it = syndromeToBitLocation.find(syndrome);
     if (loc_it != syndromeToBitLocation.end()) {
@@ -223,23 +235,25 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
       size_t byte_idx = data_bit / 8;
       size_t bit_idx = data_bit % 8;
 
-      std::cerr << "correcting bit " << data_bit << " in block " << blk
-                << " syndrome=" << syndrome
-                << " stored.overall=" << (int)stored.overallParityBit
-                << " current.overall=" << (int)current.overallParityBit
-                << " stored.parity=[";
-      for (auto p : stored.parityBits)
-        std::cerr << (int)p << ",";
-      std::cerr << "] current.parity=[";
-      for (auto p : current.parityBits)
-        std::cerr << (int)p << ",";
-      std::cerr << "]\n";
+      //std::cerr << "Correcting bit " << data_bit << " in block " << blk << "\n";
 
-      std::cerr << "  Block data: ";
-      for (unsigned i = 0; i < blkSize; i++) {
-        std::cerr << std::hex << (int)blk->data[i] << " ";
-      }
-      std::cerr << std::dec << "\n";
+      // std::cerr << "correcting bit " << data_bit << " in block " << blk
+      //           << " syndrome=" << syndrome
+      //           << " stored.overall=" << (int)stored.overallParityBit
+      //           << " current.overall=" << (int)current.overallParityBit
+      //           << " stored.parity=[";
+      // for (auto p : stored.parityBits)
+      //   std::cerr << (int)p << ",";
+      // std::cerr << "] current.parity=[";
+      // for (auto p : current.parityBits)
+      //   std::cerr << (int)p << ",";
+      // std::cerr << "]\n";
+
+      // std::cerr << "  Block data: ";
+      // for (unsigned i = 0; i < blkSize; i++) {
+      //   std::cerr << std::hex << (int)blk->data[i] << " ";
+      // }
+      // std::cerr << std::dec << "\n";
 
       blk->data[byte_idx] ^= (1 << bit_idx);
     } else {
@@ -266,42 +280,125 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
   if (blk && blk->isValid() && operationReadsData(pkt)) {
     ECCResult result = checkAndCorrectECC(blk);
     static int refresh_count = 0;
-    if (result == ECCResult::Unrecoverable) {
-      refresh_count++;
-      std::cerr << "ECC refresh #" << refresh_count << " at tick " << curTick()
-                << "\n";
-      // pull fresh data from memory directly into the block.
-      // build a request packet matching this block's address and use
-      // a functional access to fill it synchronously.
-      Addr blk_addr = regenerateBlkAddr(blk);
-      RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,
-                                                 Request::funcRequestorId);
-      if (blk->isSecure()) {
-        req->setFlags(Request::SECURE);
+
+    if (result == ECCResult::Corrected) {
+      hammingStats.numAccessCorrected++;
+    } else if (result == ECCResult::Unrecoverable) {
+      hammingStats.numAccessUnrecoverable++;
+
+      if (blk->isSet(CacheBlk::DirtyBit)) {
+        hammingStats.numUnrecoverableDirty++;  // add this stat
+        std::cerr << "Unrecoverable error in dirty block at 0x"
+                  << std::hex << regenerateBlkAddr(blk) << std::dec << "\n";
+      } else {
+        refresh_count++;
+        std::cerr << "ECC refresh #" << refresh_count << " at tick " << curTick()
+                  << "\n";
+        // pull fresh data from memory directly into the block.
+        // build a request packet matching this block's address and use
+        Addr blk_addr = regenerateBlkAddr(blk);
+        RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,
+                                                  Request::funcRequestorId);
+        if (blk->isSecure()) {
+          req->setFlags(Request::SECURE);
+        }
+
+        Packet refresh_pkt(req, MemCmd::ReadReq);
+        refresh_pkt.dataStatic(blk->data); // write directly into block
+
+        // functional access -> bypasses timing
+        memSidePort.sendFunctional(&refresh_pkt);
+
+        // recompute and store fresh ECC for the refreshed data
+        recomputeAndStoreECC(blk);
       }
-
-      Packet refresh_pkt(req, MemCmd::ReadReq);
-      refresh_pkt.dataStatic(blk->data); // write directly into block
-
-      // functional access: synchronous, bypasses timing
-      memSidePort.sendFunctional(&refresh_pkt);
-
-      // recompute and store fresh ECC for the refreshed data
-      recomputeAndStoreECC(blk);
-
-      // TODO: when doing stats, compute the ecc refresh here
-      // ex. stats.eccRefreshes++;
     }
     // for "clean" and "corrected", block data is now valid
     //  fall through to base satisfyRequest to deliver data.
   }
 
-  // Defer to base class to deliver data to packet and handle the rest
   Cache::satisfyRequest(pkt, blk, deferred_response, pending_downgrade);
 
   if (blk && blk->isValid() && operationModifiesData(pkt)) {
     recomputeAndStoreECC(blk);
   }
+}
+
+
+HammingCache::HammingCacheStats::HammingCacheStats(statistics::Group *parent)
+    : statistics::Group(parent, "hamming"),
+      ADD_STAT(numScrubPasses, statistics::units::Count::get(),
+               "Total number of full scrub passes performed"),
+      ADD_STAT(numScrubBlocksChecked, statistics::units::Count::get(),
+               "Total number of valid blocks checked across all scrubs"),
+      ADD_STAT(numScrubClean, statistics::units::Count::get(),
+               "Blocks found clean during scrub"),
+      ADD_STAT(numScrubCorrected, statistics::units::Count::get(),
+               "Single-bit errors corrected during scrub (the value-add)"),
+      ADD_STAT(numScrubUnrecoverable, statistics::units::Count::get(),
+               "Multi-bit errors detected (uncorrectable) during scrub"),
+      ADD_STAT(totalScrubCycles, statistics::units::Cycle::get(),
+               "Total simulated cycles attributable to scrubbing"),
+      ADD_STAT(numAccessCorrected, statistics::units::Count::get(),
+               "Single-bit errors corrected on access"),
+      ADD_STAT(numAccessUnrecoverable, statistics::units::Count::get(),
+               "Multi-bit errors detected on access"),
+      ADD_STAT(numUnrecoverableDirty, statistics::units::Count::get(),
+               "Unrecoverable errors in dirty blocks (data loss, refetch skipped)")
+{
+}
+
+void
+HammingCache::scrubCache()
+{
+    unsigned blocks_checked = 0;
+
+    tags->forEachBlk([this, &blocks_checked](CacheBlk &blk) {
+        if (!blk.isValid()) {
+            return;
+        }
+        blocks_checked++;
+        ECCResult result = checkAndCorrectECC(&blk);
+        switch (result) {
+            case ECCResult::Clean:
+                hammingStats.numScrubClean++;
+                break;
+            case ECCResult::Corrected:
+                hammingStats.numScrubCorrected++;
+                break;
+            case ECCResult::Unrecoverable:
+                hammingStats.numScrubUnrecoverable++;
+                // for consistency with on-access path, refetch from memory
+                {
+                    if (blk.isSet(CacheBlk::DirtyBit)) {
+                      hammingStats.numUnrecoverableDirty++;  // add this stat
+                      std::cerr << "Unrecoverable error in dirty block at 0x"
+                                << std::hex << regenerateBlkAddr(&blk) << std::dec << "\n";
+                    } else {
+                      Addr blk_addr = regenerateBlkAddr(&blk);
+                      RequestPtr req = std::make_shared<Request>(
+                          blk_addr, blkSize, 0, Request::funcRequestorId);
+                      if (blk.isSecure()) {
+                          req->setFlags(Request::SECURE);
+                      }
+                      Packet refresh_pkt(req, MemCmd::ReadReq);
+                      refresh_pkt.dataStatic(blk.data);
+                      memSidePort.sendFunctional(&refresh_pkt);
+                      recomputeAndStoreECC(&blk);
+                    }
+                }
+                break;
+        }
+    });
+
+    hammingStats.numScrubPasses++;
+    hammingStats.numScrubBlocksChecked += blocks_checked;
+    hammingStats.totalScrubCycles += blocks_checked * cyclesPerBlockCheck;
+
+    // reschedule next scrub
+    if (scrubIntervalCycles > 0) {
+        schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+    }
 }
 
 } // namespace gem5

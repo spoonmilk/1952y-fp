@@ -6,6 +6,7 @@ cscope.files
 cscope.out
 *.pyc
 *~
+*.o
 .*.swp
 .*.swo
 m5out

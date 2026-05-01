@@ -45,8 +45,12 @@ system.cpu.icache = HammingCache(
     data_latency=1,
     response_latency=1,
     mshrs=4,
-    tgts_per_mshr=20
+    tgts_per_mshr=20,
+    scrub_interval_cycles=0,   
+    cycles_per_block_check=1,        # cost 1 cycle per block during scrub
+    correction_grace_ticks=12077000   # past mprotect at 12113000 for very specific workload in testing.c
 )
+
 system.cpu.dcache = HammingCache(
     size="32kB",
     assoc=8,
@@ -54,7 +58,10 @@ system.cpu.dcache = HammingCache(
     data_latency=1,
     response_latency=1,
     mshrs=4,
-    tgts_per_mshr=20
+    tgts_per_mshr=20,
+    scrub_interval_cycles=100,    # scrub every 100 cycles
+    cycles_per_block_check=1,        # cost 1 cycle per block during scrub
+    correction_grace_ticks=12077000   # past mprotect at 12113000 for very specific workload in testing.c
 )
 
 # connect caches between CPU and memory bus
@@ -84,6 +91,7 @@ system.cpu.createThreads()
 # seems like the probability should not go over 0.0001 because otherwise the system will just crash immediately, but this is something we can play around with
 system.chaos = CHAOSCache(
     target_cache=system.cpu.dcache,
+    firstClock=12077, #tick to clock ratio is 1000
     probability=0.0001,
     faultType="bit_flip",
     bitsToChange=1,

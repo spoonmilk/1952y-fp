@@ -26,6 +26,56 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// #ifndef __MEM_CACHE_HAMMING_CACHE_HH__
+// #define __MEM_CACHE_HAMMING_CACHE_HH__
+
+// #include <cstdint>
+// #include <unordered_map>
+// #include <vector>
+
+// #include "mem/cache/cache.hh"
+// #include "mem/packet.hh"
+
+// namespace gem5 {
+
+// class CacheBlk;
+// struct CacheParams;
+
+// class HammingCache : public Cache {
+// public:
+//   HammingCache(const CacheParams &p);
+
+//   void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
+//                        bool has_old_data) override;
+
+//   struct HammingCode {
+//     uint8_t overallParityBit;
+//     std::vector<uint8_t> parityBits;
+//   };
+
+//   int num_parity_bits;
+//   std::unordered_map<CacheBlk *, HammingCode> blockECCBits;
+//   std::unordered_map<uint8_t, size_t> syndromeToBitLocation;
+//   std::unordered_map<size_t, uint8_t> bitLocationToSyndrome;
+
+//   enum class ECCResult { Clean, Corrected, Unrecoverable };
+
+//   bool operationReadsData(PacketPtr pkt) const;
+//   bool operationModifiesData(PacketPtr pkt) const;
+//   ECCResult checkAndCorrectECC(CacheBlk *blk);
+//   void recomputeAndStoreECC(CacheBlk *blk);
+
+//   void satisfyRequest(PacketPtr pkt, CacheBlk *blk,
+//                       bool deferred_response = false,
+//                       bool pending_downgrade = false) override;
+//   void invalidateBlock(CacheBlk *blk) override;
+// };
+
+// } // namespace gem5
+
+// #endif // __MEM_CACHE_HAMMING_CACHE_HH__
+
+
 #ifndef __MEM_CACHE_HAMMING_CACHE_HH__
 #define __MEM_CACHE_HAMMING_CACHE_HH__
 
@@ -33,17 +83,21 @@
 #include <unordered_map>
 #include <vector>
 
+#include "base/statistics.hh"
 #include "mem/cache/cache.hh"
 #include "mem/packet.hh"
+#include "sim/eventq.hh"
+#include "params/HammingCache.hh"
 
 namespace gem5 {
 
 class CacheBlk;
 struct CacheParams;
+struct HammingCacheParams;
 
 class HammingCache : public Cache {
 public:
-  HammingCache(const CacheParams &p);
+  HammingCache(const HammingCacheParams &p);
 
   void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
                        bool has_old_data) override;
@@ -69,6 +123,29 @@ public:
                       bool deferred_response = false,
                       bool pending_downgrade = false) override;
   void invalidateBlock(CacheBlk *blk) override;
+
+  // for scrubbing novel approach
+  Cycles scrubIntervalCycles;
+  Cycles cyclesPerBlockCheck;
+  EventFunctionWrapper scrubEvent;
+  Tick correctionGraceTicks;
+
+  void scrubCache();
+
+  struct HammingCacheStats : public statistics::Group
+  {
+    HammingCacheStats(statistics::Group *parent);
+    statistics::Scalar numScrubPasses;
+    statistics::Scalar numScrubBlocksChecked;
+    statistics::Scalar numScrubClean;
+    statistics::Scalar numScrubCorrected;
+    statistics::Scalar numScrubUnrecoverable;
+    statistics::Scalar totalScrubCycles;
+    statistics::Scalar numAccessCorrected;
+    statistics::Scalar numAccessUnrecoverable;
+    statistics::Scalar numUnrecoverableDirty;
+  };
+  HammingCacheStats hammingStats;
 };
 
 } // namespace gem5

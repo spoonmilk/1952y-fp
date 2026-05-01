@@ -51,6 +51,7 @@
 #include "sim/syscall_debug_macros.hh"
 #include "sim/syscall_desc.hh"
 #include "sim/system.hh"
+#include "sim/cur_tick.hh"
 
 namespace gem5
 {
@@ -71,7 +72,7 @@ unimplementedFunc(SyscallDesc *desc, ThreadContext *tc)
 SyscallReturn
 ignoreFunc(SyscallDesc *desc, ThreadContext *tc)
 {
-    warn("ignoring syscall %s(...)", desc->name());
+    warn("ignoring syscall %s(...) at tick %llu", desc->name(), curTick());
     return 0;
 }
 

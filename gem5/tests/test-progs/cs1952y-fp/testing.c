@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define N 10000
+#define N 1000
 
 static inline uint32_t hash(uint32_t x) {
     x ^= x << 13;
