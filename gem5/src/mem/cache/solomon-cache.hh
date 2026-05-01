@@ -36,9 +36,11 @@
 extern "C" {
 #include "libcorrect/include/correct.h"
 }
+#include "base/statistics.hh"
 #include "mem/cache/cache.hh"
 #include "mem/packet.hh"
 #include "params/SolomonCache.hh"
+#include "sim/eventq.hh"
 
 namespace gem5 {
 
@@ -66,6 +68,29 @@ public:
                       bool deferred_response = false,
                       bool pending_downgrade = false) override;
   void invalidateBlock(CacheBlk *blk) override;
+
+  // for scrubbing novel approach
+  Cycles scrubIntervalCycles;
+  Cycles cyclesPerBlockCheck;
+  EventFunctionWrapper scrubEvent;
+  Tick correctionGraceTicks;
+
+  void scrubCache();
+
+  struct SolomonCacheStats : public statistics::Group
+  {
+    SolomonCacheStats(statistics::Group *parent);
+    statistics::Scalar numScrubPasses;
+    statistics::Scalar numScrubBlocksChecked;
+    statistics::Scalar numScrubClean;
+    statistics::Scalar numScrubCorrected;
+    statistics::Scalar numScrubUnrecoverable;
+    statistics::Scalar totalScrubCycles;
+    statistics::Scalar numAccessCorrected;
+    statistics::Scalar numAccessUnrecoverable;
+    statistics::Scalar numUnrecoverableDirty;
+  };
+  SolomonCacheStats solomonStats;
 
 private:
   // NOTE: It might be a problem to encode all blocks based on the same codec,

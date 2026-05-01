@@ -192,6 +192,12 @@ class SolomonCache(Cache):
     cxx_header = "mem/cache/solomon-cache.hh"
     cxx_class = "gem5::SolomonCache"
     symbol_errors = Param.Int(4, "Number of correctable RS symbol errors")
+    scrub_interval_cycles = Param.Cycles(0,
+        "Cycles between full cache scrub passes (0 disables scrubbing)")
+    cycles_per_block_check = Param.Cycles(1,
+        "Cycles consumed per block during a scrub pass (for latency accounting)")
+    correction_grace_ticks = Param.Tick(0,
+        "Number of ticks to wait out initialization")
 
 
 class NoncoherentCache(BaseCache):

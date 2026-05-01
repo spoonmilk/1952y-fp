@@ -28,6 +28,8 @@
 
 #include "mem/cache/solomon-cache.hh"
 
+#include <iostream>
+
 #include "base/logging.hh"
 #include "mem/cache/cache_blk.hh"
 #include "mem/request.hh"
@@ -37,7 +39,11 @@ namespace gem5 {
 
 SolomonCache::SolomonCache(const SolomonCacheParams &p)
     : Cache(p), num_parity_symbols(2 * p.symbol_errors), refresh_count(0),
-      rs_codec(nullptr) {
+      rs_codec(nullptr), scrubIntervalCycles(p.scrub_interval_cycles),
+      cyclesPerBlockCheck(p.cycles_per_block_check),
+      correctionGraceTicks(p.correction_grace_ticks),
+      scrubEvent([this] { this->scrubCache(); }, name() + ".scrubEvent"),
+      solomonStats(this) {
   if (blkSize > 255) {
     panic("SolomonCache: blkSize %d exceeds 255-byte GF(2^8) limit", blkSize);
   }
@@ -59,6 +65,10 @@ SolomonCache::SolomonCache(const SolomonCacheParams &p)
   uint8_t rs_generator_root_gap = 1;
   rs_codec = correct_reed_solomon_create(
       rs_poly, rs_first_const_root, rs_generator_root_gap, num_parity_symbols);
+
+  if (scrubIntervalCycles > 0) {
+    schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+  }
 }
 
 SolomonCache::~SolomonCache() { correct_reed_solomon_destroy(rs_codec); }
@@ -90,6 +100,10 @@ void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
 }
 
 SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
+  if (blk == tempBlock || curTick() < correctionGraceTicks) {
+    return ECCResult::Clean;
+  }
+
   auto parity_it = blockParityMap.find(blk);
   if (parity_it == blockParityMap.end()) {
     return ECCResult::Unrecoverable;
@@ -133,37 +147,107 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
   if (blk && blk->isValid() && operationReadsData(pkt)) {
     ECCResult result = checkAndCorrectECC(blk);
-    if (result == ECCResult::Unrecoverable) {
-      refresh_count++;
-      std::cerr << "ECC refresh #" << refresh_count << " at tick " << curTick()
-                << "\n";
-      // pull fresh data from memory directly into the block.
-      // build a request packet matching this block's address and use
-      // a functional access to fill it synchronously.
-      Addr blk_addr = regenerateBlkAddr(blk);
-      RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,
-                                                 Request::funcRequestorId);
-      if (blk->isSecure()) {
-        req->setFlags(Request::SECURE);
+    if (result == ECCResult::Corrected) {
+      solomonStats.numAccessCorrected++;
+    } else if (result == ECCResult::Unrecoverable) {
+      solomonStats.numAccessUnrecoverable++;
+      if (blk->isSet(CacheBlk::DirtyBit)) {
+        solomonStats.numUnrecoverableDirty++;
+        std::cerr << "Unrecoverable error in dirty block at 0x" << std::hex
+                  << regenerateBlkAddr(blk) << std::dec << "\n";
+      } else {
+        refresh_count++;
+        std::cerr << "ECC refresh #" << refresh_count << " at tick "
+                  << curTick() << "\n";
+        Addr blk_addr = regenerateBlkAddr(blk);
+        RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,
+                                                   Request::funcRequestorId);
+        if (blk->isSecure()) {
+          req->setFlags(Request::SECURE);
+        }
+
+        Packet refresh_pkt(req, MemCmd::ReadReq);
+        refresh_pkt.dataStatic(blk->data);
+
+        memSidePort.sendFunctional(&refresh_pkt);
+        recomputeAndStoreECC(blk);
       }
-
-      Packet refresh_pkt(req, MemCmd::ReadReq);
-      refresh_pkt.dataStatic(blk->data); // write directly into block
-
-      // functional access: synchronous, bypasses timing
-      memSidePort.sendFunctional(&refresh_pkt);
-
-      // recompute and store fresh ECC for the refreshed data
-      recomputeAndStoreECC(blk);
-
-      // TODO: when doing stats, compute the ecc refresh here
-      // ex. stats.eccRefreshes++;
     }
   }
   Cache::satisfyRequest(pkt, blk, deferred_response, pending_downgrade);
 
   if (blk && blk->isValid() && operationModifiesData(pkt)) {
     recomputeAndStoreECC(blk);
+  }
+}
+
+SolomonCache::SolomonCacheStats::SolomonCacheStats(statistics::Group *parent)
+    : statistics::Group(parent, "solomon"),
+      ADD_STAT(numScrubPasses, statistics::units::Count::get(),
+               "Total number of full scrub passes performed"),
+      ADD_STAT(numScrubBlocksChecked, statistics::units::Count::get(),
+               "Total number of valid blocks checked across all scrubs"),
+      ADD_STAT(numScrubClean, statistics::units::Count::get(),
+               "Blocks found clean during scrub"),
+      ADD_STAT(numScrubCorrected, statistics::units::Count::get(),
+               "Single-symbol errors corrected during scrub"),
+      ADD_STAT(numScrubUnrecoverable, statistics::units::Count::get(),
+               "Multi-symbol errors detected (uncorrectable) during scrub"),
+      ADD_STAT(totalScrubCycles, statistics::units::Cycle::get(),
+               "Total simulated cycles attributable to scrubbing"),
+      ADD_STAT(numAccessCorrected, statistics::units::Count::get(),
+               "Errors corrected on access"),
+      ADD_STAT(numAccessUnrecoverable, statistics::units::Count::get(),
+               "Unrecoverable errors detected on access"),
+      ADD_STAT(
+          numUnrecoverableDirty, statistics::units::Count::get(),
+          "Unrecoverable errors in dirty blocks (data loss, refetch skipped)") {
+}
+
+void SolomonCache::scrubCache() {
+  unsigned blocks_checked = 0;
+
+  tags->forEachBlk([this, &blocks_checked](CacheBlk &blk) {
+    if (!blk.isValid()) {
+      return;
+    }
+    blocks_checked++;
+    ECCResult result = checkAndCorrectECC(&blk);
+    switch (result) {
+    case ECCResult::Clean:
+      solomonStats.numScrubClean++;
+      break;
+    case ECCResult::Corrected:
+      solomonStats.numScrubCorrected++;
+      break;
+    case ECCResult::Unrecoverable:
+      solomonStats.numScrubUnrecoverable++;
+      if (blk.isSet(CacheBlk::DirtyBit)) {
+        solomonStats.numUnrecoverableDirty++;
+        std::cerr << "Unrecoverable error in dirty block at 0x" << std::hex
+                  << regenerateBlkAddr(&blk) << std::dec << "\n";
+      } else {
+        Addr blk_addr = regenerateBlkAddr(&blk);
+        RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,
+                                                   Request::funcRequestorId);
+        if (blk.isSecure()) {
+          req->setFlags(Request::SECURE);
+        }
+        Packet refresh_pkt(req, MemCmd::ReadReq);
+        refresh_pkt.dataStatic(blk.data);
+        memSidePort.sendFunctional(&refresh_pkt);
+        recomputeAndStoreECC(&blk);
+      }
+      break;
+    }
+  });
+
+  solomonStats.numScrubPasses++;
+  solomonStats.numScrubBlocksChecked += blocks_checked;
+  solomonStats.totalScrubCycles += blocks_checked * cyclesPerBlockCheck;
+
+  if (scrubIntervalCycles > 0) {
+    schedule(scrubEvent, clockEdge(scrubIntervalCycles));
   }
 }
 
