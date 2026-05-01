@@ -31,14 +31,23 @@
 #include "base/logging.hh"
 #include "mem/cache/cache_blk.hh"
 #include "mem/request.hh"
+#include "params/SolomonCache.hh"
 
 namespace gem5 {
 
 SolomonCache::SolomonCache(const SolomonCacheParams &p)
-    : Cache(p), num_parity_symbols(2 * p.symbol_errors), rs_codec(nullptr) {
+    : Cache(p), num_parity_symbols(2 * p.symbol_errors), refresh_count(0),
+      rs_codec(nullptr) {
   if (blkSize > 255) {
-    panic("SolomonCache::SolomonCache; Cannot generate cache w/ blkSize > 255 "
-          "over libcorrect GF(2^8)");
+    panic("SolomonCache: blkSize %d exceeds 255-byte GF(2^8) limit", blkSize);
+  }
+  if (p.symbol_errors < 1) {
+    panic("SolomonCache: symbol_errors must be >= 1");
+  }
+  if (blkSize + num_parity_symbols > 255) {
+    panic("SolomonCache: blkSize %d + 2*symbol_errors %d = %d exceeds "
+          "255-symbol GF(2^8) codeword limit",
+          blkSize, num_parity_symbols, blkSize + num_parity_symbols);
   }
   total_msg_size = blkSize + num_parity_symbols;
   enc_dec_buf.resize(total_msg_size);
@@ -61,26 +70,17 @@ void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
     return;
   }
 
-  CacheDataUpdateProbeArg data_update(regenerateBlkAddr(blk), blk->isSecure(),
-                                      blk->getSrcRequestorId(), accessor);
-  if (ppDataUpdate->hasListeners()) {
-    if (has_old_data) {
-      data_update.oldData = std::vector<uint64_t>(
-          blk->data, blk->data + (blkSize / sizeof(uint64_t)));
-    }
-  }
+  Cache::updateBlockData(blk, cpkt, has_old_data);
 
   if (cpkt) {
-    cpkt->writeDataToBlock(blk->data, blkSize);
     recomputeAndStoreECC(blk);
   }
-  Cache::updateBlockData(blk, cpkt, has_old_data);
 }
 
 void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
   memcpy(enc_dec_buf.data(), blk->data, blkSize);
 
-  correct_reed_solomon_encode(rs_codec, enc_dec_buf.data(), total_msg_size,
+  correct_reed_solomon_encode(rs_codec, enc_dec_buf.data(), blkSize,
                               enc_dec_buf.data());
 
   uint8_t *parity_bit_start = enc_dec_buf.data() + blkSize;
@@ -90,15 +90,20 @@ void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
 }
 
 SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
-  // Reconstruct the ECC block from cache block and map
+  auto parity_it = blockParityMap.find(blk);
+  if (parity_it == blockParityMap.end()) {
+    return ECCResult::Unrecoverable;
+  }
+
   memcpy(enc_dec_buf.data(), blk->data, blkSize);
-  memcpy(enc_dec_buf.data() + blkSize, blockParityMap[blk].data(),
+  memcpy(enc_dec_buf.data() + blkSize, parity_it->second.data(),
          num_parity_symbols);
 
-  ssize_t result = correct_reed_solomon_decode(rs_codec, enc_dec_buf.data(),
-                                               blkSize, enc_dec_buf.data());
+  ssize_t result = correct_reed_solomon_decode(
+      rs_codec, enc_dec_buf.data(), total_msg_size, enc_dec_buf.data());
   // NOTE: There is a chance that RS can silently fail, but in that case we have
-  // bigger problems If bad, just mark it as such. If corrected, write back the
+  // bigger problems.
+  // If bad, just mark it as such. If corrected, write back the
   // corrections.
   if (result < 0) {
     return ECCResult::Unrecoverable;
@@ -128,7 +133,6 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
   if (blk && blk->isValid() && operationReadsData(pkt)) {
     ECCResult result = checkAndCorrectECC(blk);
-    static int refresh_count = 0;
     if (result == ECCResult::Unrecoverable) {
       refresh_count++;
       std::cerr << "ECC refresh #" << refresh_count << " at tick " << curTick()

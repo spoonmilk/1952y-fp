@@ -54,6 +54,7 @@ public:
 
   size_t num_parity_symbols; // 2 * t where t = symbol errors
   size_t total_msg_size;     // blkSize + num_parity_symbols
+  int refresh_count;
   enum class ECCResult { Clean, Corrected, Unrecoverable };
 
   bool operationReadsData(PacketPtr pkt) const;

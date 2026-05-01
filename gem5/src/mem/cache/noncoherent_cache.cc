@@ -260,7 +260,7 @@ NoncoherentCache::serviceMSHRTargets(MSHR *mshr, const PacketPtr pkt,
             from_core = true;
 
             Tick completion_time;
-            // Here we charge on completion_time the delay of the xbar if the
+            // Here we charge on completion_time the delay of the xbar if thed
             // packet comes from it, charged on headerDelay.
             completion_time = pkt->headerDelay;
 
