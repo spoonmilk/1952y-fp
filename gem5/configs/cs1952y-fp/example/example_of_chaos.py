@@ -15,6 +15,14 @@ m5.util.addToPath("../../")
 from common import SimpleOpts
 
 SimpleOpts.add_option("binary", type=str)
+SimpleOpts.add_option(
+    "--chaos-prob", type=float, default=0.0001,
+    help="Bit-flip probability for CHAOS injector (default 0.0001)"
+)
+SimpleOpts.add_option(
+    "--chaos-bits", type=int, default=1,
+    help="Bits flipped per CHAOS corruption event (default 1)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -91,16 +99,19 @@ system.cpu.createThreads()
 # seems like the probability should not go over 0.0001 because otherwise the system will just crash immediately, but this is something we can play around with
 system.chaos = CHAOSCache(
     target_cache=system.cpu.dcache,
-    firstClock=12077, #tick to clock ratio is 1000
-    probability=0.0001,
+    firstClock=12077,  # tick-to-clock ratio is 1000
+    probability=args.chaos_prob,
     faultType="bit_flip",
-    bitsToChange=1,
-    corruptionSize=1
+    bitsToChange=args.chaos_bits,
+    corruptionSize=1,
 )
 
 root = Root(full_system=False, system=system)
 m5.instantiate()
 
-print(f"Beginning simulation!")
+print(
+    f"Simulating HammingCache Workload: "
+    f"chaos_prob={args.chaos_prob}, chaos_bits={args.chaos_bits}"
+)
 exit_event = m5.simulate()
 print(f"Exiting @ tick {m5.curTick()} because {exit_event.getCause()}")
