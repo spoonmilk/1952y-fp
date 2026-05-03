@@ -34,6 +34,7 @@
 #include "mem/cache/cache_blk.hh"
 #include "mem/request.hh"
 #include "params/SolomonCache.hh"
+#include "sim/sim_exit.hh"
 
 namespace gem5 {
 
@@ -83,6 +84,8 @@ void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
   Cache::updateBlockData(blk, cpkt, has_old_data);
 
   if (cpkt) {
+    // copy block to copies for correctness checking later
+    copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
     recomputeAndStoreECC(blk);
   }
 }
@@ -106,7 +109,7 @@ SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
 
   auto parity_it = blockParityMap.find(blk);
   if (parity_it == blockParityMap.end()) {
-    return ECCResult::Unrecoverable;
+    return ECCResult::Clean; // TODO: confirm, but matches hamming for "magic blocks" that are added by gem5 internals
   }
 
   memcpy(enc_dec_buf.data(), blk->data, blkSize);
@@ -120,9 +123,29 @@ SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
   // If bad, just mark it as such. If corrected, write back the
   // corrections.
   if (result < 0) {
+
+    std::cerr << "Unrecoverable error in block at " << regenerateBlkAddr(blk) << "\n";
     return ECCResult::Unrecoverable;
   } else if (memcmp(enc_dec_buf.data(), blk->data, blkSize) != 0) {
+
+    //std::cerr << "Corrected error in block at " << regenerateBlkAddr(blk) << "\n";
     memcpy(blk->data, enc_dec_buf.data(), blkSize);
+
+    // check the correction - if this ever happens, we can see if there's an issue w/ the implementation
+    auto copy_it = copies.find(blk);
+    if (copy_it != copies.end()) {
+        const std::vector<uint8_t> &copy = copy_it->second;
+        bool exit = false;
+        for (size_t i = 0; i < blkSize; i++) {
+            if (blk->data[i] != copy[i]) {
+                std::cerr << "Verification after correction: mismatch found at byte " << i << "\n";
+                exit = true;
+            }
+        }
+        if (exit) {
+            exitSimLoop("Verification failure after ECC correction", 1);
+        }
+    }
     return ECCResult::Corrected;
   }
   return ECCResult::Clean;
@@ -155,6 +178,7 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
         solomonStats.numUnrecoverableDirty++;
         std::cerr << "Unrecoverable error in dirty block at 0x" << std::hex
                   << regenerateBlkAddr(blk) << std::dec << "\n";
+        exitSimLoop("Unrecoverable error in dirty block", 1);
       } else {
         refresh_count++;
         std::cerr << "ECC refresh #" << refresh_count << " at tick "
@@ -226,6 +250,7 @@ void SolomonCache::scrubCache() {
         solomonStats.numUnrecoverableDirty++;
         std::cerr << "Unrecoverable error in dirty block at 0x" << std::hex
                   << regenerateBlkAddr(&blk) << std::dec << "\n";
+        exitSimLoop("Unrecoverable error in dirty block during scrub", 1);
       } else {
         Addr blk_addr = regenerateBlkAddr(&blk);
         RequestPtr req = std::make_shared<Request>(blk_addr, blkSize, 0,

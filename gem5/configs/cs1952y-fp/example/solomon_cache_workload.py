@@ -43,14 +43,15 @@ system.cpu = RiscvO3CPU()
 system.membus = SystemXBar()
 
 cache_params = dict(
-    size="32kB",
-    assoc=8,
+    size="1kB",
+    assoc=1,
     tag_latency=1,
     data_latency=1,
     response_latency=1,
-    mshrs=4,
-    tgts_per_mshr=20,
-    symbol_errors=args.symbol_errors,
+    mshrs=1,
+    tgts_per_mshr=1,
+    scrub_interval_cycles=10,
+    symbol_errors=args.symbol_errors
 )
 
 system.cpu.icache = SolomonCache(**cache_params)

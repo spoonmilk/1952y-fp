@@ -74,6 +74,7 @@ public:
   Cycles cyclesPerBlockCheck;
   EventFunctionWrapper scrubEvent;
   Tick correctionGraceTicks;
+  std::unordered_map<CacheBlk*, std::vector<uint8_t>> copies;
 
   void scrubCache();
 
