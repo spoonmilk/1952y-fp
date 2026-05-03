@@ -46,31 +46,38 @@ system.cpu = RiscvO3CPU()
 system.membus = SystemXBar()
 
 # L1 Caches 
-system.cpu.icache = HammingCache(
+system.cpu.icache = Cache(
     size="32kB",
-    assoc=8,
+    assoc=1,
     tag_latency=1,
     data_latency=1,
     response_latency=1,
     mshrs=4,
-    tgts_per_mshr=20,
-    scrub_interval_cycles=0,   
-    cycles_per_block_check=1,        # cost 1 cycle per block during scrub
-    correction_grace_ticks=12077000   # past mprotect at 12113000 for very specific workload in testing.c
+    tgts_per_mshr=20
 )
 
 system.cpu.dcache = HammingCache(
-    size="32kB",
-    assoc=8,
+    size="1kB",
+    assoc=1,
     tag_latency=1,
     data_latency=1,
     response_latency=1,
-    mshrs=4,
-    tgts_per_mshr=20,
-    scrub_interval_cycles=100,    # scrub every 100 cycles
+    mshrs=1,
+    tgts_per_mshr=1,
+    scrub_interval_cycles=10,    # scrub every 100 cycles
     cycles_per_block_check=1,        # cost 1 cycle per block during scrub
-    correction_grace_ticks=12077000   # past mprotect at 12113000 for very specific workload in testing.c
+    correction_grace_ticks=52077000   # past mprotect at 12113000 for very specific workload in testing.c
 )
+
+# system.cpu.dcache = Cache(
+#     size="1kB",
+#     assoc=1,
+#     tag_latency=1,
+#     data_latency=1,
+#     response_latency=1,
+#     mshrs=1,
+#     tgts_per_mshr=1
+# )
 
 # connect caches between CPU and memory bus
 system.cpu.icache_port = system.cpu.icache.cpu_side
@@ -99,7 +106,7 @@ system.cpu.createThreads()
 # seems like the probability should not go over 0.0001 because otherwise the system will just crash immediately, but this is something we can play around with
 system.chaos = CHAOSCache(
     target_cache=system.cpu.dcache,
-    firstClock=12077,  # tick-to-clock ratio is 1000
+    firstClock=52077,  # tick-to-clock ratio is 1000
     probability=args.chaos_prob,
     faultType="bit_flip",
     bitsToChange=args.chaos_bits,

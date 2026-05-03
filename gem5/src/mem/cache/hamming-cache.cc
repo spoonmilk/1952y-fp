@@ -33,6 +33,7 @@
 #include "mem/cache/cache_blk.hh"
 #include "mem/request.hh"
 #include "params/Cache.hh"
+#include "sim/sim_exit.hh"
 
 namespace gem5 {
 
@@ -70,6 +71,8 @@ HammingCache::HammingCache(const HammingCacheParams &p) : Cache(p),
     }
     pos++;
   }
+
+  // once we reach here, there should actually be 
 }
 
 void HammingCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
@@ -99,6 +102,8 @@ void HammingCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
     // 2. record the specific parity bits (using a mask?)
     // the data is in *data, but it is not an iterable. The blksize is the only
     // thing delimiting the traversal
+    copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
+
     size_t total_data_bits = blkSize * 8;
     HammingCode code;
     code.overallParityBit = 0;
@@ -184,7 +189,6 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
 
   auto it = blockECCBits.find(blk);
   if (it == blockECCBits.end()) {
-    // treat as clean
     return ECCResult::Clean;
   }
   const HammingCode &stored = it->second;
@@ -235,7 +239,9 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
       size_t byte_idx = data_bit / 8;
       size_t bit_idx = data_bit % 8;
 
-      //std::cerr << "Correcting bit " << data_bit << " in block " << blk << "\n";
+      hammingStats.totalCorrected++;
+
+      //std::cerr << "Correcting byte number " << byte_idx << "\n";
 
       // std::cerr << "correcting bit " << data_bit << " in block " << blk
       //           << " syndrome=" << syndrome
@@ -258,7 +264,25 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
       blk->data[byte_idx] ^= (1 << bit_idx);
     } else {
       // error in a parity bit, data is fine, refresh stored ECC
+      // TODO: add metric to catch refreshes due to parity bit errors 
+      std::cerr << "correcting via refresh" << "\n";
       blockECCBits[blk] = std::move(current);
+    }
+
+    // check against the copy of the block we stored during the last update
+    auto copy_it = copies.find(blk);
+    if (copy_it != copies.end()) {
+        const std::vector<uint8_t> &copy = copy_it->second;
+        bool exit = false;
+        for (size_t i = 0; i < blkSize; i++) {
+            if (blk->data[i] != copy[i]) {
+                std::cerr << "Verification after correction: mismatch found at byte " << i << " for block " << hammingStats.totalCorrected.value() << "\n";
+                exit = true;
+            }
+        }
+        if (exit) {
+            exitSimLoop("Verification failure after ECC correction", 1);
+        }
     }
     return ECCResult::Corrected;
   }
@@ -290,6 +314,8 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
         hammingStats.numUnrecoverableDirty++;  // add this stat
         std::cerr << "Unrecoverable error in dirty block at 0x"
                   << std::hex << regenerateBlkAddr(blk) << std::dec << "\n";
+
+        exitSimLoop("Unrecoverable error in dirty block", 1);
       } else {
         refresh_count++;
         std::cerr << "ECC refresh #" << refresh_count << " at tick " << curTick()
@@ -344,7 +370,9 @@ HammingCache::HammingCacheStats::HammingCacheStats(statistics::Group *parent)
       ADD_STAT(numAccessUnrecoverable, statistics::units::Count::get(),
                "Multi-bit errors detected on access"),
       ADD_STAT(numUnrecoverableDirty, statistics::units::Count::get(),
-               "Unrecoverable errors in dirty blocks (data loss, refetch skipped)")
+               "Unrecoverable errors in dirty blocks (data loss, refetch skipped)"),
+      ADD_STAT(totalCorrected, statistics::units::Count::get(),
+               "Total single-bit errors corrected (scrub + access)")
 {
 }
 
@@ -374,6 +402,7 @@ HammingCache::scrubCache()
                       hammingStats.numUnrecoverableDirty++;  // add this stat
                       std::cerr << "Unrecoverable error in dirty block at 0x"
                                 << std::hex << regenerateBlkAddr(&blk) << std::dec << "\n";
+                      exitSimLoop("Unrecoverable error in dirty block", 1);
                     } else {
                       Addr blk_addr = regenerateBlkAddr(&blk);
                       RequestPtr req = std::make_shared<Request>(

@@ -136,6 +136,8 @@ namespace gem5
     void
     CHAOSCache::injectFault()
     {   
+
+        //warn("Injecting fault at tick %lu\n", curTick());
         BaseTags* tags = getTags();
         unsigned blockSize = targetCache->getBlockSize();
         
@@ -192,8 +194,19 @@ namespace gem5
                         permanent_faults[std::make_pair(blockAddr, byteOffset)] = {chosen_fault_type_enum, mask, true};
                         break;
                     case FaultType::BitFlip:
-                        data[byteOffset] ^= mask;
-                        stats->numBitFlips++;
+                        // if (blocks_with_injected_faults.size() == 16) {
+                        //     blocks_with_injected_faults.clear();
+                        // }
+                        // if (blocks_with_injected_faults.find(data) != blocks_with_injected_faults.end()) {
+                        //     warn("Block already has an injected fault, skipping bit flip to avoid compounding faults.");
+                        //     std::cerr << "number of blocks with injected faults: " << blocks_with_injected_faults.size() << "\n";
+                        // }
+                        // else {
+                            data[byteOffset] ^= mask;
+                            stats->numBitFlips++;
+                            //std::cerr << "Injected bit on byte " << byteOffset << " of block " << blockAddr << "\n";
+                        //     blocks_with_injected_faults.insert(data);
+                        // }
                         break;
                     default:
                         break;

@@ -158,7 +158,7 @@ class CacheBlk : public TaggedEntry
     }
 
     CacheBlk(const CacheBlk&) = delete;
-    CacheBlk& operator=(const CacheBlk&) = delete;
+    //CacheBlk& operator=(const CacheBlk&) = delete;
     CacheBlk(const CacheBlk&&) = delete;
     /**
      * Move assignment operator.

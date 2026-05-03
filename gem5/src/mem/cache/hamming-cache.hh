@@ -109,8 +109,9 @@ public:
 
   int num_parity_bits;
   std::unordered_map<CacheBlk *, HammingCode> blockECCBits;
-  std::unordered_map<uint8_t, size_t> syndromeToBitLocation;
-  std::unordered_map<size_t, uint8_t> bitLocationToSyndrome;
+  std::unordered_map<size_t, size_t> syndromeToBitLocation;
+  std::unordered_map<size_t, size_t> bitLocationToSyndrome;
+  std::unordered_map<CacheBlk*, std::vector<uint8_t>> copies;
 
   enum class ECCResult { Clean, Corrected, Unrecoverable };
 
@@ -144,6 +145,7 @@ public:
     statistics::Scalar numAccessCorrected;
     statistics::Scalar numAccessUnrecoverable;
     statistics::Scalar numUnrecoverableDirty;
+    statistics::Scalar totalCorrected;
   };
   HammingCacheStats hammingStats;
 };

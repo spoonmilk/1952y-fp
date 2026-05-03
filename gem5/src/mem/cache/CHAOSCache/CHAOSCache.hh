@@ -52,6 +52,8 @@ class CHAOSCache : public SimObject
     int cycles_permament_fault_check;
     bool write_log;
 
+    std::unordered_set<uint8_t*> blocks_with_injected_faults;
+
     EventFunctionWrapper attackEvent, periodicCheck;
     Tick first_tick, last_tick, ticks_permament_fault_check;
     std::map<std::pair<Addr, int>, PermanentFault> permanent_faults;
