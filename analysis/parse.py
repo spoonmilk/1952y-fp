@@ -57,7 +57,6 @@ def _parse_stats_file(path):
 
 
 def _read_config(run_dir):
-    """Return (chaos_prob, scrub_interval) from config.ini, or (nan, nan)."""
     config_ini = run_dir / "config.ini"
     chaos_prob = math.nan
     scrub_interval = math.nan
@@ -78,12 +77,6 @@ def _read_config(run_dir):
 
 
 def load_results(results_dir):
-    """Return a list of record dicts, one per run directory found under results_dir.
-
-    Records with completed=False have empty stats (the simulation crashed); all
-    ECC counters are 0 and CPU stats are NaN.  These are used to compute H2
-    completion rates.
-    """
     results_dir = Path(results_dir)
     records = []
 
@@ -97,10 +90,8 @@ def load_results(results_dir):
                 continue
             bench = bench_dir.name
 
-            # support both flat stats.txt and run_N/stats.txt layouts
             run_dirs = sorted(bench_dir.glob("run_*"))
             if not run_dirs:
-                # flat layout — treat the bench dir itself as the run
                 run_dirs = [bench_dir]
 
             for run_dir in run_dirs:

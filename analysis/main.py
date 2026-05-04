@@ -1,15 +1,12 @@
 """
 Analysis for CSCI1952Y final project: ECC in L1 Cache Schemes.
-Reads from results.csv and produces three plots (real data only).
 
 Usage:
-    python3 main.py [--csv PATH] [--output PATH]
-
-    --csv     Path to results CSV  (default: ./output/results.csv)
-    --output  Directory for plots  (default: ./output)
+    python3 main.py [--results PATH] [--csv PATH] [--output PATH]
 """
 
 import argparse
+import csv as csv_mod
 from pathlib import Path
 
 import pandas as pd
@@ -54,9 +51,7 @@ def main():
 
     csv_path = Path(args.csv) if args.csv else output_dir / "results.csv"
 
-    # rebuild CSV from raw stats if it doesn't exist
     if not csv_path.exists():
-        import csv as csv_mod
         print(f"CSV not found at {csv_path}, building from {args.results} ...")
         records = load_results(args.results)
         if not records:

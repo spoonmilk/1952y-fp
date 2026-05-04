@@ -1,11 +1,4 @@
-"""
-Plots for CSCI1952Y ECC final project — real data only.
-
-Three charts:
-  1. corrections_by_workload  — H1: scrub vs access corrections across benches
-  2. completion_vs_prob       — H2: MM pass/fail by chaos probability
-  3. corrections_vs_prob      — H2: scrub corrections captured across prob levels (MM)
-"""
+"""Plots for CSCI1952Y ECC final project."""
 
 import matplotlib
 matplotlib.use("Agg")
@@ -24,16 +17,7 @@ def _save(fig, path):
     print(f"  saved {path}")
 
 
-# ── Chart 1 ───────────────────────────────────────────────────────────────────
-
 def plot_corrections_by_workload(df, output_dir):
-    """
-    H1: scrubbing corrects far more errors than on-access correction alone.
-
-    Uses run_1 multi-bench sweep (prob=1e-4, scrub_interval=10, completed only).
-    Bars show scrub-corrected; access-corrected is stacked on top.
-    A red hatch cap marks runs with at least one unrecoverable error.
-    """
     data = df[
         (df["run"] == "run_1") &
         (df["completed"] == True)
@@ -83,15 +67,7 @@ def plot_corrections_by_workload(df, output_dir):
     _save(fig, Path(output_dir) / "corrections_by_workload.png")
 
 
-# ── Chart 2 ───────────────────────────────────────────────────────────────────
-
 def plot_completion_vs_prob(df, output_dir):
-    """
-    H2: program completion rate vs. SEU probability for the MM workload.
-
-    Each point is one measured run. Separate markers distinguish
-    scrub_interval=10 (filled) from scrub_interval=100 (open).
-    """
     mm = df[df["bench"] == "MM"].copy()
     mm = mm[mm["chaos_prob"].notna()]
 
@@ -133,16 +109,7 @@ def plot_completion_vs_prob(df, output_dir):
     _save(fig, Path(output_dir) / "completion_vs_prob.png")
 
 
-# ── Chart 3 ───────────────────────────────────────────────────────────────────
-
 def plot_corrections_vs_prob(df, output_dir):
-    """
-    H2 complement: how many errors scrubbing caught in MM runs that completed,
-    as a function of chaos_prob.
-
-    Shows scrub-corrected (dominant) and access-corrected (usually near zero)
-    separately. Runs at scrub_interval=100 are marked with open symbols.
-    """
     mm = df[
         (df["bench"] == "MM") &
         (df["completed"] == True) &
