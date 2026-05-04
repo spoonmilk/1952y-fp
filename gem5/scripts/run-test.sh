@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B] [--sym-errors N] [--run N]
+# args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B] [--sym-errors N] [--scrub-interval N] [--run N]
 
 set -euo pipefail
 
@@ -12,14 +12,16 @@ BENCH="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 CHAOS_PROB="0.0001"
 CHAOS_BITS="1"
 SYM_ERRORS="4"
+SCRUB_INTERVAL="10"
 RUN=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --chaos-prob)  CHAOS_PROB="$2"; shift 2 ;;
-        --chaos-bits)  CHAOS_BITS="$2"; shift 2 ;;
-        --sym-errors)  SYM_ERRORS="$2"; shift 2 ;;
-        --run)         RUN="$2";        shift 2 ;;
+        --chaos-prob)     CHAOS_PROB="$2";     shift 2 ;;
+        --chaos-bits)     CHAOS_BITS="$2";     shift 2 ;;
+        --sym-errors)     SYM_ERRORS="$2";     shift 2 ;;
+        --scrub-interval) SCRUB_INTERVAL="$2"; shift 2 ;;
+        --run)            RUN="$2";            shift 2 ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
 done
@@ -43,4 +45,5 @@ EXTRA=()
     "$BINARY_REL" \
     --chaos-prob "$CHAOS_PROB" \
     --chaos-bits "$CHAOS_BITS" \
+    --scrub-interval "$SCRUB_INTERVAL" \
     "${EXTRA[@]}"

@@ -23,6 +23,10 @@ SimpleOpts.add_option(
     "--chaos-bits", type=int, default=1,
     help="Bits flipped per CHAOS corruption event (default 1)"
 )
+SimpleOpts.add_option(
+    "--scrub-interval", type=int, default=10,
+    help="Cycles between scrub passes (default 10)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -64,7 +68,7 @@ system.cpu.dcache = HammingCache(
     response_latency=1,
     mshrs=1,
     tgts_per_mshr=1,
-    scrub_interval_cycles=10,    # scrub every 100 cycles
+    scrub_interval_cycles=args.scrub_interval,
     cycles_per_block_check=1,        # cost 1 cycle per block during scrub
     correction_grace_ticks=52077000   # past mprotect at 12113000 for very specific workload in testing.c
 )

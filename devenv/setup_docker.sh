@@ -25,7 +25,7 @@ while test "$#" -ne 0; do
 done
 
 echo "Building image $IMAGE (this will take a while)..."
-docker build --build-arg GEM5_REPO="$GEM5_REPO" -t "$IMAGE" . || (echo "Error building image." && exit 1)
+docker build --platform linux/amd64 --build-arg GEM5_REPO="$GEM5_REPO" -t "$IMAGE" . || { echo "Error building image." && exit 1; }
 
 if ! $gem5_exists; then
     echo "Starting docker container to copy over directories"

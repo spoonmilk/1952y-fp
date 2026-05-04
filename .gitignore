@@ -3,8 +3,8 @@
 
 # gem5 simulation outputs (recreated by sim_sweep.sh / run-test.sh)
 gem5/results/
-gem5/build.log
-gem5/sweep.log
+gem5/*.log
+gem5/compile_commands.json
 
 # analysis outputs (recreated by analysis/main.py)
 analysis/output/

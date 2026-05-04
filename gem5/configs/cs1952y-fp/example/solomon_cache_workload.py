@@ -24,6 +24,10 @@ SimpleOpts.add_option(
     "--chaos-bits", type=int, default=1,
     help="Bits flipped per CHAOS corruption event (default 1)"
 )
+SimpleOpts.add_option(
+    "--scrub-interval", type=int, default=10,
+    help="Cycles between scrub passes (default 10)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -50,7 +54,7 @@ cache_params = dict(
     response_latency=1,
     mshrs=1,
     tgts_per_mshr=1,
-    scrub_interval_cycles=10,
+    scrub_interval_cycles=args.scrub_interval,
     symbol_errors=args.symbol_errors
 )
 
