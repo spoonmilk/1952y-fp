@@ -1,1 +1,10 @@
 .idea
+*.pyc
+
+# gem5 simulation outputs (recreated by sim_sweep.sh / run-test.sh)
+gem5/results/
+gem5/build.log
+gem5/sweep.log
+
+# analysis outputs (recreated by analysis/main.py)
+analysis/output/
