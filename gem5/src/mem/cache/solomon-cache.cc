@@ -83,10 +83,48 @@ void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
 
   Cache::updateBlockData(blk, cpkt, has_old_data);
 
-  if (cpkt) {
-    // copy block to copies for correctness checking later
-    copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
-    recomputeAndStoreECC(blk);
+  // Keep Solomon bookkeeping in sync for all mutation paths, including
+  // functional writes that may call this with cpkt == nullptr.
+  copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
+  recomputeAndStoreECC(blk);
+}
+
+void SolomonCache::functionalAccess(PacketPtr pkt, bool from_cpu_side)
+{
+  CacheBlk *blk_before = nullptr;
+  std::vector<uint8_t> before;
+
+  // snapshot block bytes so we can detect in-place functional writes
+  if (pkt->isWrite()) {
+    blk_before = tags->findBlock(pkt->getAddr(), pkt->isSecure());
+    if (blk_before && blk_before->isValid() && blk_before != tempBlock) {
+      before = std::vector<uint8_t>(blk_before->data, blk_before->data + blkSize);
+    } else {
+      blk_before = nullptr;
+    }
+  }
+
+  BaseCache::functionalAccess(pkt, from_cpu_side);
+
+  if (!blk_before) {
+    return;
+  }
+
+  CacheBlk *blk_after = tags->findBlock(pkt->getAddr(), pkt->isSecure());
+  if (!blk_after || !blk_after->isValid() || blk_after != blk_before) {
+    return;
+  }
+
+  if (memcmp(before.data(), blk_after->data, blkSize) != 0) {
+    const bool fits_single_block =
+        pkt->getOffset(blkSize) + pkt->getSize() <= blkSize;
+
+    // route through updateBlockData workflow so ECC/copies stay consistent with normal timing writes
+    if (fits_single_block) {
+      updateBlockData(blk_after, pkt, true);
+    } else {
+      updateBlockData(blk_after, nullptr, true);
+    }
   }
 }
 

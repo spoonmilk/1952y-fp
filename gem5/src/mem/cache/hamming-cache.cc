@@ -92,60 +92,59 @@ void HammingCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
     }
   }
 
-  // actually perform the data update
+  // Actually perform the data update if a packet payload is provided.
+  // For some paths (e.g., functional writes) data may have already been
+  // mutated outside this method and cpkt will be null; in that case we still
+  // refresh ECC/copies below.
   if (cpkt) {
     cpkt->writeDataToBlock(blk->data, blkSize);
-    // after the write, the data is available in the block, so grab from there
-    // idea here is to grab the materials needed to make the struct, then append
-    // them directly into the unordered_map
-    // 1. get overall parity of the block
-    // 2. record the specific parity bits (using a mask?)
-    // the data is in *data, but it is not an iterable. The blksize is the only
-    // thing delimiting the traversal
-    copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
-
-    size_t total_data_bits = blkSize * 8;
-    HammingCode code;
-    code.overallParityBit = 0;
-    code.parityBits.assign(num_parity_bits, 0);
-
-    // walk through every data bit, contributing to overall parity and to
-    // each Hamming parity bit whose codeword position covers this data bit
-    for (size_t data_index = 0; data_index < total_data_bits; data_index++) {
-      size_t byte_idx = data_index / 8;
-      size_t bit_idx = data_index % 8;
-      uint8_t bit_value = (blk->data[byte_idx] >> bit_idx) & 1;
-
-      if (bit_value) {
-        // update overall parity
-        code.overallParityBit ^= 1;
-
-        // look up this data bit's codeword position
-        size_t codeword_pos = bitLocationToSyndrome.at(data_index);
-
-        // for each parity bit, check if its position (a power of 2)
-        // shares a 1-bit with this data bit's codeword position.
-        for (int p = 0; p < num_parity_bits; p++) {
-          size_t parity_pos = (1ULL << p);
-          if (codeword_pos &
-              parity_pos) { // this parity bit covers this data bit
-            code.parityBits[p] ^= 1;
-          }
-        }
-      }
-    }
-
-    // store the computed ECC, overwriting any previous entry for this block
-    blockECCBits[blk] = std::move(code);
   }
 
+  recomputeAndStoreECC(blk);
+
   if (ppDataUpdate->hasListeners()) {
-    if (cpkt) {
-      data_update.newData = std::vector<uint64_t>(
-          blk->data, blk->data + (blkSize / sizeof(uint64_t)));
-      data_update.hwPrefetched = blk->wasPrefetched();
-    }
+    data_update.newData = std::vector<uint64_t>(
+        blk->data, blk->data + (blkSize / sizeof(uint64_t)));
+    data_update.hwPrefetched = blk->wasPrefetched();
     ppDataUpdate->notify(data_update);
+  }
+}
+
+void HammingCache::functionalAccess(PacketPtr pkt, bool from_cpu_side)
+{
+  CacheBlk *blk_before = nullptr;
+  std::vector<uint8_t> before;
+
+  // snapshot block bytes so we can detect in-place functional writes
+  if (pkt->isWrite()) {
+    blk_before = tags->findBlock(pkt->getAddr(), pkt->isSecure());
+    if (blk_before && blk_before->isValid() && blk_before != tempBlock) {
+      before = std::vector<uint8_t>(blk_before->data, blk_before->data + blkSize);
+    } else {
+      blk_before = nullptr;
+    }
+  }
+
+  BaseCache::functionalAccess(pkt, from_cpu_side);
+
+  if (!blk_before) {
+    return;
+  }
+
+  CacheBlk *blk_after = tags->findBlock(pkt->getAddr(), pkt->isSecure());
+  if (!blk_after || !blk_after->isValid() || blk_after != blk_before) {
+    return;
+  }
+
+  if (memcmp(before.data(), blk_after->data, blkSize) != 0) {
+    const bool fits_single_block =
+        pkt->getOffset(blkSize) + pkt->getSize() <= blkSize;
+
+    if (fits_single_block) {
+      updateBlockData(blk_after, pkt, true);
+    } else {
+      updateBlockData(blk_after, nullptr, true);
+    }
   }
 }
 

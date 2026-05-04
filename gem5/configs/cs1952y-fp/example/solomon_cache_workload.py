@@ -42,7 +42,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 system.mem_mode = "timing"
 system.mem_ranges = [AddrRange("8192MB")]
 
-system.cpu = RiscvO3CPU()
+system.cpu = RiscvTimingSimpleCPU() #RiscvO3CPU()
 
 system.membus = SystemXBar()
 

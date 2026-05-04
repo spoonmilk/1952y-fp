@@ -123,6 +123,7 @@ public:
   void satisfyRequest(PacketPtr pkt, CacheBlk *blk,
                       bool deferred_response = false,
                       bool pending_downgrade = false) override;
+  void functionalAccess(PacketPtr pkt, bool from_cpu_side) override;
   void invalidateBlock(CacheBlk *blk) override;
 
   // for scrubbing novel approach
