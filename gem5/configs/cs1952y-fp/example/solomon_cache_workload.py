@@ -24,6 +24,10 @@ SimpleOpts.add_option(
     "--chaos-bits", type=int, default=1,
     help="Bits flipped per CHAOS corruption event (default 1)"
 )
+SimpleOpts.add_option(
+    "--delay", type=int, default=52077000,
+    help="Delay for CHAOS corruption event (default 52077000)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -43,7 +47,7 @@ system.cpu = RiscvO3CPU()
 system.membus = SystemXBar()
 
 cache_params = dict(
-    size="1kB",
+    size="32kB",
     assoc=1,
     tag_latency=1,
     data_latency=1,
@@ -51,7 +55,8 @@ cache_params = dict(
     mshrs=1,
     tgts_per_mshr=1,
     scrub_interval_cycles=10,
-    symbol_errors=args.symbol_errors
+    symbol_errors=args.symbol_errors,
+    correction_grace_ticks=args.delay
 )
 
 system.cpu.icache = SolomonCache(**cache_params)
@@ -82,6 +87,7 @@ system.cpu.createThreads()
 # CHAOS fault injector — targets dcache only so icache stays clean
 system.chaos = CHAOSCache(
     target_cache=system.cpu.dcache,
+    firstClock=args.delay / 1000,  # tick-to-clock ratio is 1000
     probability=args.chaos_prob,
     faultType="bit_flip",
     bitsToChange=args.chaos_bits,

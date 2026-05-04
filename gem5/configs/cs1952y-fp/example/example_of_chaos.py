@@ -23,6 +23,10 @@ SimpleOpts.add_option(
     "--chaos-bits", type=int, default=1,
     help="Bits flipped per CHAOS corruption event (default 1)"
 )
+SimpleOpts.add_option(
+    "--delay", type=int, default=52077000,
+    help="Delay for CHAOS corruption event (default 52077000)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -48,7 +52,7 @@ system.membus = SystemXBar()
 # L1 Caches 
 system.cpu.icache = Cache(
     size="32kB",
-    assoc=1,
+    assoc=8,
     tag_latency=1,
     data_latency=1,
     response_latency=1,
@@ -57,16 +61,16 @@ system.cpu.icache = Cache(
 )
 
 system.cpu.dcache = HammingCache(
-    size="1kB",
-    assoc=1,
+    size="32kB",
+    assoc=8,
     tag_latency=1,
     data_latency=1,
     response_latency=1,
     mshrs=1,
     tgts_per_mshr=1,
-    scrub_interval_cycles=10,    # scrub every 100 cycles
+    scrub_interval_cycles=100,    # scrub every 100 cycles
     cycles_per_block_check=1,        # cost 1 cycle per block during scrub
-    correction_grace_ticks=52077000   # past mprotect at 12113000 for very specific workload in testing.c
+    correction_grace_ticks=args.delay   # past mprotect at 12113000 for very specific workload in testing.c
 )
 
 # system.cpu.dcache = Cache(
@@ -106,7 +110,7 @@ system.cpu.createThreads()
 # seems like the probability should not go over 0.0001 because otherwise the system will just crash immediately, but this is something we can play around with
 system.chaos = CHAOSCache(
     target_cache=system.cpu.dcache,
-    firstClock=52077,  # tick-to-clock ratio is 1000
+    firstClock=args.delay / 1000,  # tick-to-clock ratio is 1000
     probability=args.chaos_prob,
     faultType="bit_flip",
     bitsToChange=args.chaos_bits,

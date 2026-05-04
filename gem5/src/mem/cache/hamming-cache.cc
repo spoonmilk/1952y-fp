@@ -180,9 +180,19 @@ void HammingCache::recomputeAndStoreECC(CacheBlk *blk) {
   }
 
   blockECCBits[blk] = std::move(code);
+  copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
 }
 
 HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
+
+  auto copy_it = copies.find(blk);
+  if (copy_it != copies.end()) {
+      bool matches_before = (memcmp(blk->data, copy_it->second.data(), blkSize) == 0);
+      if (!matches_before) {
+          std::cerr << "ECC check on block " << blk
+                    << " mismatch with copy before correction\n";
+      }
+  }
   if (blk == tempBlock || curTick() < correctionGraceTicks) {
     return ECCResult::Clean;
   }
@@ -293,6 +303,7 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
 
 void HammingCache::invalidateBlock(CacheBlk *blk) {
   blockECCBits.erase(blk);
+  copies.erase(blk);
   BaseCache::invalidateBlock(blk);
 }
 
