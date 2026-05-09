@@ -28,6 +28,18 @@ SimpleOpts.add_option(
     "--delay", type=int, default=52077000,
     help="Delay for CHAOS corruption event (default 52077000)"
 )
+SimpleOpts.add_option(
+    "--scrub-interval", type=int, default=10,
+    help="Cycles between scrub passes (default 10)"
+)
+SimpleOpts.add_option(
+    "--scrub-tighten-factor", type=float, default=2.0,
+    help="Factor to tighten scrub interval by (default 2.0)"
+)
+SimpleOpts.add_option(
+    "--scrub-relax-factor", type=float, default=2.0,
+    help="Factor to relax scrub interval by (default 2.0)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -42,7 +54,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 system.mem_mode = "timing"
 system.mem_ranges = [AddrRange("8192MB")]
 
-system.cpu = RiscvTimingSimpleCPU() #RiscvO3CPU()
+system.cpu = RiscvO3CPU()
 
 system.membus = SystemXBar()
 
@@ -54,12 +66,23 @@ cache_params = dict(
     response_latency=1,
     mshrs=1,
     tgts_per_mshr=1,
-    scrub_interval_cycles=10,
+    scrub_interval_cycles=args.scrub_interval,
     symbol_errors=args.symbol_errors,
-    correction_grace_ticks=args.delay
+    correction_grace_ticks=args.delay,
+    scrub_tighten_factor=args.scrub_tighten_factor,
+    scrub_relax_factor=args.scrub_relax_factor
 )
 
-system.cpu.icache = SolomonCache(**cache_params)
+#system.cpu.icache = SolomonCache(**cache_params)
+system.cpu.icache = Cache(
+    size="32kB",
+    assoc=8,
+    tag_latency=1,
+    data_latency=1,
+    response_latency=1,
+    mshrs=4,
+    tgts_per_mshr=20
+)
 system.cpu.dcache = SolomonCache(**cache_params)
 
 system.cpu.icache_port = system.cpu.icache.cpu_side

@@ -70,13 +70,18 @@ public:
   void functionalAccess(PacketPtr pkt, bool from_cpu_side) override;
   void invalidateBlock(CacheBlk *blk) override;
 
-  // for scrubbing novel approach
-  Cycles scrubIntervalCycles;
+  Cycles scrubIntervalCycles;   
+  Cycles currentScrubIntervalCycles;  // adaptive current interval
+  const Cycles minScrubIntervalCycles;
+  float scrubTightenFactor;           
+  float scrubRelaxFactor;             
   Cycles cyclesPerBlockCheck;
   EventFunctionWrapper scrubEvent;
   Tick correctionGraceTicks;
   std::unordered_map<CacheBlk*, std::vector<uint8_t>> copies;
 
+  void tightenScrubInterval();
+  void relaxScrubInterval();
   void scrubCache();
 
   struct SolomonCacheStats : public statistics::Group

@@ -12,14 +12,22 @@ BENCH="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 CHAOS_PROB="0.0001"
 CHAOS_BITS="1"
 SYM_ERRORS="4"
+DELAY="52077000"
+SCRUB_INTERVAL="10"
+SCRUB_TIGHTEN_FACTOR="1.0"
+SCRUB_RELAX_FACTOR="1.0"
 RUN=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --chaos-prob)  CHAOS_PROB="$2"; shift 2 ;;
-        --chaos-bits)  CHAOS_BITS="$2"; shift 2 ;;
-        --sym-errors)  SYM_ERRORS="$2"; shift 2 ;;
-        --run)         RUN="$2";        shift 2 ;;
+        --chaos-prob)          CHAOS_PROB="$2";         shift 2 ;;
+        --chaos-bits)          CHAOS_BITS="$2";         shift 2 ;;
+        --sym-errors)          SYM_ERRORS="$2";         shift 2 ;;
+        --delay)               DELAY="$2";              shift 2 ;;
+        --scrub-interval)      SCRUB_INTERVAL="$2";     shift 2 ;;
+        --scrub-tighten-factor) SCRUB_TIGHTEN_FACTOR="$2"; shift 2 ;;
+        --scrub-relax-factor)   SCRUB_RELAX_FACTOR="$2";   shift 2 ;;
+        --run)                 RUN="$2";                shift 2 ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
 done
@@ -30,8 +38,19 @@ case "$CACHE" in
     *) echo "Did not specify a valid cache"; exit 1 ;;
 esac
 
-BINARY_REL="microbench/$BENCH/bench.RISCV"
-[[ -f "$GEM5_DIR/$BINARY_REL" ]] || { echo "Run compile-microbench.sh first."; exit 1; }
+# BINARY_REL="microbench/$BENCH/bench.RISCV"
+# [[ -f "$GEM5_DIR/$BINARY_REL" ]] || { echo "Run compile-microbench.sh first."; exit 1; }
+
+if [[ "$BENCH" == "DLP" ]]; then
+    BINARY_REL="tests/test-progs/cs1952y-fp/vec.rvv"
+else
+    BINARY_REL="microbench/$BENCH/bench.RISCV"
+fi
+
+[[ -f "$GEM5_DIR/$BINARY_REL" ]] || {
+    echo "Workload not found: $GEM5_DIR/$BINARY_REL"
+    exit 1
+}
 
 OUTDIR="$GEM5_DIR/results/$CACHE/$BENCH${RUN:+/run_$RUN}"
 mkdir -p "$OUTDIR"
@@ -43,4 +62,8 @@ EXTRA=()
     "$BINARY_REL" \
     --chaos-prob "$CHAOS_PROB" \
     --chaos-bits "$CHAOS_BITS" \
+    --delay "$DELAY" \
+    --scrub-interval "$SCRUB_INTERVAL" \
+    --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" \
+    --scrub-relax-factor "$SCRUB_RELAX_FACTOR" \
     "${EXTRA[@]}"

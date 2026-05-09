@@ -127,11 +127,17 @@ public:
   void invalidateBlock(CacheBlk *blk) override;
 
   // for scrubbing novel approach
-  Cycles scrubIntervalCycles;
+  const Cycles scrubIntervalCycles;   // max interval (from param)
+  Cycles currentScrubIntervalCycles;  // adaptive current interval
+  const Cycles minScrubIntervalCycles;
+  float scrubTightenFactor;           // divide factor when faults found (tunable)
+  float scrubRelaxFactor;             // multiply factor when clean (tunable)
   Cycles cyclesPerBlockCheck;
   EventFunctionWrapper scrubEvent;
   Tick correctionGraceTicks;
 
+  void tightenScrubInterval();
+  void relaxScrubInterval();
   void scrubCache();
 
   struct HammingCacheStats : public statistics::Group

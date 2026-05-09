@@ -67,7 +67,7 @@
             "faultType": "bit_flip",
             "firstClock": 52077,
             "lastClock": 0,
-            "probability": 0.0001,
+            "probability": 1e-10,
             "stuckAtOneProb": 0.05,
             "stuckAtZeroProb": 0.05,
             "target_cache": "system.cpu.dcache",
@@ -1055,7 +1055,7 @@
                 "addr_ranges": [
                     "0:18446744073709551615"
                 ],
-                "assoc": 1,
+                "assoc": 8,
                 "clk_domain": "system.clk_domain",
                 "clusivity": "mostly_incl",
                 "compressor": null,
@@ -1092,9 +1092,11 @@
                     "eventq_index": 0
                 },
                 "response_latency": 1,
-                "scrub_interval_cycles": 10,
+                "scrub_interval_cycles": 10000000000000000000,
+                "scrub_relax_factor": 1.25,
+                "scrub_tighten_factor": 2.0,
                 "sequential_access": false,
-                "size": 1024,
+                "size": 32768,
                 "system": "system",
                 "tag_latency": 1,
                 "tags": {
@@ -1102,7 +1104,7 @@
                     "cxx_class": "gem5::BaseSetAssoc",
                     "name": "tags",
                     "path": "system.cpu.dcache.tags",
-                    "assoc": 1,
+                    "assoc": 8,
                     "block_size": 64,
                     "clk_domain": "system.clk_domain",
                     "entry_size": 64,
@@ -1112,10 +1114,10 @@
                         "cxx_class": "gem5::SetAssociative",
                         "name": "indexing_policy",
                         "path": "system.cpu.dcache.tags.indexing_policy",
-                        "assoc": 1,
+                        "assoc": 8,
                         "entry_size": 64,
                         "eventq_index": 0,
-                        "size": 1024
+                        "size": 32768
                     },
                     "power_model": [],
                     "power_state": {
@@ -1133,7 +1135,7 @@
                     },
                     "replacement_policy": "system.cpu.dcache.replacement_policy",
                     "sequential_access": false,
-                    "size": 1024,
+                    "size": 32768,
                     "system": "system",
                     "tag_latency": 1,
                     "warmup_percentage": 0
@@ -1162,7 +1164,7 @@
                 "addr_ranges": [
                     "0:18446744073709551615"
                 ],
-                "assoc": 1,
+                "assoc": 8,
                 "clk_domain": "system.clk_domain",
                 "clusivity": "mostly_incl",
                 "compressor": null,
@@ -1206,7 +1208,7 @@
                     "cxx_class": "gem5::BaseSetAssoc",
                     "name": "tags",
                     "path": "system.cpu.icache.tags",
-                    "assoc": 1,
+                    "assoc": 8,
                     "block_size": 64,
                     "clk_domain": "system.clk_domain",
                     "entry_size": 64,
@@ -1216,7 +1218,7 @@
                         "cxx_class": "gem5::SetAssociative",
                         "name": "indexing_policy",
                         "path": "system.cpu.icache.tags.indexing_policy",
-                        "assoc": 1,
+                        "assoc": 8,
                         "entry_size": 64,
                         "eventq_index": 0,
                         "size": 32768

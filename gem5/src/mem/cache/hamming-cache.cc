@@ -39,6 +39,10 @@ namespace gem5 {
 
 HammingCache::HammingCache(const HammingCacheParams &p) : Cache(p),
   scrubIntervalCycles(p.scrub_interval_cycles),
+  currentScrubIntervalCycles(Cycles(10)), // idea: start at minimum and adapt based on observed error rates
+  minScrubIntervalCycles(Cycles(10)),
+  scrubTightenFactor(p.scrub_tighten_factor),
+  scrubRelaxFactor(p.scrub_relax_factor),
   cyclesPerBlockCheck(p.cycles_per_block_check),
   correctionGraceTicks(p.correction_grace_ticks),
   scrubEvent([this] { this->scrubCache(); }, name() + ".scrubEvent"),
@@ -46,7 +50,7 @@ HammingCache::HammingCache(const HammingCacheParams &p) : Cache(p),
 {
   // Schedule the first scrub event if scrubbing is enabled
   if (scrubIntervalCycles > 0) {
-      schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+      schedule(scrubEvent, clockEdge(currentScrubIntervalCycles));
   }
 
   size_t total_data_bits = blkSize * 8;
@@ -300,6 +304,38 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
   return ECCResult::Unrecoverable;
 }
 
+void HammingCache::tightenScrubInterval() {
+  Cycles newInterval = Cycles((uint64_t)(currentScrubIntervalCycles / scrubTightenFactor));
+  if (newInterval < minScrubIntervalCycles) {
+    newInterval = minScrubIntervalCycles;
+  }
+  else {
+    std::cerr << "Tightening scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+  }
+  if (newInterval < currentScrubIntervalCycles) {
+    currentScrubIntervalCycles = newInterval;
+    // If the next scrub is already scheduled and the new time is sooner,
+    // reschedule it earlier.
+    if (scrubEvent.scheduled()) {
+      Tick newTick = clockEdge(currentScrubIntervalCycles);
+      if (newTick < scrubEvent.when()) {
+        reschedule(scrubEvent, newTick);
+      }
+    }
+  }
+}
+
+void HammingCache::relaxScrubInterval() {
+  Cycles newInterval = Cycles((uint64_t)(currentScrubIntervalCycles * scrubRelaxFactor));
+  if (newInterval > scrubIntervalCycles) {
+    newInterval = scrubIntervalCycles;
+  }
+  else {
+    std::cerr << "Relaxing scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+  }
+  currentScrubIntervalCycles = newInterval;
+}
+
 void HammingCache::invalidateBlock(CacheBlk *blk) {
   blockECCBits.erase(blk);
   copies.erase(blk);
@@ -317,8 +353,10 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
     if (result == ECCResult::Corrected) {
       hammingStats.numAccessCorrected++;
+      tightenScrubInterval();
     } else if (result == ECCResult::Unrecoverable) {
       hammingStats.numAccessUnrecoverable++;
+      tightenScrubInterval();
 
       if (blk->isSet(CacheBlk::DirtyBit)) {
         hammingStats.numUnrecoverableDirty++;  // add this stat
@@ -391,7 +429,9 @@ HammingCache::scrubCache()
 {
     unsigned blocks_checked = 0;
 
-    tags->forEachBlk([this, &blocks_checked](CacheBlk &blk) {
+    bool faultFoundThisScrub = false;
+
+    tags->forEachBlk([this, &blocks_checked, &faultFoundThisScrub](CacheBlk &blk) {
         if (!blk.isValid()) {
             return;
         }
@@ -403,8 +443,10 @@ HammingCache::scrubCache()
                 break;
             case ECCResult::Corrected:
                 hammingStats.numScrubCorrected++;
+                faultFoundThisScrub = true;
                 break;
             case ECCResult::Unrecoverable:
+                faultFoundThisScrub = true;
                 hammingStats.numScrubUnrecoverable++;
                 // for consistency with on-access path, refetch from memory
                 {
@@ -434,9 +476,16 @@ HammingCache::scrubCache()
     hammingStats.numScrubBlocksChecked += blocks_checked;
     hammingStats.totalScrubCycles += blocks_checked * cyclesPerBlockCheck;
 
+    // adapt scrub interval based on whether any faults were found
+    if (faultFoundThisScrub) {
+        tightenScrubInterval();
+    } else {
+        relaxScrubInterval();
+    }
+
     // reschedule next scrub
     if (scrubIntervalCycles > 0) {
-        schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+        schedule(scrubEvent, clockEdge(currentScrubIntervalCycles));
     }
 }
 

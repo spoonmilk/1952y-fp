@@ -41,6 +41,10 @@ namespace gem5 {
 SolomonCache::SolomonCache(const SolomonCacheParams &p)
     : Cache(p), num_parity_symbols(2 * p.symbol_errors), refresh_count(0),
       rs_codec(nullptr), scrubIntervalCycles(p.scrub_interval_cycles),
+      currentScrubIntervalCycles(Cycles(10)), // idea: start at minimum and adapt based on observed error rates
+      minScrubIntervalCycles(Cycles(10)),
+      scrubTightenFactor(p.scrub_tighten_factor),
+      scrubRelaxFactor(p.scrub_relax_factor),
       cyclesPerBlockCheck(p.cycles_per_block_check),
       correctionGraceTicks(p.correction_grace_ticks),
       scrubEvent([this] { this->scrubCache(); }, name() + ".scrubEvent"),
@@ -68,7 +72,7 @@ SolomonCache::SolomonCache(const SolomonCacheParams &p)
       rs_poly, rs_first_const_root, rs_generator_root_gap, num_parity_symbols);
 
   if (scrubIntervalCycles > 0) {
-    schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+    schedule(scrubEvent, clockEdge(currentScrubIntervalCycles));  // ← uses currentScrub...
   }
 }
 
@@ -138,9 +142,21 @@ void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
   const std::vector<uint8_t> parity_block = std::vector<uint8_t>(
       parity_bit_start, parity_bit_start + num_parity_symbols);
   blockParityMap[blk] = parity_block;
+
+  copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
 }
 
 SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
+  //std::cerr << "Checking ECC for block at " << regenerateBlkAddr(blk) << "\n";
+  auto copy_it = copies.find(blk);
+  if (copy_it != copies.end()) {
+      bool matches_before = (memcmp(blk->data, copy_it->second.data(), blkSize) == 0);
+      if (!matches_before) {
+          std::cerr << "ECC check on block " << blk
+                    << " mismatch with copy before correction\n";
+      }
+  }
+
   if (blk == tempBlock || curTick() < correctionGraceTicks) {
     return ECCResult::Clean;
   }
@@ -197,8 +213,41 @@ bool SolomonCache::operationModifiesData(PacketPtr pkt) const {
   return pkt->isWrite() || pkt->cmd == MemCmd::SwapReq;
 }
 
+void SolomonCache::tightenScrubInterval() {
+  Cycles newInterval = Cycles((uint64_t)(currentScrubIntervalCycles / scrubTightenFactor));
+  if (newInterval < minScrubIntervalCycles) {
+    newInterval = minScrubIntervalCycles;
+  }
+  else {
+    std::cerr << "Tightening scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+  }
+  if (newInterval < currentScrubIntervalCycles) {
+    currentScrubIntervalCycles = newInterval;
+    // If the next scrub is already scheduled and the new time is sooner,
+    // reschedule it earlier.
+    if (scrubEvent.scheduled()) {
+      Tick newTick = clockEdge(currentScrubIntervalCycles);
+      if (newTick < scrubEvent.when()) {
+        reschedule(scrubEvent, newTick);
+      }
+    }
+  }
+}
+
+void SolomonCache::relaxScrubInterval() {
+  Cycles newInterval = Cycles((uint64_t)(currentScrubIntervalCycles * scrubRelaxFactor));
+  if (newInterval > scrubIntervalCycles) {
+    newInterval = scrubIntervalCycles;
+  }
+  else {
+    std::cerr << "Relaxing scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+  }
+  currentScrubIntervalCycles = newInterval;
+}
+
 void SolomonCache::invalidateBlock(CacheBlk *blk) {
   blockParityMap.erase(blk);
+  copies.erase(blk);
   BaseCache::invalidateBlock(blk);
 }
 
@@ -210,8 +259,10 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
     ECCResult result = checkAndCorrectECC(blk);
     if (result == ECCResult::Corrected) {
       solomonStats.numAccessCorrected++;
+      tightenScrubInterval();
     } else if (result == ECCResult::Unrecoverable) {
       solomonStats.numAccessUnrecoverable++;
+      tightenScrubInterval();
       if (blk->isSet(CacheBlk::DirtyBit)) {
         solomonStats.numUnrecoverableDirty++;
         std::cerr << "Unrecoverable error in dirty block at 0x" << std::hex
@@ -269,7 +320,9 @@ SolomonCache::SolomonCacheStats::SolomonCacheStats(statistics::Group *parent)
 void SolomonCache::scrubCache() {
   unsigned blocks_checked = 0;
 
-  tags->forEachBlk([this, &blocks_checked](CacheBlk &blk) {
+  bool faultFoundThisScrub = false;
+
+  tags->forEachBlk([this, &blocks_checked, &faultFoundThisScrub](CacheBlk &blk) {
     if (!blk.isValid()) {
       return;
     }
@@ -281,8 +334,10 @@ void SolomonCache::scrubCache() {
       break;
     case ECCResult::Corrected:
       solomonStats.numScrubCorrected++;
+      faultFoundThisScrub = true;
       break;
     case ECCResult::Unrecoverable:
+      faultFoundThisScrub = true;
       solomonStats.numScrubUnrecoverable++;
       if (blk.isSet(CacheBlk::DirtyBit)) {
         solomonStats.numUnrecoverableDirty++;
@@ -309,8 +364,15 @@ void SolomonCache::scrubCache() {
   solomonStats.numScrubBlocksChecked += blocks_checked;
   solomonStats.totalScrubCycles += blocks_checked * cyclesPerBlockCheck;
 
+  // adapt scrub interval based on whether any faults were found
+  if (faultFoundThisScrub) {
+      tightenScrubInterval();
+  } else {
+      relaxScrubInterval();
+  }
+
   if (scrubIntervalCycles > 0) {
-    schedule(scrubEvent, clockEdge(scrubIntervalCycles));
+    schedule(scrubEvent, clockEdge(currentScrubIntervalCycles));
   }
 }
 

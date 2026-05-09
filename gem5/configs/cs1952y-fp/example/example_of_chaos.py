@@ -27,6 +27,18 @@ SimpleOpts.add_option(
     "--delay", type=int, default=52077000,
     help="Delay for CHAOS corruption event (default 52077000)"
 )
+SimpleOpts.add_option(
+    "--scrub-interval", type=int, default=10,
+    help="Cycles between scrub passes (default 10)"
+)
+SimpleOpts.add_option(
+    "--scrub-tighten-factor", type=float, default=2.0,
+    help="Factor to tighten scrub interval by (default 2.0)"
+)
+SimpleOpts.add_option(
+    "--scrub-relax-factor", type=float, default=2.0,
+    help="Factor to relax scrub interval by (default 2.0)"
+)
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -68,9 +80,11 @@ system.cpu.dcache = HammingCache(
     response_latency=1,
     mshrs=1,
     tgts_per_mshr=1,
-    scrub_interval_cycles=100,    # scrub every 100 cycles
+    scrub_interval_cycles=args.scrub_interval,    # scrub every args.scrub_interval cycles
     cycles_per_block_check=1,        # cost 1 cycle per block during scrub
-    correction_grace_ticks=args.delay   # past mprotect at 12113000 for very specific workload in testing.c
+    correction_grace_ticks=args.delay,   # past mprotect at 12113000 for very specific workload in testing.c
+    scrub_tighten_factor=args.scrub_tighten_factor,
+    scrub_relax_factor=args.scrub_relax_factor
 )
 
 # system.cpu.dcache = Cache(

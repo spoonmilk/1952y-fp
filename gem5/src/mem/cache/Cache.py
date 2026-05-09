@@ -185,6 +185,8 @@ class HammingCache(Cache):
         "Cycles consumed per block during a scrub pass (for latency accounting)")
     correction_grace_ticks = Param.Tick(0,
         "Number of ticks to wait out initialization")
+    scrub_tighten_factor = Param.Float(2.0, "Factor to tighten scrub interval by (e.g. 2 to halve)")
+    scrub_relax_factor = Param.Float(2.0, "Factor to relax scrub interval by (e.g. 2 to double)")
 
 
 class SolomonCache(Cache):
@@ -198,6 +200,8 @@ class SolomonCache(Cache):
         "Cycles consumed per block during a scrub pass (for latency accounting)")
     correction_grace_ticks = Param.Tick(0,
         "Number of ticks to wait out initialization")
+    scrub_tighten_factor = Param.Float(2.0, "Factor to tighten scrub interval by (e.g. 2 to halve)")
+    scrub_relax_factor = Param.Float(2.0, "Factor to relax scrub interval by (e.g. 2 to double)")
 
 
 class NoncoherentCache(BaseCache):
