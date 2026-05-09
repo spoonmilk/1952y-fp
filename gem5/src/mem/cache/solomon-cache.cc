@@ -87,8 +87,8 @@ void SolomonCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
 
   Cache::updateBlockData(blk, cpkt, has_old_data);
 
-  // Keep Solomon bookkeeping in sync for all mutation paths, including
-  // functional writes that may call this with cpkt == nullptr.
+  // keep bookkeeping in sync for all paths, including
+  // functional writes that may call this with cpkt == nullptr
   copies[blk] = std::vector<uint8_t>(blk->data, blk->data + blkSize);
   recomputeAndStoreECC(blk);
 }
@@ -147,23 +147,15 @@ void SolomonCache::recomputeAndStoreECC(CacheBlk *blk) {
 }
 
 SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
-  //std::cerr << "Checking ECC for block at " << regenerateBlkAddr(blk) << "\n";
-  auto copy_it = copies.find(blk);
-  if (copy_it != copies.end()) {
-      bool matches_before = (memcmp(blk->data, copy_it->second.data(), blkSize) == 0);
-      if (!matches_before) {
-          std::cerr << "ECC check on block " << blk
-                    << " mismatch with copy before correction\n";
-      }
-  }
 
   if (blk == tempBlock || curTick() < correctionGraceTicks) {
-    return ECCResult::Clean;
+    return {ECCStatus::Clean, false};
   }
 
   auto parity_it = blockParityMap.find(blk);
   if (parity_it == blockParityMap.end()) {
-    return ECCResult::Clean; // TODO: confirm, but matches hamming for "magic blocks" that are added by gem5 internals
+    // matches hamming for "magic blocks" added by gem5 internals
+    return {ECCStatus::Clean, false};
   }
 
   memcpy(enc_dec_buf.data(), blk->data, blkSize);
@@ -174,35 +166,40 @@ SolomonCache::ECCResult SolomonCache::checkAndCorrectECC(CacheBlk *blk) {
       rs_codec, enc_dec_buf.data(), total_msg_size, enc_dec_buf.data());
   // NOTE: There is a chance that RS can silently fail, but in that case we have
   // bigger problems.
-  // If bad, just mark it as such. If corrected, write back the
-  // corrections.
   if (result < 0) {
-
     std::cerr << "Unrecoverable error in block at " << regenerateBlkAddr(blk) << "\n";
-    return ECCResult::Unrecoverable;
-  } else if (memcmp(enc_dec_buf.data(), blk->data, blkSize) != 0) {
-
-    //std::cerr << "Corrected error in block at " << regenerateBlkAddr(blk) << "\n";
-    memcpy(blk->data, enc_dec_buf.data(), blkSize);
-
-    // check the correction - if this ever happens, we can see if there's an issue w/ the implementation
-    auto copy_it = copies.find(blk);
-    if (copy_it != copies.end()) {
-        const std::vector<uint8_t> &copy = copy_it->second;
-        bool exit = false;
-        for (size_t i = 0; i < blkSize; i++) {
-            if (blk->data[i] != copy[i]) {
-                std::cerr << "Verification after correction: mismatch found at byte " << i << "\n";
-                exit = true;
-            }
-        }
-        if (exit) {
-            exitSimLoop("Verification failure after ECC correction", 1);
-        }
-    }
-    return ECCResult::Corrected;
+    return {ECCStatus::Unrecoverable, false};
   }
-  return ECCResult::Clean;
+
+  if (memcmp(enc_dec_buf.data(), blk->data, blkSize) == 0) {
+    // decoder ran but no symbols actually changed -> clean
+    return {ECCStatus::Clean, false};
+  }
+
+  // decoder corrected one or more symbols, write back into the block
+  memcpy(blk->data, enc_dec_buf.data(), blkSize);
+
+  // verify against the copy of the block data we stored at last update.
+  // 'verified' is only meaningful for Corrected results. If no copy is
+  // available we treat it as verified (same optimistic behavior as before).
+  bool verified = true;
+  auto copy_it = copies.find(blk);
+  if (copy_it != copies.end()) {
+    const std::vector<uint8_t> &copy = copy_it->second;
+    for (size_t i = 0; i < blkSize; i++) {
+      if (blk->data[i] != copy[i]) {
+        std::cerr << "Verification after correction: mismatch at byte "
+                  << i << " for block " << blk << "\n";
+        verified = false;
+        break;
+      }
+    }
+    if (!verified) {
+      exitSimLoop("Verification failure after ECC correction", 1);
+    }
+  }
+
+  return {ECCStatus::Corrected, verified};
 }
 
 bool SolomonCache::operationReadsData(PacketPtr pkt) const {
@@ -223,8 +220,7 @@ void SolomonCache::tightenScrubInterval() {
   }
   if (newInterval < currentScrubIntervalCycles) {
     currentScrubIntervalCycles = newInterval;
-    // If the next scrub is already scheduled and the new time is sooner,
-    // reschedule it earlier.
+    // if the next scrub is already scheduled and the new time is sooner, reschedule it earlier.
     if (scrubEvent.scheduled()) {
       Tick newTick = clockEdge(currentScrubIntervalCycles);
       if (newTick < scrubEvent.when()) {
@@ -257,10 +253,16 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
   if (blk && blk->isValid() && operationReadsData(pkt)) {
     ECCResult result = checkAndCorrectECC(blk);
-    if (result == ECCResult::Corrected) {
-      solomonStats.numAccessCorrected++;
+    if (result.status == ECCStatus::Corrected) {
+      // attempted: decoder reported a correction
+      solomonStats.numAccessAttemptedCorrections++;
+      // successful: passed verification or no copy
+      if (result.verified) {
+        solomonStats.numAccessCorrected++;
+        solomonStats.totalSuccessfulCorrections++;
+      }
       tightenScrubInterval();
-    } else if (result == ECCResult::Unrecoverable) {
+    } else if (result.status == ECCStatus::Unrecoverable) {
       solomonStats.numAccessUnrecoverable++;
       tightenScrubInterval();
       if (blk->isSet(CacheBlk::DirtyBit)) {
@@ -296,25 +298,39 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
 SolomonCache::SolomonCacheStats::SolomonCacheStats(statistics::Group *parent)
     : statistics::Group(parent, "solomon"),
+      // scrub-pass bookkeeping
       ADD_STAT(numScrubPasses, statistics::units::Count::get(),
                "Total number of full scrub passes performed"),
       ADD_STAT(numScrubBlocksChecked, statistics::units::Count::get(),
                "Total number of valid blocks checked across all scrubs"),
       ADD_STAT(numScrubClean, statistics::units::Count::get(),
                "Blocks found clean during scrub"),
+      ADD_STAT(numScrubAttemptedCorrections, statistics::units::Count::get(),
+               "Corrections attempted during scrub (decoder reported a "
+               "correction, before verification)"),
       ADD_STAT(numScrubCorrected, statistics::units::Count::get(),
-               "Single-symbol errors corrected during scrub"),
+               "Symbol errors corrected during scrub that passed verification"),
       ADD_STAT(numScrubUnrecoverable, statistics::units::Count::get(),
                "Multi-symbol errors detected (uncorrectable) during scrub"),
       ADD_STAT(totalScrubCycles, statistics::units::Cycle::get(),
                "Total simulated cycles attributable to scrubbing"),
+
+      // on-access bookkeeping
+      ADD_STAT(numAccessAttemptedCorrections, statistics::units::Count::get(),
+               "Corrections attempted on access (decoder reported a "
+               "correction, before verification)"),
       ADD_STAT(numAccessCorrected, statistics::units::Count::get(),
-               "Errors corrected on access"),
+               "Errors corrected on access that passed verification"),
       ADD_STAT(numAccessUnrecoverable, statistics::units::Count::get(),
                "Unrecoverable errors detected on access"),
-      ADD_STAT(
-          numUnrecoverableDirty, statistics::units::Count::get(),
-          "Unrecoverable errors in dirty blocks (data loss, refetch skipped)") {
+
+      // shared / aggregate 
+      ADD_STAT(numUnrecoverableDirty, statistics::units::Count::get(),
+               "Unrecoverable errors in dirty blocks (data loss, refetch skipped)"),
+      ADD_STAT(totalSuccessfulCorrections, statistics::units::Count::get(),
+               "Total successful corrections regardless of source (scrub or "
+               "access); equals numScrubCorrected + numAccessCorrected")
+{
 }
 
 void SolomonCache::scrubCache() {
@@ -328,15 +344,19 @@ void SolomonCache::scrubCache() {
     }
     blocks_checked++;
     ECCResult result = checkAndCorrectECC(&blk);
-    switch (result) {
-    case ECCResult::Clean:
+    switch (result.status) {
+    case ECCStatus::Clean:
       solomonStats.numScrubClean++;
       break;
-    case ECCResult::Corrected:
-      solomonStats.numScrubCorrected++;
+    case ECCStatus::Corrected:
+      solomonStats.numScrubAttemptedCorrections++;
+      if (result.verified) {
+        solomonStats.numScrubCorrected++;
+        solomonStats.totalSuccessfulCorrections++;
+      }
       faultFoundThisScrub = true;
       break;
-    case ECCResult::Unrecoverable:
+    case ECCStatus::Unrecoverable:
       faultFoundThisScrub = true;
       solomonStats.numScrubUnrecoverable++;
       if (blk.isSet(CacheBlk::DirtyBit)) {

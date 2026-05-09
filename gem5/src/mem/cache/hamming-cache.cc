@@ -75,8 +75,6 @@ HammingCache::HammingCache(const HammingCacheParams &p) : Cache(p),
     }
     pos++;
   }
-
-  // once we reach here, there should actually be 
 }
 
 void HammingCache::updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
@@ -187,22 +185,16 @@ void HammingCache::recomputeAndStoreECC(CacheBlk *blk) {
 }
 
 HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
+  // stat updates live in the callers (satisfyRequest / scrubCache)
+  // so scrub vs. access counters stay coherent
 
-  auto copy_it = copies.find(blk);
-  if (copy_it != copies.end()) {
-      bool matches_before = (memcmp(blk->data, copy_it->second.data(), blkSize) == 0);
-      if (!matches_before) {
-          std::cerr << "ECC check on block " << blk
-                    << " mismatch with copy before correction\n";
-      }
-  }
   if (blk == tempBlock || curTick() < correctionGraceTicks) {
-    return ECCResult::Clean;
+    return {ECCStatus::Clean, CorrectionKind::None, false};
   }
 
   auto it = blockECCBits.find(blk);
   if (it == blockECCBits.end()) {
-    return ECCResult::Clean;
+    return {ECCStatus::Clean, CorrectionKind::None, false};
   }
   const HammingCode &stored = it->second;
 
@@ -239,69 +231,52 @@ HammingCache::ECCResult HammingCache::checkAndCorrectECC(CacheBlk *blk) {
       (current.overallParityBit ^ stored.overallParityBit) != 0;
 
   if (syndrome == 0 && !overall_mismatch) {
-    return ECCResult::Clean;
+    return {ECCStatus::Clean, CorrectionKind::None, false};
   }
 
   if (syndrome != 0 && overall_mismatch) {
-
     // single-bit error in data or parity bit
+    CorrectionKind kind = CorrectionKind::None;
+
     auto loc_it = syndromeToBitLocation.find(syndrome);
     if (loc_it != syndromeToBitLocation.end()) {
       // error in a data bit — flip it back
       size_t data_bit = loc_it->second;
       size_t byte_idx = data_bit / 8;
       size_t bit_idx = data_bit % 8;
-
-      hammingStats.totalCorrected++;
-
-      //std::cerr << "Correcting byte number " << byte_idx << "\n";
-
-      // std::cerr << "correcting bit " << data_bit << " in block " << blk
-      //           << " syndrome=" << syndrome
-      //           << " stored.overall=" << (int)stored.overallParityBit
-      //           << " current.overall=" << (int)current.overallParityBit
-      //           << " stored.parity=[";
-      // for (auto p : stored.parityBits)
-      //   std::cerr << (int)p << ",";
-      // std::cerr << "] current.parity=[";
-      // for (auto p : current.parityBits)
-      //   std::cerr << (int)p << ",";
-      // std::cerr << "]\n";
-
-      // std::cerr << "  Block data: ";
-      // for (unsigned i = 0; i < blkSize; i++) {
-      //   std::cerr << std::hex << (int)blk->data[i] << " ";
-      // }
-      // std::cerr << std::dec << "\n";
-
       blk->data[byte_idx] ^= (1 << bit_idx);
+      kind = CorrectionKind::DataBitFlip;
     } else {
       // error in a parity bit, data is fine, refresh stored ECC
-      // TODO: add metric to catch refreshes due to parity bit errors 
-      std::cerr << "correcting via refresh" << "\n";
       blockECCBits[blk] = std::move(current);
+      kind = CorrectionKind::ParityRefresh;
     }
 
-    // check against the copy of the block we stored during the last update
+    // verify against the copy of the block data we stored at last update.
+    // 'verified' is only meaningful for Corrected results. If no copy is
+    // available we treat it as verified (same optimistic behavior as before).
+    bool verified = true;
     auto copy_it = copies.find(blk);
     if (copy_it != copies.end()) {
-        const std::vector<uint8_t> &copy = copy_it->second;
-        bool exit = false;
-        for (size_t i = 0; i < blkSize; i++) {
-            if (blk->data[i] != copy[i]) {
-                std::cerr << "Verification after correction: mismatch found at byte " << i << " for block " << hammingStats.totalCorrected.value() << "\n";
-                exit = true;
-            }
+      const std::vector<uint8_t> &copy = copy_it->second;
+      for (size_t i = 0; i < blkSize; i++) {
+        if (blk->data[i] != copy[i]) {
+          std::cerr << "Verification after correction: mismatch at byte "
+                    << i << " for block " << blk << "\n";
+          verified = false;
+          break;
         }
-        if (exit) {
-            exitSimLoop("Verification failure after ECC correction", 1);
-        }
+      }
+      if (!verified) {
+        exitSimLoop("Verification failure after ECC correction", 1);
+      }
     }
-    return ECCResult::Corrected;
+
+    return {ECCStatus::Corrected, kind, verified};
   }
 
   // two-bit error or overall-only mismatch, unrecoverable
-  return ECCResult::Unrecoverable;
+  return {ECCStatus::Unrecoverable, CorrectionKind::None, false};
 }
 
 void HammingCache::tightenScrubInterval() {
@@ -351,15 +326,24 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
     ECCResult result = checkAndCorrectECC(blk);
     static int refresh_count = 0;
 
-    if (result == ECCResult::Corrected) {
-      hammingStats.numAccessCorrected++;
+    if (result.status == ECCStatus::Corrected) {
+      // attempted: we entered the correction branch
+      hammingStats.numAccessAttemptedCorrections++;
+      // successful: passed verification (or no copy available — see callee)
+      if (result.verified) {
+        hammingStats.numAccessCorrected++;
+        hammingStats.totalSuccessfulCorrections++;
+        if (result.kind == CorrectionKind::ParityRefresh) {
+          hammingStats.numAccessParityRefreshed++;
+        }
+      }
       tightenScrubInterval();
-    } else if (result == ECCResult::Unrecoverable) {
+    } else if (result.status == ECCStatus::Unrecoverable) {
       hammingStats.numAccessUnrecoverable++;
       tightenScrubInterval();
 
       if (blk->isSet(CacheBlk::DirtyBit)) {
-        hammingStats.numUnrecoverableDirty++;  // add this stat
+        hammingStats.numUnrecoverableDirty++;
         std::cerr << "Unrecoverable error in dirty block at 0x"
                   << std::hex << regenerateBlkAddr(blk) << std::dec << "\n";
 
@@ -401,26 +385,45 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
 HammingCache::HammingCacheStats::HammingCacheStats(statistics::Group *parent)
     : statistics::Group(parent, "hamming"),
+      // scrub-pass bookkeeping
       ADD_STAT(numScrubPasses, statistics::units::Count::get(),
                "Total number of full scrub passes performed"),
       ADD_STAT(numScrubBlocksChecked, statistics::units::Count::get(),
                "Total number of valid blocks checked across all scrubs"),
       ADD_STAT(numScrubClean, statistics::units::Count::get(),
                "Blocks found clean during scrub"),
+      ADD_STAT(numScrubAttemptedCorrections, statistics::units::Count::get(),
+               "Corrections attempted during scrub (entered correction branch, "
+               "before verification)"),
       ADD_STAT(numScrubCorrected, statistics::units::Count::get(),
-               "Single-bit errors corrected during scrub (the value-add)"),
+               "Single-bit errors corrected during scrub that passed verification"),
+      ADD_STAT(numScrubParityRefreshed, statistics::units::Count::get(),
+               "Scrub corrections handled via parity-bit refresh (subset of "
+               "numScrubCorrected)"),
       ADD_STAT(numScrubUnrecoverable, statistics::units::Count::get(),
                "Multi-bit errors detected (uncorrectable) during scrub"),
       ADD_STAT(totalScrubCycles, statistics::units::Cycle::get(),
                "Total simulated cycles attributable to scrubbing"),
+
+      // on-access bookkeeping
+      ADD_STAT(numAccessAttemptedCorrections, statistics::units::Count::get(),
+               "Corrections attempted on access (entered correction branch, "
+               "before verification)"),
       ADD_STAT(numAccessCorrected, statistics::units::Count::get(),
-               "Single-bit errors corrected on access"),
+               "Single-bit errors corrected on access that passed verification"),
+      ADD_STAT(numAccessParityRefreshed, statistics::units::Count::get(),
+               "Access corrections handled via parity-bit refresh (subset of "
+               "numAccessCorrected)"),
       ADD_STAT(numAccessUnrecoverable, statistics::units::Count::get(),
                "Multi-bit errors detected on access"),
+
+      // shared / aggregate
       ADD_STAT(numUnrecoverableDirty, statistics::units::Count::get(),
                "Unrecoverable errors in dirty blocks (data loss, refetch skipped)"),
-      ADD_STAT(totalCorrected, statistics::units::Count::get(),
-               "Total single-bit errors corrected (scrub + access)")
+      ADD_STAT(totalSuccessfulCorrections, statistics::units::Count::get(),
+               "Total successful corrections regardless of source (scrub or "
+               "access) or kind (data-bit flip or parity refresh); equals "
+               "numScrubCorrected + numAccessCorrected")
 {
 }
 
@@ -437,21 +440,28 @@ HammingCache::scrubCache()
         }
         blocks_checked++;
         ECCResult result = checkAndCorrectECC(&blk);
-        switch (result) {
-            case ECCResult::Clean:
+        switch (result.status) {
+            case ECCStatus::Clean:
                 hammingStats.numScrubClean++;
                 break;
-            case ECCResult::Corrected:
-                hammingStats.numScrubCorrected++;
+            case ECCStatus::Corrected:
+                hammingStats.numScrubAttemptedCorrections++;
+                if (result.verified) {
+                    hammingStats.numScrubCorrected++;
+                    hammingStats.totalSuccessfulCorrections++;
+                    if (result.kind == CorrectionKind::ParityRefresh) {
+                        hammingStats.numScrubParityRefreshed++;
+                    }
+                }
                 faultFoundThisScrub = true;
                 break;
-            case ECCResult::Unrecoverable:
+            case ECCStatus::Unrecoverable:
                 faultFoundThisScrub = true;
                 hammingStats.numScrubUnrecoverable++;
                 // for consistency with on-access path, refetch from memory
                 {
                     if (blk.isSet(CacheBlk::DirtyBit)) {
-                      hammingStats.numUnrecoverableDirty++;  // add this stat
+                      hammingStats.numUnrecoverableDirty++;
                       std::cerr << "Unrecoverable error in dirty block at 0x"
                                 << std::hex << regenerateBlkAddr(&blk) << std::dec << "\n";
                       exitSimLoop("Unrecoverable error in dirty block", 1);

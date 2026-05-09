@@ -26,56 +26,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// #ifndef __MEM_CACHE_HAMMING_CACHE_HH__
-// #define __MEM_CACHE_HAMMING_CACHE_HH__
-
-// #include <cstdint>
-// #include <unordered_map>
-// #include <vector>
-
-// #include "mem/cache/cache.hh"
-// #include "mem/packet.hh"
-
-// namespace gem5 {
-
-// class CacheBlk;
-// struct CacheParams;
-
-// class HammingCache : public Cache {
-// public:
-//   HammingCache(const CacheParams &p);
-
-//   void updateBlockData(CacheBlk *blk, const PacketPtr cpkt,
-//                        bool has_old_data) override;
-
-//   struct HammingCode {
-//     uint8_t overallParityBit;
-//     std::vector<uint8_t> parityBits;
-//   };
-
-//   int num_parity_bits;
-//   std::unordered_map<CacheBlk *, HammingCode> blockECCBits;
-//   std::unordered_map<uint8_t, size_t> syndromeToBitLocation;
-//   std::unordered_map<size_t, uint8_t> bitLocationToSyndrome;
-
-//   enum class ECCResult { Clean, Corrected, Unrecoverable };
-
-//   bool operationReadsData(PacketPtr pkt) const;
-//   bool operationModifiesData(PacketPtr pkt) const;
-//   ECCResult checkAndCorrectECC(CacheBlk *blk);
-//   void recomputeAndStoreECC(CacheBlk *blk);
-
-//   void satisfyRequest(PacketPtr pkt, CacheBlk *blk,
-//                       bool deferred_response = false,
-//                       bool pending_downgrade = false) override;
-//   void invalidateBlock(CacheBlk *blk) override;
-// };
-
-// } // namespace gem5
-
-// #endif // __MEM_CACHE_HAMMING_CACHE_HH__
-
-
 #ifndef __MEM_CACHE_HAMMING_CACHE_HH__
 #define __MEM_CACHE_HAMMING_CACHE_HH__
 
@@ -113,7 +63,17 @@ public:
   std::unordered_map<size_t, size_t> bitLocationToSyndrome;
   std::unordered_map<CacheBlk*, std::vector<uint8_t>> copies;
 
-  enum class ECCResult { Clean, Corrected, Unrecoverable };
+  // status: high-level outcome callers switch on
+  // kind: subtype meaningful only when status is Corrected
+  enum class ECCStatus { Clean, Corrected, Unrecoverable };
+  enum class CorrectionKind { None, DataBitFlip, ParityRefresh };
+
+  struct ECCResult {
+    ECCStatus status;
+    CorrectionKind kind;       // None unless status is Corrected
+    bool verified;             // for Corrected: did the post-correction copy match?
+                               // (always false when no copy was available
+  };
 
   bool operationReadsData(PacketPtr pkt) const;
   bool operationModifiesData(PacketPtr pkt) const;
@@ -130,8 +90,8 @@ public:
   const Cycles scrubIntervalCycles;   // max interval (from param)
   Cycles currentScrubIntervalCycles;  // adaptive current interval
   const Cycles minScrubIntervalCycles;
-  float scrubTightenFactor;           // divide factor when faults found (tunable)
-  float scrubRelaxFactor;             // multiply factor when clean (tunable)
+  float scrubTightenFactor;           // divide factor when faults found 
+  float scrubRelaxFactor;             // multiply factor when clean 
   Cycles cyclesPerBlockCheck;
   EventFunctionWrapper scrubEvent;
   Tick correctionGraceTicks;
@@ -143,16 +103,34 @@ public:
   struct HammingCacheStats : public statistics::Group
   {
     HammingCacheStats(statistics::Group *parent);
+
+    // scrub-pass bookkeeping
     statistics::Scalar numScrubPasses;
     statistics::Scalar numScrubBlocksChecked;
     statistics::Scalar numScrubClean;
+
+    // attempts during scrub, entered the correction branch (data-bit flip or
+    // parity refresh), regardless of whether verification later succeeded
+    statistics::Scalar numScrubAttemptedCorrections;
+    // scrub corrections that passed verification
     statistics::Scalar numScrubCorrected;
+    // scrub corrections that hit the parity-refresh path specifically
+    statistics::Scalar numScrubParityRefreshed;
+    // multi-bit / unrecoverable detections during scrub
     statistics::Scalar numScrubUnrecoverable;
     statistics::Scalar totalScrubCycles;
+
+    // on-access bookkeeping
+    statistics::Scalar numAccessAttemptedCorrections;
     statistics::Scalar numAccessCorrected;
+    statistics::Scalar numAccessParityRefreshed;
     statistics::Scalar numAccessUnrecoverable;
+
+    // shared / aggregate 
+    // unrecoverable error in a dirty block (data loss, can't refetch)
     statistics::Scalar numUnrecoverableDirty;
-    statistics::Scalar totalCorrected;
+    // every correction that passed verification, regardless of source (scrub or access) or kind (data-bit flip or parity refresh)
+    statistics::Scalar totalSuccessfulCorrections;
   };
   HammingCacheStats hammingStats;
 };

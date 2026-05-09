@@ -57,7 +57,15 @@ public:
   size_t num_parity_symbols; // 2 * t where t = symbol errors
   size_t total_msg_size;     // blkSize + num_parity_symbols
   int refresh_count;
-  enum class ECCResult { Clean, Corrected, Unrecoverable };
+
+  // status: high-level outcome callers switch on
+  enum class ECCStatus { Clean, Corrected, Unrecoverable };
+
+  struct ECCResult {
+    ECCStatus status;
+    bool verified;  // for Corrected = did the post-correction copy match
+                    // (always true when no copy is available
+  };
 
   bool operationReadsData(PacketPtr pkt) const;
   bool operationModifiesData(PacketPtr pkt) const;
@@ -70,11 +78,11 @@ public:
   void functionalAccess(PacketPtr pkt, bool from_cpu_side) override;
   void invalidateBlock(CacheBlk *blk) override;
 
-  Cycles scrubIntervalCycles;   
+  Cycles scrubIntervalCycles;
   Cycles currentScrubIntervalCycles;  // adaptive current interval
   const Cycles minScrubIntervalCycles;
-  float scrubTightenFactor;           
-  float scrubRelaxFactor;             
+  float scrubTightenFactor;
+  float scrubRelaxFactor;
   Cycles cyclesPerBlockCheck;
   EventFunctionWrapper scrubEvent;
   Tick correctionGraceTicks;
@@ -87,15 +95,32 @@ public:
   struct SolomonCacheStats : public statistics::Group
   {
     SolomonCacheStats(statistics::Group *parent);
+
+    // scrub-pass bookkeeping
     statistics::Scalar numScrubPasses;
     statistics::Scalar numScrubBlocksChecked;
     statistics::Scalar numScrubClean;
+
+    // attempts during scrub, decoder reported a correction, regardless of
+    // whether verification later succeeded
+    statistics::Scalar numScrubAttemptedCorrections;
+    // scrub corrections that passed verification
     statistics::Scalar numScrubCorrected;
+    // multi-symbol / unrecoverable detections during scrub
     statistics::Scalar numScrubUnrecoverable;
     statistics::Scalar totalScrubCycles;
+
+    // on-access bookkeeping
+    statistics::Scalar numAccessAttemptedCorrections;
     statistics::Scalar numAccessCorrected;
     statistics::Scalar numAccessUnrecoverable;
+
+    // shared / aggregate
+    // unrecoverable error in a dirty block (data loss, can't refetch)
     statistics::Scalar numUnrecoverableDirty;
+    // every correction that passed verification, regardless of source
+    // (scrub or access); equals numScrubCorrected + numAccessCorrected
+    statistics::Scalar totalSuccessfulCorrections;
   };
   SolomonCacheStats solomonStats;
 
