@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B] [--sym-errors N] [--run N]
+# args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B] [--sym-errors N] [--scrub-interval N] [--run N]
 
 set -euo pipefail
 
