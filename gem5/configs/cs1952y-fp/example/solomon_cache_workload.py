@@ -60,7 +60,7 @@ system.membus = SystemXBar()
 
 cache_params = dict(
     size="32kB",
-    assoc=1,
+    assoc=8,
     tag_latency=1,
     data_latency=1,
     response_latency=1,
