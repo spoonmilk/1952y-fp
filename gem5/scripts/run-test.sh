@@ -9,11 +9,12 @@ GEM5_BIN="/gem5_build/gem5.debug"
 CACHE="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 BENCH="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 
-CHAOS_PROB="0.0001"
+# these are now the experimental base parameters for the experiments
+CHAOS_PROB="0.00001"
 CHAOS_BITS="1"
 SYM_ERRORS="4"
 DELAY="52077000"
-SCRUB_INTERVAL="10"
+SCRUB_INTERVAL="100000000000000000" # set for dynamic scrubbing (acts like its maximum), but changed for the fixed interval kinds
 SCRUB_TIGHTEN_FACTOR="1.0"
 SCRUB_RELAX_FACTOR="1.0"
 RUN=""
