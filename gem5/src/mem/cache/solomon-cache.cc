@@ -60,6 +60,17 @@ SolomonCache::SolomonCache(const SolomonCacheParams &p)
           "255-symbol GF(2^8) codeword limit",
           blkSize, num_parity_symbols, blkSize + num_parity_symbols);
   }
+  if (scrubTightenFactor == 1.0 && scrubRelaxFactor == 1.0) {
+  currentScrubIntervalCycles = scrubIntervalCycles; // no adaptation, just use the specified interval
+  std::cerr << "Scrubbing enabled with fixed interval of " << scrubIntervalCycles << " cycles\n";
+
+  }
+  else{
+    std::cerr << "Scrubbing enabled with adaptive interval starting at " << currentScrubIntervalCycles
+              << " cycles, tightening factor " << scrubTightenFactor
+              << ", relax factor " << scrubRelaxFactor << "\n";
+  }
+
   total_msg_size = blkSize + num_parity_symbols;
   enc_dec_buf.resize(total_msg_size);
   // TODO: Maybe worth allowing specification of root polynomials through python

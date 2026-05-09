@@ -48,6 +48,16 @@ HammingCache::HammingCache(const HammingCacheParams &p) : Cache(p),
   scrubEvent([this] { this->scrubCache(); }, name() + ".scrubEvent"),
   hammingStats(this)
 {
+
+  if (scrubTightenFactor == 1.0 && scrubRelaxFactor == 1.0) {
+    currentScrubIntervalCycles = scrubIntervalCycles; // no adaptation, just use the specified interval
+    std::cerr << "Scrubbing enabled with fixed interval of " << scrubIntervalCycles << " cycles\n";
+  }
+  else{
+    std::cerr << "Scrubbing enabled with adaptive interval starting at " << currentScrubIntervalCycles
+              << " cycles, tightening factor " << scrubTightenFactor
+              << ", relax factor " << scrubRelaxFactor << "\n";
+  }
   // Schedule the first scrub event if scrubbing is enabled
   if (scrubIntervalCycles > 0) {
       schedule(scrubEvent, clockEdge(currentScrubIntervalCycles));

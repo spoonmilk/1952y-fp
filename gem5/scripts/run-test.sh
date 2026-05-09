@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
-# args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B] [--sym-errors N] [--scrub-interval N] [--run N]
+# args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B]
+#                                 [--sym-errors N] [--scrub-interval N]
+#                                 [--scrub-tighten-factor F] [--scrub-relax-factor F]
+#                                 [--delay T] [--run N] [--outdir PATH]
+#
+# When --outdir is provided, results are written there directly. Otherwise
+# the default layout results/<cache>/<bench>[/run_N] is used. The --outdir
+# form is what sweeps should use to avoid collisions when running in
+# parallel.
 
 set -euo pipefail
 
@@ -9,26 +17,27 @@ GEM5_BIN="/gem5_build/gem5.debug"
 CACHE="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 BENCH="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 
-# these are now the experimental base parameters for the experiments
-CHAOS_PROB="0.00001"
+CHAOS_PROB="0.01" # default is 0.0001
 CHAOS_BITS="1"
 SYM_ERRORS="4"
 DELAY="52077000"
-SCRUB_INTERVAL="100000000000000000" # set for dynamic scrubbing (acts like its maximum), but changed for the fixed interval kinds
+SCRUB_INTERVAL="10000000000" # the default
 SCRUB_TIGHTEN_FACTOR="1.0"
 SCRUB_RELAX_FACTOR="1.0"
 RUN=""
+OUTDIR_OVERRIDE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --chaos-prob)          CHAOS_PROB="$2";         shift 2 ;;
-        --chaos-bits)          CHAOS_BITS="$2";         shift 2 ;;
-        --sym-errors)          SYM_ERRORS="$2";         shift 2 ;;
-        --delay)               DELAY="$2";              shift 2 ;;
-        --scrub-interval)      SCRUB_INTERVAL="$2";     shift 2 ;;
+        --chaos-prob)           CHAOS_PROB="$2";           shift 2 ;;
+        --chaos-bits)           CHAOS_BITS="$2";           shift 2 ;;
+        --sym-errors)           SYM_ERRORS="$2";           shift 2 ;;
+        --delay)                DELAY="$2";                shift 2 ;;
+        --scrub-interval)       SCRUB_INTERVAL="$2";       shift 2 ;;
         --scrub-tighten-factor) SCRUB_TIGHTEN_FACTOR="$2"; shift 2 ;;
         --scrub-relax-factor)   SCRUB_RELAX_FACTOR="$2";   shift 2 ;;
-        --run)                 RUN="$2";                shift 2 ;;
+        --run)                  RUN="$2";                  shift 2 ;;
+        --outdir)               OUTDIR_OVERRIDE="$2";      shift 2 ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
 done
@@ -38,9 +47,6 @@ case "$CACHE" in
     solomon) CONFIG="$GEM5_DIR/configs/cs1952y-fp/example/solomon_cache_workload.py" ;;
     *) echo "Did not specify a valid cache"; exit 1 ;;
 esac
-
-# BINARY_REL="microbench/$BENCH/bench.RISCV"
-# [[ -f "$GEM5_DIR/$BINARY_REL" ]] || { echo "Run compile-microbench.sh first."; exit 1; }
 
 if [[ "$BENCH" == "DLP" ]]; then
     BINARY_REL="tests/test-progs/cs1952y-fp/vec.rvv"
@@ -53,7 +59,11 @@ fi
     exit 1
 }
 
-OUTDIR="$GEM5_DIR/results/$CACHE/$BENCH${RUN:+/run_$RUN}"
+if [[ -n "$OUTDIR_OVERRIDE" ]]; then
+    OUTDIR="$OUTDIR_OVERRIDE"
+else
+    OUTDIR="$GEM5_DIR/results/$CACHE/$BENCH${RUN:+/run_$RUN}"
+fi
 mkdir -p "$OUTDIR"
 
 EXTRA=()
