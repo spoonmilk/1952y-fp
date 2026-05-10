@@ -294,13 +294,10 @@ void HammingCache::tightenScrubInterval() {
   if (newInterval < minScrubIntervalCycles) {
     newInterval = minScrubIntervalCycles;
   }
-  else {
-    std::cerr << "Tightening scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
-  }
   if (newInterval < currentScrubIntervalCycles) {
+    std::cerr << "Tightening scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
     currentScrubIntervalCycles = newInterval;
-    // If the next scrub is already scheduled and the new time is sooner,
-    // reschedule it earlier.
+    // if the next scrub is already scheduled and the new time is sooner, reschedule it earlier
     if (scrubEvent.scheduled()) {
       Tick newTick = clockEdge(currentScrubIntervalCycles);
       if (newTick < scrubEvent.when()) {
@@ -315,8 +312,8 @@ void HammingCache::relaxScrubInterval() {
   if (newInterval > scrubIntervalCycles) {
     newInterval = scrubIntervalCycles;
   }
-  else {
-    std::cerr << "Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+  if (newInterval > currentScrubIntervalCycles) {
+    std::cerr << "Relaxing scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
   }
   currentScrubIntervalCycles = newInterval;
 }

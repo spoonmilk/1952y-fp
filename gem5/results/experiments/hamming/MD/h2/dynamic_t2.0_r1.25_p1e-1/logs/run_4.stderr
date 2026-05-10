@@ -1,0 +1,118 @@
+warn: No dot file generated. Please install pydot to generate the dot file and pdf.
+Scrubbing enabled with adaptive interval starting at 10 cycles, tightening factor 2, relax factor 1.25
+src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/arch/riscv/linux/se_workload.cc:60: warn: Unknown operating system; assuming Linux.
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+Relaxing scrub interval from 10 cycles to 12 cycles
+Relaxing scrub interval from 12 cycles to 15 cycles
+Relaxing scrub interval from 15 cycles to 18 cycles
+Relaxing scrub interval from 18 cycles to 22 cycles
+Relaxing scrub interval from 22 cycles to 27 cycles
+Relaxing scrub interval from 27 cycles to 33 cycles
+Relaxing scrub interval from 33 cycles to 41 cycles
+Relaxing scrub interval from 41 cycles to 51 cycles
+Relaxing scrub interval from 51 cycles to 63 cycles
+Relaxing scrub interval from 63 cycles to 78 cycles
+Relaxing scrub interval from 78 cycles to 97 cycles
+Relaxing scrub interval from 97 cycles to 121 cycles
+Relaxing scrub interval from 121 cycles to 151 cycles
+Relaxing scrub interval from 151 cycles to 188 cycles
+Relaxing scrub interval from 188 cycles to 235 cycles
+Relaxing scrub interval from 235 cycles to 293 cycles
+Relaxing scrub interval from 293 cycles to 366 cycles
+Relaxing scrub interval from 366 cycles to 457 cycles
+Relaxing scrub interval from 457 cycles to 571 cycles
+Relaxing scrub interval from 571 cycles to 713 cycles
+Relaxing scrub interval from 713 cycles to 891 cycles
+Relaxing scrub interval from 891 cycles to 1113 cycles
+Relaxing scrub interval from 1113 cycles to 1391 cycles
+Relaxing scrub interval from 1391 cycles to 1738 cycles
+Relaxing scrub interval from 1738 cycles to 2172 cycles
+Relaxing scrub interval from 2172 cycles to 2715 cycles
+Relaxing scrub interval from 2715 cycles to 3393 cycles
+Relaxing scrub interval from 3393 cycles to 4241 cycles
+Relaxing scrub interval from 4241 cycles to 5301 cycles
+Relaxing scrub interval from 5301 cycles to 6626 cycles
+Relaxing scrub interval from 6626 cycles to 8282 cycles
+Relaxing scrub interval from 8282 cycles to 10352 cycles
+Relaxing scrub interval from 10352 cycles to 12940 cycles
+Tightening scrub interval from 12940 cycles to 6470 cycles
+Tightening scrub interval from 6470 cycles to 3235 cycles
+Tightening scrub interval from 3235 cycles to 1617 cycles
+Tightening scrub interval from 1617 cycles to 808 cycles
+Unrecoverable error in dirty block at 0x18000
+Unrecoverable error in dirty block at 0x12040
+Unrecoverable error in dirty block at 0x14080
+Unrecoverable error in dirty block at 0x160c0
+Unrecoverable error in dirty block at 0x130c0
+Unrecoverable error in dirty block at 0x140c0
+Unrecoverable error in dirty block at 0x12140
+Unrecoverable error in dirty block at 0x17180
+Unrecoverable error in dirty block at 0x161c0
+Unrecoverable error in dirty block at 0x171c0
+Unrecoverable error in dirty block at 0x18200
+Unrecoverable error in dirty block at 0x18240
+Unrecoverable error in dirty block at 0x13240
+Verification after correction: mismatch at byte 16 for block 0x563dcb499cf0
+Verification after correction: mismatch at byte 2 for block 0x563dcb49a1a0
+Unrecoverable error in dirty block at 0x182c0
+Unrecoverable error in dirty block at 0x122c0
+Unrecoverable error in dirty block at 0x18340
+Unrecoverable error in dirty block at 0x14340
+Unrecoverable error in dirty block at 0x16380
+Unrecoverable error in dirty block at 0x153c0
+Unrecoverable error in dirty block at 0x15400
+Unrecoverable error in dirty block at 0x17480
+Unrecoverable error in dirty block at 0x184c0
+Unrecoverable error in dirty block at 0x134c0
+Unrecoverable error in dirty block at 0x13500
+Verification after correction: mismatch at byte 3 for block 0x563dcb49c798
+Unrecoverable error in dirty block at 0x13580
+Unrecoverable error in dirty block at 0x155c0
+Unrecoverable error in dirty block at 0x135c0
+Verification after correction: mismatch at byte 10 for block 0x563dcb49d350
+Verification after correction: mismatch at byte 27 for block 0x563dcb49d8f0
+Unrecoverable error in dirty block at 0x146c0
+Verification after correction: mismatch at byte 4 for block 0x563dcb49e520
+Unrecoverable error in dirty block at 0x15780
+Verification after correction: mismatch at byte 0 for block 0x563dcb49e958
+Verification after correction: mismatch at byte 1 for block 0x563dcb49f600
+Unrecoverable error in dirty block at 0x15880
+Verification after correction: mismatch at byte 14 for block 0x563dcb49f8d0
+Unrecoverable error in dirty block at 0x178c0
+Verification after correction: mismatch at byte 23 for block 0x563dcb49fc90
+Unrecoverable error in dirty block at 0x138c0
+Unrecoverable error in dirty block at 0x17900
+Unrecoverable error in dirty block at 0x16940
+Unrecoverable error in dirty block at 0x11940
+Verification after correction: mismatch at byte 31 for block 0x563dcb4a0848
+Unrecoverable error in dirty block at 0x13980
+Unrecoverable error in dirty block at 0x159c0
+Verification after correction: mismatch at byte 2 for block 0x563dcb4a0b18
+Unrecoverable error in dirty block at 0x14a00
+Unrecoverable error in dirty block at 0x15ac0
+Unrecoverable error in dirty block at 0x15b00
+Unrecoverable error in dirty block at 0x14b40
+Unrecoverable error in dirty block at 0x15b40
+Unrecoverable error in dirty block at 0x16b40
+Unrecoverable error in dirty block at 0x17b80
+Unrecoverable error in dirty block at 0x12b80
+Unrecoverable error in dirty block at 0x17bc0
+Unrecoverable error in dirty block at 0x17c00
+Unrecoverable error in dirty block at 0x12c40
+Verification after correction: mismatch at byte 2 for block 0x563dcb4a3278
+Unrecoverable error in dirty block at 0x15c80
+Unrecoverable error in dirty block at 0x12c80
+Unrecoverable error in dirty block at 0x17cc0
+Unrecoverable error in dirty block at 0x18cc0
+Unrecoverable error in dirty block at 0x15dc0
+Verification after correction: mismatch at byte 4 for block 0x563dcb4a4628
+Unrecoverable error in dirty block at 0x18e00
+Unrecoverable error in dirty block at 0x14e80
+Unrecoverable error in dirty block at 0x13f00
+Unrecoverable error in dirty block at 0x18f40
+Verification after correction: mismatch at byte 5 for block 0x563dcb4a5e88
+Verification after correction: mismatch at byte 1 for block 0x563dcb4a6680
+Tightening scrub interval from 808 cycles to 404 cycles

@@ -226,10 +226,8 @@ void SolomonCache::tightenScrubInterval() {
   if (newInterval < minScrubIntervalCycles) {
     newInterval = minScrubIntervalCycles;
   }
-  else {
-    std::cerr << "Tightening scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
-  }
   if (newInterval < currentScrubIntervalCycles) {
+    std::cerr << "Tightening scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
     currentScrubIntervalCycles = newInterval;
     // if the next scrub is already scheduled and the new time is sooner, reschedule it earlier.
     if (scrubEvent.scheduled()) {
@@ -246,7 +244,7 @@ void SolomonCache::relaxScrubInterval() {
   if (newInterval > scrubIntervalCycles) {
     newInterval = scrubIntervalCycles;
   }
-  else {
+  if (newInterval > currentScrubIntervalCycles) {
     std::cerr << "Relaxing scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
   }
   currentScrubIntervalCycles = newInterval;

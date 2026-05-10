@@ -1,0 +1,9 @@
+warn: No dot file generated. Please install pydot to generate the dot file and pdf.
+Scrubbing enabled with fixed interval of 0 cycles
+src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/arch/riscv/linux/se_workload.cc:60: warn: Unknown operating system; assuming Linux.
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+ECC refresh #1 at tick 353344000
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 79: 98126 Killed                  timeout --signal=KILL 30 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" "${EXTRA[@]}"

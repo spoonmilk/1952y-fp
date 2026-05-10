@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Hypothesis 1 sweep: how does scrub policy affect ECC behavior on MD?
-#
 # Layout written:
 #   results/experiments/<cache>/MD/h1/<differentiator>/run_N/   (gem5 outdir)
 #   results/experiments/<cache>/MD/h1/<differentiator>/summary.csv
@@ -9,16 +7,15 @@
 # summary.csv columns:
 #   run,status,exit_code,wall_seconds,fail_reason,start_iso,end_iso
 #
-# Status classification (more rigorous than just exit code, because gem5
+# Status classification (more detailed than just exit code, because gem5
 # can exit 0 while its simulated CPU panicked or hit an unrecoverable ECC
 # error via exitSimLoop):
 #   OK    — exit 0 AND stats.txt non-empty AND no panic/fatal/unrecoverable
 #           signature in stderr
 #   CRASH — anything else; fail_reason gives a one-word hint
 #
-# Crashes don't abort the sweep — they're logged and we move on.
+# crashes don't abort the sweep, they're logged
 #
-# Parallelism: default 6 concurrent gem5 processes. Override with --jobs.
 #
 # Usage:
 #   bash sim_h1.sh                 # both caches, 10 runs each, 6 in parallel
