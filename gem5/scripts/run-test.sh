@@ -6,8 +6,7 @@
 #
 # When --outdir is provided, results are written there directly. Otherwise
 # the default layout results/<cache>/<bench>[/run_N] is used. The --outdir
-# form is what sweeps should use to avoid collisions when running in
-# parallel.
+# form is what sweeps should use to avoid collisions when running in parallel
 
 set -euo pipefail
 
@@ -17,7 +16,7 @@ GEM5_BIN="/gem5_build/gem5.debug"
 CACHE="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 BENCH="${1:?Usage: run-test.sh <hamming|solomon> <bench>}"; shift
 
-CHAOS_PROB="0.01" # default is 0.0001
+CHAOS_PROB="0.0001" # default is 0.0001 # I ran everything with 0.0001...
 CHAOS_BITS="1"
 SYM_ERRORS="4"
 DELAY="52077000"
@@ -69,7 +68,7 @@ mkdir -p "$OUTDIR"
 EXTRA=()
 [[ "$CACHE" == "solomon" ]] && EXTRA+=(--symbol-errors "$SYM_ERRORS")
 
-"$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
+timeout --signal=KILL 600 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
     "$BINARY_REL" \
     --chaos-prob "$CHAOS_PROB" \
     --chaos-bits "$CHAOS_BITS" \

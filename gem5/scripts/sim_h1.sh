@@ -35,7 +35,7 @@ RUN_TEST="$SCRIPTS_DIR/run-test.sh"
 
 [[ -x "$RUN_TEST" ]] || { echo "ERROR: $RUN_TEST not found or not executable"; exit 1; }
 
-# ---------------- defaults & arg parsing ----------------
+# defaults & arg parsing
 HYPOTHESIS="h1"
 WORKLOAD="MD"
 RUNS=10
@@ -55,7 +55,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# ---------------- candidates ----------------
+# candidates
 # Each entry: <differentiator>|<extra args to run-test.sh>
 CANDIDATES=(
     "on-access|--scrub-interval 0"
@@ -64,7 +64,7 @@ CANDIDATES=(
     "dynamic_t2.0_r1.25|--scrub-tighten-factor 2.0 --scrub-relax-factor 1.25"
 )
 
-# ---------------- helpers ----------------
+#  helpers
 
 # classify_run: inspect a finished run's outputs and return a status.
 # Echoes "STATUS|REASON".
@@ -151,8 +151,8 @@ run_one() {
     return $exit_code
 }
 
-# ---------------- pre-sweep cleanup ----------------
-# Truncate summary.csv (write a fresh header) for every candidate this
+#  pre-sweep cleanup 
+# truncate summary.csv (write a fresh header) for every candidate this
 # sweep will touch, BEFORE any jobs start. Old run_N/ dirs are left alone
 # — gem5 will overwrite stats.txt under --outdir.
 for cache in "${CACHES[@]}"; do
@@ -166,7 +166,7 @@ for cache in "${CACHES[@]}"; do
     done
 done
 
-# ---------------- build the job list ----------------
+# build the job list
 declare -a JOBS_LIST=()
 for cache in "${CACHES[@]}"; do
     for entry in "${CANDIDATES[@]}"; do
@@ -180,7 +180,7 @@ done
 
 total_jobs=${#JOBS_LIST[@]}
 
-# ---------------- pre-flight summary ----------------
+# pre-flight summary 
 echo "=== H1 sweep starting ==="
 echo "    caches:     ${CACHES[*]}"
 echo "    workload:   $WORKLOAD"
@@ -196,7 +196,7 @@ for entry in "${CANDIDATES[@]}"; do
 done
 echo ""
 
-# ---------------- job pool ----------------
+# job pool 
 sweep_start="$(date +%s)"
 declare -A INFLIGHT=()
 
@@ -236,7 +236,7 @@ done
 
 sweep_end="$(date +%s)"
 
-# ---------------- final tally ----------------
+#  final tally 
 ok=0
 fail=0
 declare -A REASON_COUNT=()

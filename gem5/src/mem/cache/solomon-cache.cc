@@ -247,7 +247,7 @@ void SolomonCache::relaxScrubInterval() {
     newInterval = scrubIntervalCycles;
   }
   else {
-    std::cerr << "Relaxingxxx scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+    std::cerr << "Relaxing scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
   }
   currentScrubIntervalCycles = newInterval;
 }

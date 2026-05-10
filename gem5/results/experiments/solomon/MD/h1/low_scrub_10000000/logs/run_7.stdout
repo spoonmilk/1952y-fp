@@ -1,0 +1,12 @@
+Global frequency set at 1000000000000 ticks per second
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.1.0.0
+gem5 compiled May  9 2026 23:12:21
+gem5 started May  9 2026 23:30:08
+gem5 executing on 067fc61637b9, pid 4027
+command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/solomon/MD/h1/low_scrub_10000000/run_7 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/solomon_cache_workload.py microbench/MD/bench.RISCV --chaos-prob 0.0001 --chaos-bits 1 --delay 52077000 --scrub-interval 10000000 --scrub-tighten-factor 1.0 --scrub-relax-factor 1.0 --symbol-errors 4
+
+info: Standard input is not a terminal, disabling listeners.
+Simulating SolomonCache Workload:symbol_errors=4, chaos_prob=0.0001, chaos_bits=1

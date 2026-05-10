@@ -316,7 +316,7 @@ void HammingCache::relaxScrubInterval() {
     newInterval = scrubIntervalCycles;
   }
   else {
-    std::cerr << "Relaxingggg scrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
+    std::cerr << "Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from " << currentScrubIntervalCycles << " cycles to " << newInterval << " cycles\n";
   }
   currentScrubIntervalCycles = newInterval;
 }

@@ -1,0 +1,47 @@
+warn: No dot file generated. Please install pydot to generate the dot file and pdf.
+Scrubbing enabled with fixed interval of 10000000 cycles
+src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/arch/riscv/linux/se_workload.cc:60: warn: Unknown operating system; assuming Linux.
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x1000000000028130
+Memory Usage: 8529116 KBytes
+Program aborted at tick 127415000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x55f76682a04d]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x55f76684fe94]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7fe9eaa51520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7fe9eaaa59fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7fe9eaa51476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7fe9eaa377f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x55f764d60048]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x55f7668a4ef7]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x55f7659193a7]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x55f76590792f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x55f765905dec]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x55f7659054bb]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55f765903b0e]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x55f765917441]
+/gem5_build/gem5.debug(+0x351f923)[0x55f765914923]
+/gem5_build/gem5.debug(+0x35293c2)[0x55f76591e3c2]
+/gem5_build/gem5.debug(+0x3529154)[0x55f76591e154]
+/gem5_build/gem5.debug(+0x3528f4e)[0x55f76591df4e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x55f764e4a976]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x55f764e491a8]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x55f76683e001]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x55f7668617c3]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x55f76686125a]
+/gem5_build/gem5.debug(+0x4392caa)[0x55f766787caa]
+/gem5_build/gem5.debug(+0x4391108)[0x55f766786108]
+/gem5_build/gem5.debug(+0x438cdb9)[0x55f766781db9]
+/gem5_build/gem5.debug(+0x438ce24)[0x55f766781e24]
+/gem5_build/gem5.debug(+0x297cb59)[0x55f764d71b59]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7fe9eb374033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7fe9eb32dffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7fe9eb2c2776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7fe9eb40e4df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 80:  4604 Aborted                 (core dumped) "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" "${EXTRA[@]}"

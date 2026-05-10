@@ -1,0 +1,90 @@
+warn: No dot file generated. Please install pydot to generate the dot file and pdf.
+Scrubbing enabled with adaptive interval starting at 10 cycles, tightening factor 2, relax factor 1.25
+src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/arch/riscv/linux/se_workload.cc:60: warn: Unknown operating system; assuming Linux.
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 10 cycles to 12 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 12 cycles to 15 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 15 cycles to 18 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 18 cycles to 22 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 22 cycles to 27 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 27 cycles to 33 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 33 cycles to 41 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 41 cycles to 51 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 51 cycles to 63 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 63 cycles to 78 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 78 cycles to 97 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 97 cycles to 121 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 121 cycles to 151 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 151 cycles to 188 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 188 cycles to 235 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 235 cycles to 293 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 293 cycles to 366 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 366 cycles to 457 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 457 cycles to 571 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 571 cycles to 713 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 713 cycles to 891 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 891 cycles to 1113 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 1113 cycles to 1391 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 1391 cycles to 1738 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 1738 cycles to 2172 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 2172 cycles to 2715 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 2715 cycles to 3393 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 3393 cycles to 4241 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 4241 cycles to 5301 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 5301 cycles to 6626 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 6626 cycles to 8282 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 8282 cycles to 10352 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 10352 cycles to 12940 cycles
+Tightening scrub interval from 12940 cycles to 6470 cycles
+Tightening scrub interval from 6470 cycles to 3235 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 3235 cycles to 4043 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 4043 cycles to 5053 cycles
+Tightening scrub interval from 5053 cycles to 2526 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 2526 cycles to 3157 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 3157 cycles to 3946 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 3946 cycles to 4932 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 4932 cycles to 6165 cycles
+Relaxing sdfsdfsdfdsfdfsdfsdfsdscrub interval from 6165 cycles to 7706 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x100000000022b50
+Memory Usage: 8528032 KBytes
+Program aborted at tick 104333000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x5565146c604d]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x5565146ebe94]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7eff4b8c6520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7eff4b91a9fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7eff4b8c6476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7eff4b8ac7f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x556512bfc048]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x556514740ef7]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x5565137b53a7]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x5565137a392f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x5565137a1dec]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x5565137a14bb]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55651379fb0e]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x5565137b3441]
+/gem5_build/gem5.debug(+0x351f923)[0x5565137b0923]
+/gem5_build/gem5.debug(+0x35293c2)[0x5565137ba3c2]
+/gem5_build/gem5.debug(+0x3529154)[0x5565137ba154]
+/gem5_build/gem5.debug(+0x3528f4e)[0x5565137b9f4e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x556512ce6976]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x556512ce51a8]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x5565146da001]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x5565146fd7c3]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x5565146fd25a]
+/gem5_build/gem5.debug(+0x4392caa)[0x556514623caa]
+/gem5_build/gem5.debug(+0x4391108)[0x556514622108]
+/gem5_build/gem5.debug(+0x438cdb9)[0x55651461ddb9]
+/gem5_build/gem5.debug(+0x438ce24)[0x55651461de24]
+/gem5_build/gem5.debug(+0x297cb59)[0x556512c0db59]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7eff4c1e9033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7eff4c1a2ffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7eff4c137776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7eff4c2834df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 80: 99613 Aborted                 (core dumped) "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" "${EXTRA[@]}"
