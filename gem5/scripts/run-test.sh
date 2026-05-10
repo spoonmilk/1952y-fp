@@ -2,8 +2,8 @@
 # args: <hamming|solomon> <bench> [--chaos-prob P] [--chaos-bits B]
 #                                 [--sym-errors N] [--scrub-interval N]
 #                                 [--scrub-tighten-factor F] [--scrub-relax-factor F]
+#                                 [--cache-size SIZE]
 #                                 [--delay T] [--run N] [--outdir PATH]
-#
 # When --outdir is provided, results are written there directly. Otherwise
 # the default layout results/<cache>/<bench>[/run_N] is used. The --outdir
 # form is what sweeps should use to avoid collisions when running in parallel
@@ -23,6 +23,7 @@ DELAY="52077000"
 SCRUB_INTERVAL="10000000000" # the default
 SCRUB_TIGHTEN_FACTOR="1.0"
 SCRUB_RELAX_FACTOR="1.0"
+CACHE_SIZE="32kB"
 RUN=""
 OUTDIR_OVERRIDE=""
 
@@ -35,6 +36,7 @@ while [[ $# -gt 0 ]]; do
         --scrub-interval)       SCRUB_INTERVAL="$2";       shift 2 ;;
         --scrub-tighten-factor) SCRUB_TIGHTEN_FACTOR="$2"; shift 2 ;;
         --scrub-relax-factor)   SCRUB_RELAX_FACTOR="$2";   shift 2 ;;
+        --cache-size)           CACHE_SIZE="$2";           shift 2 ;;
         --run)                  RUN="$2";                  shift 2 ;;
         --outdir)               OUTDIR_OVERRIDE="$2";      shift 2 ;;
         *) echo "Unknown option: $1"; exit 1 ;;
@@ -47,11 +49,11 @@ case "$CACHE" in
     *) echo "Did not specify a valid cache"; exit 1 ;;
 esac
 
-if [[ "$BENCH" == "DLP" ]]; then
-    BINARY_REL="tests/test-progs/cs1952y-fp/vec.rvv"
-else
-    BINARY_REL="microbench/$BENCH/bench.RISCV"
-fi
+case "$BENCH" in
+    DLP)     BINARY_REL="tests/test-progs/cs1952y-fp/vec.rvv" ;;
+    DLP_NP)  BINARY_REL="tests/test-progs/cs1952y-fp/vec_no_parallel" ;;
+    *)       BINARY_REL="microbench/$BENCH/bench.RISCV" ;;
+esac
 
 [[ -f "$GEM5_DIR/$BINARY_REL" ]] || {
     echo "Workload not found: $GEM5_DIR/$BINARY_REL"
@@ -68,7 +70,7 @@ mkdir -p "$OUTDIR"
 EXTRA=()
 [[ "$CACHE" == "solomon" ]] && EXTRA+=(--symbol-errors "$SYM_ERRORS")
 
-timeout --signal=KILL 15 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
+timeout --signal=KILL 50 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
     "$BINARY_REL" \
     --chaos-prob "$CHAOS_PROB" \
     --chaos-bits "$CHAOS_BITS" \
@@ -76,4 +78,5 @@ timeout --signal=KILL 15 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
     --scrub-interval "$SCRUB_INTERVAL" \
     --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" \
     --scrub-relax-factor "$SCRUB_RELAX_FACTOR" \
+    --cache-size "$CACHE_SIZE" \
     "${EXTRA[@]}"

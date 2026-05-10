@@ -40,6 +40,11 @@ SimpleOpts.add_option(
     "--scrub-relax-factor", type=float, default=2.0,
     help="Factor to relax scrub interval by (default 2.0)"
 )
+SimpleOpts.add_option(
+    "--cache-size", type=str, default="32kB",
+    help="Cache size in KB (default 32kB)"
+)
+
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -59,7 +64,7 @@ system.cpu = RiscvO3CPU()
 system.membus = SystemXBar()
 
 cache_params = dict(
-    size="32kB",
+    size=args.cache_size,
     assoc=8,
     tag_latency=1,
     data_latency=1,

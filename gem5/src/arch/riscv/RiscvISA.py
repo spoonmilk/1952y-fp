@@ -99,7 +99,8 @@ class RiscvISA(BaseISA):
 
     enable_rvv = Param.Bool(True, "Enable vector extension")
     vlen = Param.RiscvVectorLength(
-        256,
+        # 1024, # this is used in hypothesis 4
+        256, 
         "Length of each vector register in bits. \
         VLEN in Ch. 2 of RISC-V vector spec",
     )

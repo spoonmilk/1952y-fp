@@ -11,6 +11,12 @@ from m5.objects.RiscvCPU import RiscvCPU
 from m5.objects.BaseO3CPU import BaseO3CPU
 from m5.objects.BranchPredictor import *
 
+from m5.params import (
+    Enum,
+    Param,
+    UInt32,
+)
+
 m5.util.addToPath("../../")
 from common import SimpleOpts
 
@@ -39,6 +45,13 @@ SimpleOpts.add_option(
     "--scrub-relax-factor", type=float, default=2.0,
     help="Factor to relax scrub interval by (default 2.0)"
 )
+SimpleOpts.add_option(
+    "--cache-size", type=str, default="32kB",
+    help="Cache size in KB (default 32kB)"
+)
+
+
+
 args = SimpleOpts.parse_args()
 
 thispath = os.path.dirname(os.path.realpath(__file__))
@@ -73,7 +86,7 @@ system.cpu.icache = Cache(
 )
 
 system.cpu.dcache = HammingCache(
-    size="32kB",
+    size=args.cache_size,
     assoc=8,
     tag_latency=1,
     data_latency=1,
