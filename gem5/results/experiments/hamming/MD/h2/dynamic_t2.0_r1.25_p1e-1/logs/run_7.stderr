@@ -39,5 +39,5 @@ Relaxing scrub interval from 6626 cycles to 8282 cycles
 Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
 Tightening scrub interval from 12940 cycles to 6470 cycles
-Verification after correction: mismatch at byte 27 for block 0x556fa3770170
+Verification after correction: mismatch at byte 2 for block 0x55ca9da9e2c0
 Tightening scrub interval from 6470 cycles to 3235 cycles

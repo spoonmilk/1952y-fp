@@ -41,5 +41,78 @@ Relaxing scrub interval from 10352 cycles to 12940 cycles
 Tightening scrub interval from 12940 cycles to 6470 cycles
 Tightening scrub interval from 6470 cycles to 3235 cycles
 Tightening scrub interval from 3235 cycles to 1617 cycles
-Unrecoverable error in dirty block at 0xd640
+Unrecoverable error in dirty block at 0x17000
+Unrecoverable error in dirty block at 0x14040
+Unrecoverable error in dirty block at 0x15200
+Unrecoverable error in dirty block at 0x12280
+Unrecoverable error in dirty block at 0x15300
+Verification after correction: mismatch at byte 9 for block 0x55646288c188
+Unrecoverable error in dirty block at 0x12300
+Unrecoverable error in dirty block at 0x17380
+Unrecoverable error in dirty block at 0x18380
+Unrecoverable error in dirty block at 0x163c0
+Unrecoverable error in dirty block at 0x13400
+Unrecoverable error in dirty block at 0x12440
+Unrecoverable error in dirty block at 0x16480
+Unrecoverable error in dirty block at 0x18480
+Verification after correction: mismatch at byte 24 for block 0x55646288db50
+Verification after correction: mismatch at byte 2 for block 0x55646288dbc8
+Unrecoverable error in dirty block at 0x17540
+Unrecoverable error in dirty block at 0x12540
+Unrecoverable error in dirty block at 0x15580
+Unrecoverable error in dirty block at 0x17580
+Unrecoverable error in dirty block at 0x18580
+Unrecoverable error in dirty block at 0x11580
+Unrecoverable error in dirty block at 0x145c0
+Verification after correction: mismatch at byte 11 for block 0x55646288eca8
+Unrecoverable error in dirty block at 0x17640
+Unrecoverable error in dirty block at 0x116c0
+Unrecoverable error in dirty block at 0x18740
+Unrecoverable error in dirty block at 0x12740
+Unrecoverable error in dirty block at 0x17780
+Unrecoverable error in dirty block at 0x14840
+Unrecoverable error in dirty block at 0x16840
+Unrecoverable error in dirty block at 0x17840
+Unrecoverable error in dirty block at 0x13840
+Verification after correction: mismatch at byte 41 for block 0x556462891390
+Unrecoverable error in dirty block at 0x15880
+Unrecoverable error in dirty block at 0x16880
+Unrecoverable error in dirty block at 0x17880
+Unrecoverable error in dirty block at 0x178c0
+Unrecoverable error in dirty block at 0x138c0
+Unrecoverable error in dirty block at 0x169c0
+Unrecoverable error in dirty block at 0x13a00
+Verification after correction: mismatch at byte 4 for block 0x556462892bf0
+Verification after correction: mismatch at byte 0 for block 0x556462892c68
+Unrecoverable error in dirty block at 0x15a40
+Unrecoverable error in dirty block at 0x16a40
+Unrecoverable error in dirty block at 0x15a80
+Unrecoverable error in dirty block at 0x16a80
+Unrecoverable error in dirty block at 0x12ac0
+Verification after correction: mismatch at byte 8 for block 0x556462893910
+Unrecoverable error in dirty block at 0x15b00
+Unrecoverable error in dirty block at 0x17b00
+Unrecoverable error in dirty block at 0x16b40
+Unrecoverable error in dirty block at 0x13bc0
+Unrecoverable error in dirty block at 0x14c00
+Unrecoverable error in dirty block at 0x16c40
+Unrecoverable error in dirty block at 0x14c40
+Verification after correction: mismatch at byte 0 for block 0x556462895350
+Unrecoverable error in dirty block at 0x14d00
+Verification after correction: mismatch at byte 1 for block 0x556462895ad0
+Unrecoverable error in dirty block at 0x17d40
+Unrecoverable error in dirty block at 0x13d40
+Unrecoverable error in dirty block at 0x13d80
+Unrecoverable error in dirty block at 0x17dc0
+Unrecoverable error in dirty block at 0x12dc0
+Unrecoverable error in dirty block at 0x14dc0
+Verification after correction: mismatch at byte 11 for block 0x556462896778
+Unrecoverable error in dirty block at 0x17e00
+Unrecoverable error in dirty block at 0x13e00
+Unrecoverable error in dirty block at 0x15e40
+Unrecoverable error in dirty block at 0x14ec0
+Unrecoverable error in dirty block at 0x14f00
+Unrecoverable error in dirty block at 0x16f00
+Unrecoverable error in dirty block at 0x17f80
+Unrecoverable error in dirty block at 0x13fc0
 Tightening scrub interval from 1617 cycles to 808 cycles

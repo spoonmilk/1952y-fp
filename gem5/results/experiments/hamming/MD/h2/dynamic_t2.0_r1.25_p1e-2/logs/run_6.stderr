@@ -38,19 +38,12 @@ Relaxing scrub interval from 5301 cycles to 6626 cycles
 Relaxing scrub interval from 6626 cycles to 8282 cycles
 Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
+Unrecoverable error in dirty block at 0x191c0
+Unrecoverable error in dirty block at 0x17280
+Unrecoverable error in dirty block at 0x19580
+Unrecoverable error in dirty block at 0x16940
+Verification after correction: mismatch at byte 4 for block 0x5572ce4b46c8
+Unrecoverable error in dirty block at 0x15a40
+Verification after correction: mismatch at byte 10 for block 0x5572ce4b7080
+Unrecoverable error in dirty block at 0x14fc0
 Tightening scrub interval from 12940 cycles to 6470 cycles
-Tightening scrub interval from 6470 cycles to 3235 cycles
-Verification after correction: mismatch at byte 35 for block 0x5603656c5a20
-Unrecoverable error in dirty block at 0x14280
-Unrecoverable error in dirty block at 0x17300
-Unrecoverable error in dirty block at 0x143c0
-Unrecoverable error in dirty block at 0x169c0
-Unrecoverable error in dirty block at 0x17b00
-Unrecoverable error in dirty block at 0x18b00
-Unrecoverable error in dirty block at 0x15c00
-Unrecoverable error in dirty block at 0x13d00
-Unrecoverable error in dirty block at 0x14d00
-Unrecoverable error in dirty block at 0x18ec0
-Unrecoverable error in dirty block at 0x16f00
-Unrecoverable error in dirty block at 0x13f00
-Tightening scrub interval from 3235 cycles to 1617 cycles

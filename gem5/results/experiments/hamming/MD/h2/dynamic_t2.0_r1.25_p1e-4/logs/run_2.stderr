@@ -38,101 +38,45 @@ Relaxing scrub interval from 5301 cycles to 6626 cycles
 Relaxing scrub interval from 6626 cycles to 8282 cycles
 Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
-Tightening scrub interval from 12940 cycles to 6470 cycles
-Relaxing scrub interval from 6470 cycles to 8087 cycles
-Tightening scrub interval from 8087 cycles to 4043 cycles
-Relaxing scrub interval from 4043 cycles to 5053 cycles
-Tightening scrub interval from 5053 cycles to 2526 cycles
-Relaxing scrub interval from 2526 cycles to 3157 cycles
-Relaxing scrub interval from 3157 cycles to 3946 cycles
-Tightening scrub interval from 3946 cycles to 1973 cycles
-Relaxing scrub interval from 1973 cycles to 2466 cycles
-Tightening scrub interval from 2466 cycles to 1233 cycles
-Relaxing scrub interval from 1233 cycles to 1541 cycles
-Relaxing scrub interval from 1541 cycles to 1926 cycles
-Relaxing scrub interval from 1926 cycles to 2407 cycles
-Relaxing scrub interval from 2407 cycles to 3008 cycles
-Relaxing scrub interval from 3008 cycles to 3760 cycles
-Relaxing scrub interval from 3760 cycles to 4700 cycles
-Tightening scrub interval from 4700 cycles to 2350 cycles
-Relaxing scrub interval from 2350 cycles to 2937 cycles
-Relaxing scrub interval from 2937 cycles to 3671 cycles
-Relaxing scrub interval from 3671 cycles to 4588 cycles
-Tightening scrub interval from 4588 cycles to 2294 cycles
-Relaxing scrub interval from 2294 cycles to 2867 cycles
-Relaxing scrub interval from 2867 cycles to 3583 cycles
-Tightening scrub interval from 3583 cycles to 1791 cycles
-Relaxing scrub interval from 1791 cycles to 2238 cycles
-Relaxing scrub interval from 2238 cycles to 2797 cycles
-Relaxing scrub interval from 2797 cycles to 3496 cycles
-Relaxing scrub interval from 3496 cycles to 4370 cycles
-Relaxing scrub interval from 4370 cycles to 5462 cycles
-Tightening scrub interval from 5462 cycles to 2731 cycles
-Relaxing scrub interval from 2731 cycles to 3413 cycles
-Tightening scrub interval from 3413 cycles to 1706 cycles
-Relaxing scrub interval from 1706 cycles to 2132 cycles
-Relaxing scrub interval from 2132 cycles to 2665 cycles
-Relaxing scrub interval from 2665 cycles to 3331 cycles
-Relaxing scrub interval from 3331 cycles to 4163 cycles
-Tightening scrub interval from 4163 cycles to 2081 cycles
-Relaxing scrub interval from 2081 cycles to 2601 cycles
-Tightening scrub interval from 2601 cycles to 1300 cycles
-Tightening scrub interval from 1300 cycles to 650 cycles
-Relaxing scrub interval from 650 cycles to 812 cycles
-Relaxing scrub interval from 812 cycles to 1015 cycles
-Relaxing scrub interval from 1015 cycles to 1268 cycles
-Relaxing scrub interval from 1268 cycles to 1585 cycles
-Relaxing scrub interval from 1585 cycles to 1981 cycles
-Relaxing scrub interval from 1981 cycles to 2476 cycles
-Relaxing scrub interval from 2476 cycles to 3095 cycles
-Relaxing scrub interval from 3095 cycles to 3868 cycles
-Relaxing scrub interval from 3868 cycles to 4835 cycles
-Relaxing scrub interval from 4835 cycles to 6043 cycles
-Relaxing scrub interval from 6043 cycles to 7553 cycles
-Tightening scrub interval from 7553 cycles to 3776 cycles
-Relaxing scrub interval from 3776 cycles to 4720 cycles
-Relaxing scrub interval from 4720 cycles to 5900 cycles
-Tightening scrub interval from 5900 cycles to 2950 cycles
-Tightening scrub interval from 2950 cycles to 1475 cycles
-Relaxing scrub interval from 1475 cycles to 1843 cycles
-Relaxing scrub interval from 1843 cycles to 2303 cycles
-Relaxing scrub interval from 2303 cycles to 2878 cycles
-Relaxing scrub interval from 2878 cycles to 3597 cycles
-Tightening scrub interval from 3597 cycles to 1798 cycles
-Relaxing scrub interval from 1798 cycles to 2247 cycles
-Relaxing scrub interval from 2247 cycles to 2808 cycles
-Tightening scrub interval from 2808 cycles to 1404 cycles
-Relaxing scrub interval from 1404 cycles to 1755 cycles
-Relaxing scrub interval from 1755 cycles to 2193 cycles
-Relaxing scrub interval from 2193 cycles to 2741 cycles
-Relaxing scrub interval from 2741 cycles to 3426 cycles
-Tightening scrub interval from 3426 cycles to 1713 cycles
-Relaxing scrub interval from 1713 cycles to 2141 cycles
-Relaxing scrub interval from 2141 cycles to 2676 cycles
-Relaxing scrub interval from 2676 cycles to 3345 cycles
-Relaxing scrub interval from 3345 cycles to 4181 cycles
-Relaxing scrub interval from 4181 cycles to 5226 cycles
-Tightening scrub interval from 5226 cycles to 2613 cycles
-Tightening scrub interval from 2613 cycles to 1306 cycles
-Relaxing scrub interval from 1306 cycles to 1632 cycles
-Relaxing scrub interval from 1632 cycles to 2040 cycles
-Tightening scrub interval from 2040 cycles to 1020 cycles
-Relaxing scrub interval from 1020 cycles to 1275 cycles
-Relaxing scrub interval from 1275 cycles to 1593 cycles
-Relaxing scrub interval from 1593 cycles to 1991 cycles
-Relaxing scrub interval from 1991 cycles to 2488 cycles
-Tightening scrub interval from 2488 cycles to 1244 cycles
-Relaxing scrub interval from 1244 cycles to 1555 cycles
-Relaxing scrub interval from 1555 cycles to 1943 cycles
-Relaxing scrub interval from 1943 cycles to 2428 cycles
-Relaxing scrub interval from 2428 cycles to 3035 cycles
-Relaxing scrub interval from 3035 cycles to 3793 cycles
-Relaxing scrub interval from 3793 cycles to 4741 cycles
-Tightening scrub interval from 4741 cycles to 2370 cycles
-Relaxing scrub interval from 2370 cycles to 2962 cycles
-Relaxing scrub interval from 2962 cycles to 3702 cycles
-Tightening scrub interval from 3702 cycles to 1851 cycles
-Relaxing scrub interval from 1851 cycles to 2313 cycles
-Relaxing scrub interval from 2313 cycles to 2891 cycles
-Relaxing scrub interval from 2891 cycles to 3613 cycles
-Relaxing scrub interval from 3613 cycles to 4516 cycles
+Relaxing scrub interval from 12940 cycles to 16175 cycles
+Relaxing scrub interval from 16175 cycles to 20218 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x10020b90
+Memory Usage: 8529152 KBytes
+Program aborted at tick 95524000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x5640586cd061]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x5640586f2ea8]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7ff5638a1520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7ff5638f59fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7ff5638a1476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7ff5638877f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x564056c03028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x564058747f0b]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x5640577bc387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x5640577aa90f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x5640577a8dcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x5640577a849b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x5640577a6aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x5640577ba421]
+/gem5_build/gem5.debug(+0x351f903)[0x5640577b7903]
+/gem5_build/gem5.debug(+0x35293a2)[0x5640577c13a2]
+/gem5_build/gem5.debug(+0x3529134)[0x5640577c1134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x5640577c0f2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x564056ced956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x564056cec188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x5640586e1015]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x5640587047d7]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x56405870426e]
+/gem5_build/gem5.debug(+0x4392cbe)[0x56405862acbe]
+/gem5_build/gem5.debug(+0x439111c)[0x56405862911c]
+/gem5_build/gem5.debug(+0x438cdcd)[0x564058624dcd]
+/gem5_build/gem5.debug(+0x438ce38)[0x564058624e38]
+/gem5_build/gem5.debug(+0x297cb39)[0x564056c14b39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7ff5641c4033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7ff56417dffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7ff564112776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7ff56425e4df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 50510 Killed                  timeout --signal=KILL 15 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

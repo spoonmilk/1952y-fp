@@ -3,10 +3,10 @@ gem5 Simulator System.  https://www.gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 version 23.1.0.0
-gem5 compiled May 10 2026 01:26:29
-gem5 started May 10 2026 02:23:04
-gem5 executing on 067fc61637b9, pid 8194
-command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/solomon/MD/h2/low_scrub_10000000_p1e-1/run_7 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/solomon_cache_workload.py microbench/MD/bench.RISCV --chaos-prob 0.1 --chaos-bits 1 --delay 52077000 --scrub-interval 10000000 --scrub-tighten-factor 1.0 --scrub-relax-factor 1.0 --symbol-errors 4
+gem5 compiled May 11 2026 00:20:56
+gem5 started May 11 2026 01:00:50
+gem5 executing on 067fc61637b9, pid 69941
+command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/solomon/MD/h2/low_scrub_10000000_p1e-1/run_7 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/solomon_cache_workload.py microbench/MD/bench.RISCV --chaos-prob 0.1 --chaos-bits 1 --delay 52077000 --scrub-interval 10000000 --scrub-tighten-factor 1.0 --scrub-relax-factor 1.0 --cache-size 32kB --symbol-errors 4
 
 info: Standard input is not a terminal, disabling listeners.
 Simulating SolomonCache Workload:symbol_errors=4, chaos_prob=0.1, chaos_bits=1

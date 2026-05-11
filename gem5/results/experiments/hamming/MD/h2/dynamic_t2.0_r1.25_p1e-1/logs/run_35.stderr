@@ -1,0 +1,320 @@
+warn: No dot file generated. Please install pydot to generate the dot file and pdf.
+Scrubbing enabled with adaptive interval starting at 10 cycles, tightening factor 2, relax factor 1.25
+src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/arch/riscv/linux/se_workload.cc:60: warn: Unknown operating system; assuming Linux.
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+Relaxing scrub interval from 10 cycles to 12 cycles
+Relaxing scrub interval from 12 cycles to 15 cycles
+Relaxing scrub interval from 15 cycles to 18 cycles
+Relaxing scrub interval from 18 cycles to 22 cycles
+Relaxing scrub interval from 22 cycles to 27 cycles
+Relaxing scrub interval from 27 cycles to 33 cycles
+Relaxing scrub interval from 33 cycles to 41 cycles
+Relaxing scrub interval from 41 cycles to 51 cycles
+Relaxing scrub interval from 51 cycles to 63 cycles
+Relaxing scrub interval from 63 cycles to 78 cycles
+Relaxing scrub interval from 78 cycles to 97 cycles
+Relaxing scrub interval from 97 cycles to 121 cycles
+Relaxing scrub interval from 121 cycles to 151 cycles
+Relaxing scrub interval from 151 cycles to 188 cycles
+Relaxing scrub interval from 188 cycles to 235 cycles
+Relaxing scrub interval from 235 cycles to 293 cycles
+Relaxing scrub interval from 293 cycles to 366 cycles
+Relaxing scrub interval from 366 cycles to 457 cycles
+Relaxing scrub interval from 457 cycles to 571 cycles
+Relaxing scrub interval from 571 cycles to 713 cycles
+Relaxing scrub interval from 713 cycles to 891 cycles
+Relaxing scrub interval from 891 cycles to 1113 cycles
+Relaxing scrub interval from 1113 cycles to 1391 cycles
+Relaxing scrub interval from 1391 cycles to 1738 cycles
+Relaxing scrub interval from 1738 cycles to 2172 cycles
+Relaxing scrub interval from 2172 cycles to 2715 cycles
+Relaxing scrub interval from 2715 cycles to 3393 cycles
+Relaxing scrub interval from 3393 cycles to 4241 cycles
+Relaxing scrub interval from 4241 cycles to 5301 cycles
+Relaxing scrub interval from 5301 cycles to 6626 cycles
+Relaxing scrub interval from 6626 cycles to 8282 cycles
+Relaxing scrub interval from 8282 cycles to 10352 cycles
+Relaxing scrub interval from 10352 cycles to 12940 cycles
+Tightening scrub interval from 12940 cycles to 6470 cycles
+Tightening scrub interval from 6470 cycles to 3235 cycles
+Tightening scrub interval from 3235 cycles to 1617 cycles
+Unrecoverable error in dirty block at 0x15000
+Verification after correction: mismatch at byte 9 for block 0x555774243488
+Verification after correction: mismatch at byte 18 for block 0x555774243500
+Verification after correction: mismatch at byte 21 for block 0x5557742436e0
+Verification after correction: mismatch at byte 1 for block 0x555774243758
+Unrecoverable error in dirty block at 0x16040
+Unrecoverable error in dirty block at 0x19040
+Verification after correction: mismatch at byte 2 for block 0x555774243aa0
+Unrecoverable error in dirty block at 0x14040
+Verification after correction: mismatch at byte 16 for block 0x555774243b90
+Verification after correction: mismatch at byte 23 for block 0x555774243c08
+Unrecoverable error in dirty block at 0x19080
+Verification after correction: mismatch at byte 3 for block 0x555774243ed8
+Unrecoverable error in dirty block at 0x150c0
+Unrecoverable error in dirty block at 0x160c0
+Unrecoverable error in dirty block at 0x170c0
+Unrecoverable error in dirty block at 0x190c0
+Verification after correction: mismatch at byte 21 for block 0x555774244298
+Unrecoverable error in dirty block at 0x15100
+Verification after correction: mismatch at byte 14 for block 0x555774244388
+Unrecoverable error in dirty block at 0x19100
+Unrecoverable error in dirty block at 0x14100
+Unrecoverable error in dirty block at 0x18140
+Verification after correction: mismatch at byte 33 for block 0x5557742448b0
+Unrecoverable error in dirty block at 0x13140
+Unrecoverable error in dirty block at 0x14140
+Unrecoverable error in dirty block at 0x15180
+Unrecoverable error in dirty block at 0x16180
+Unrecoverable error in dirty block at 0x18180
+Unrecoverable error in dirty block at 0x13180
+Unrecoverable error in dirty block at 0x151c0
+Verification after correction: mismatch at byte 3 for block 0x555774244ec8
+Verification after correction: mismatch at byte 3 for block 0x555774245120
+Unrecoverable error in dirty block at 0x15200
+Unrecoverable error in dirty block at 0x16200
+Unrecoverable error in dirty block at 0x17200
+Verification after correction: mismatch at byte 19 for block 0x5557742453f0
+Verification after correction: mismatch at byte 7 for block 0x5557742454e0
+Unrecoverable error in dirty block at 0x14200
+Verification after correction: mismatch at byte 19 for block 0x5557742455d0
+Verification after correction: mismatch at byte 0 for block 0x555774245738
+Unrecoverable error in dirty block at 0x19240
+Unrecoverable error in dirty block at 0x14240
+Unrecoverable error in dirty block at 0x16280
+Unrecoverable error in dirty block at 0x14280
+Unrecoverable error in dirty block at 0x172c0
+Verification after correction: mismatch at byte 4 for block 0x555774245eb8
+Unrecoverable error in dirty block at 0x192c0
+Unrecoverable error in dirty block at 0x16300
+Unrecoverable error in dirty block at 0x1a300
+Unrecoverable error in dirty block at 0x14300
+Unrecoverable error in dirty block at 0x15340
+Unrecoverable error in dirty block at 0x16340
+Verification after correction: mismatch at byte 1 for block 0x5557742465c0
+Verification after correction: mismatch at byte 11 for block 0x5557742466b0
+Unrecoverable error in dirty block at 0x13340
+Unrecoverable error in dirty block at 0x15380
+Verification after correction: mismatch at byte 6 for block 0x555774246908
+Verification after correction: mismatch at byte 3 for block 0x555774246980
+Unrecoverable error in dirty block at 0x18380
+Verification after correction: mismatch at byte 4 for block 0x555774246b60
+Verification after correction: mismatch at byte 32 for block 0x555774246bd8
+Verification after correction: mismatch at byte 5 for block 0x555774246c50
+Unrecoverable error in dirty block at 0x183c0
+Unrecoverable error in dirty block at 0x133c0
+Unrecoverable error in dirty block at 0x15400
+Unrecoverable error in dirty block at 0x16400
+Unrecoverable error in dirty block at 0x18400
+Verification after correction: mismatch at byte 35 for block 0x555774247358
+Unrecoverable error in dirty block at 0x16440
+Unrecoverable error in dirty block at 0x18440
+Unrecoverable error in dirty block at 0x19440
+Unrecoverable error in dirty block at 0x13440
+Unrecoverable error in dirty block at 0x14440
+Verification after correction: mismatch at byte 13 for block 0x555774247790
+Unrecoverable error in dirty block at 0x13480
+Verification after correction: mismatch at byte 0 for block 0x555774247ad8
+Unrecoverable error in dirty block at 0x154c0
+Verification after correction: mismatch at byte 9 for block 0x555774247bc8
+Unrecoverable error in dirty block at 0x184c0
+Unrecoverable error in dirty block at 0x194c0
+Verification after correction: mismatch at byte 0 for block 0x555774247e20
+Verification after correction: mismatch at byte 45 for block 0x555774247e98
+Unrecoverable error in dirty block at 0x15500
+Unrecoverable error in dirty block at 0x16500
+Unrecoverable error in dirty block at 0x17500
+Unrecoverable error in dirty block at 0x14500
+Verification after correction: mismatch at byte 10 for block 0x5557742482d0
+Verification after correction: mismatch at byte 5 for block 0x5557742483c0
+Unrecoverable error in dirty block at 0x13540
+Unrecoverable error in dirty block at 0x14540
+Unrecoverable error in dirty block at 0x17580
+Unrecoverable error in dirty block at 0x18580
+Unrecoverable error in dirty block at 0x13580
+Unrecoverable error in dirty block at 0x14580
+Unrecoverable error in dirty block at 0x145c0
+Unrecoverable error in dirty block at 0x165c0
+Verification after correction: mismatch at byte 16 for block 0x555774248c30
+Verification after correction: mismatch at byte 45 for block 0x555774248ca8
+Unrecoverable error in dirty block at 0x195c0
+Unrecoverable error in dirty block at 0x14600
+Unrecoverable error in dirty block at 0x15600
+Verification after correction: mismatch at byte 15 for block 0x555774248f78
+Unrecoverable error in dirty block at 0x18600
+Unrecoverable error in dirty block at 0x14640
+Verification after correction: mismatch at byte 6 for block 0x555774249248
+Unrecoverable error in dirty block at 0x16640
+Verification after correction: mismatch at byte 0 for block 0x5557742493b0
+Unrecoverable error in dirty block at 0x18640
+Unrecoverable error in dirty block at 0x19640
+Unrecoverable error in dirty block at 0x14680
+Unrecoverable error in dirty block at 0x19680
+Verification after correction: mismatch at byte 33 for block 0x5557742498d8
+Unrecoverable error in dirty block at 0x146c0
+Unrecoverable error in dirty block at 0x156c0
+Unrecoverable error in dirty block at 0x166c0
+Verification after correction: mismatch at byte 16 for block 0x555774249ab8
+Unrecoverable error in dirty block at 0x136c0
+Verification after correction: mismatch at byte 5 for block 0x555774249d10
+Unrecoverable error in dirty block at 0x15700
+Unrecoverable error in dirty block at 0x18700
+Unrecoverable error in dirty block at 0x13700
+Unrecoverable error in dirty block at 0x14740
+Verification after correction: mismatch at byte 2 for block 0x55577424a1c0
+Unrecoverable error in dirty block at 0x19740
+Verification after correction: mismatch at byte 22 for block 0x55577424a508
+Verification after correction: mismatch at byte 1 for block 0x55577424a6e8
+Verification after correction: mismatch at byte 36 for block 0x55577424a850
+Unrecoverable error in dirty block at 0x187c0
+Verification after correction: mismatch at byte 5 for block 0x55577424ab98
+Unrecoverable error in dirty block at 0x15800
+Unrecoverable error in dirty block at 0x16800
+Verification after correction: mismatch at byte 7 for block 0x55577424adf0
+Unrecoverable error in dirty block at 0x19800
+Unrecoverable error in dirty block at 0x13800
+Unrecoverable error in dirty block at 0x15840
+Verification after correction: mismatch at byte 32 for block 0x55577424b0c0
+Unrecoverable error in dirty block at 0x17840
+Verification after correction: mismatch at byte 30 for block 0x55577424b1b0
+Unrecoverable error in dirty block at 0x19840
+Unrecoverable error in dirty block at 0x13840
+Unrecoverable error in dirty block at 0x14880
+Verification after correction: mismatch at byte 5 for block 0x55577424b408
+Verification after correction: mismatch at byte 8 for block 0x55577424b660
+Unrecoverable error in dirty block at 0x13880
+Verification after correction: mismatch at byte 3 for block 0x55577424b8b8
+Unrecoverable error in dirty block at 0x198c0
+Unrecoverable error in dirty block at 0x128c0
+Verification after correction: mismatch at byte 10 for block 0x55577424bb10
+Unrecoverable error in dirty block at 0x15900
+Verification after correction: mismatch at byte 12 for block 0x55577424bc00
+Verification after correction: mismatch at byte 5 for block 0x55577424bc78
+Verification after correction: mismatch at byte 14 for block 0x55577424bcf0
+Unrecoverable error in dirty block at 0x12900
+Verification after correction: mismatch at byte 12 for block 0x55577424bfc0
+Verification after correction: mismatch at byte 3 for block 0x55577424c1a0
+Unrecoverable error in dirty block at 0x13940
+Unrecoverable error in dirty block at 0x17980
+Verification after correction: mismatch at byte 0 for block 0x55577424c560
+Unrecoverable error in dirty block at 0x13980
+Verification after correction: mismatch at byte 2 for block 0x55577424c650
+Unrecoverable error in dirty block at 0x159c0
+Unrecoverable error in dirty block at 0x179c0
+Unrecoverable error in dirty block at 0x189c0
+Unrecoverable error in dirty block at 0x129c0
+Verification after correction: mismatch at byte 27 for block 0x55577424ca88
+Unrecoverable error in dirty block at 0x15a00
+Unrecoverable error in dirty block at 0x16a00
+Verification after correction: mismatch at byte 22 for block 0x55577424cc68
+Unrecoverable error in dirty block at 0x18a00
+Unrecoverable error in dirty block at 0x19a00
+Unrecoverable error in dirty block at 0x13a40
+Unrecoverable error in dirty block at 0x14a40
+Verification after correction: mismatch at byte 9 for block 0x55577424cec0
+Unrecoverable error in dirty block at 0x16a40
+Unrecoverable error in dirty block at 0x17a40
+Unrecoverable error in dirty block at 0x18a40
+Verification after correction: mismatch at byte 1 for block 0x55577424d190
+Unrecoverable error in dirty block at 0x15a80
+Verification after correction: mismatch at byte 37 for block 0x55577424d2f8
+Unrecoverable error in dirty block at 0x18a80
+Verification after correction: mismatch at byte 15 for block 0x55577424d4d8
+Unrecoverable error in dirty block at 0x14ac0
+Unrecoverable error in dirty block at 0x15ac0
+Unrecoverable error in dirty block at 0x17ac0
+Verification after correction: mismatch at byte 4 for block 0x55577424d7a8
+Verification after correction: mismatch at byte 13 for block 0x55577424d910
+Verification after correction: mismatch at byte 18 for block 0x55577424d988
+Unrecoverable error in dirty block at 0x16b00
+Unrecoverable error in dirty block at 0x18b00
+Unrecoverable error in dirty block at 0x12b00
+Unrecoverable error in dirty block at 0x13b00
+Unrecoverable error in dirty block at 0x14b40
+Unrecoverable error in dirty block at 0x15b40
+Verification after correction: mismatch at byte 10 for block 0x55577424ddc0
+Verification after correction: mismatch at byte 38 for block 0x55577424de38
+Unrecoverable error in dirty block at 0x13b40
+Unrecoverable error in dirty block at 0x14b80
+Unrecoverable error in dirty block at 0x15b80
+Verification after correction: mismatch at byte 7 for block 0x55577424e180
+Unrecoverable error in dirty block at 0x14bc0
+Unrecoverable error in dirty block at 0x16bc0
+Verification after correction: mismatch at byte 1 for block 0x55577424e5b8
+Verification after correction: mismatch at byte 3 for block 0x55577424e630
+Unrecoverable error in dirty block at 0x12bc0
+Unrecoverable error in dirty block at 0x13bc0
+Verification after correction: mismatch at byte 28 for block 0x55577424e810
+Unrecoverable error in dirty block at 0x12c00
+Unrecoverable error in dirty block at 0x13c00
+Verification after correction: mismatch at byte 36 for block 0x55577424eb58
+Verification after correction: mismatch at byte 5 for block 0x55577424ebd0
+Verification after correction: mismatch at byte 7 for block 0x55577424ee28
+Verification after correction: mismatch at byte 14 for block 0x55577424eea0
+Unrecoverable error in dirty block at 0x14c40
+Verification after correction: mismatch at byte 10 for block 0x55577424ef90
+Verification after correction: mismatch at byte 6 for block 0x55577424f080
+Verification after correction: mismatch at byte 10 for block 0x55577424f1e8
+Unrecoverable error in dirty block at 0x14c80
+Verification after correction: mismatch at byte 39 for block 0x55577424f350
+Unrecoverable error in dirty block at 0x17cc0
+Unrecoverable error in dirty block at 0x18cc0
+Verification after correction: mismatch at byte 15 for block 0x55577424f710
+Unrecoverable error in dirty block at 0x16d00
+Unrecoverable error in dirty block at 0x19d00
+Verification after correction: mismatch at byte 11 for block 0x55577424fb48
+Verification after correction: mismatch at byte 8 for block 0x55577424fc38
+Verification after correction: mismatch at byte 5 for block 0x55577424fd28
+Unrecoverable error in dirty block at 0x13d40
+Unrecoverable error in dirty block at 0x14d40
+Unrecoverable error in dirty block at 0x15d80
+Verification after correction: mismatch at byte 5 for block 0x55577424ff08
+Verification after correction: mismatch at byte 17 for block 0x55577424ff80
+Verification after correction: mismatch at byte 9 for block 0x5557742500e8
+Unrecoverable error in dirty block at 0x14d80
+Verification after correction: mismatch at byte 21 for block 0x555774250250
+Unrecoverable error in dirty block at 0x16dc0
+Unrecoverable error in dirty block at 0x17dc0
+Unrecoverable error in dirty block at 0x19dc0
+Verification after correction: mismatch at byte 7 for block 0x5557742504a8
+Unrecoverable error in dirty block at 0x13dc0
+Verification after correction: mismatch at byte 11 for block 0x555774250610
+Unrecoverable error in dirty block at 0x16e00
+Unrecoverable error in dirty block at 0x17e00
+Unrecoverable error in dirty block at 0x18e00
+Unrecoverable error in dirty block at 0x13e00
+Unrecoverable error in dirty block at 0x14e40
+Unrecoverable error in dirty block at 0x16e40
+Unrecoverable error in dirty block at 0x18e40
+Unrecoverable error in dirty block at 0x13e40
+Unrecoverable error in dirty block at 0x16e80
+Unrecoverable error in dirty block at 0x17e80
+Verification after correction: mismatch at byte 1 for block 0x555774250fe8
+Verification after correction: mismatch at byte 40 for block 0x555774251060
+Verification after correction: mismatch at byte 21 for block 0x5557742510d8
+Verification after correction: mismatch at byte 11 for block 0x555774251150
+Verification after correction: mismatch at byte 24 for block 0x555774251240
+Unrecoverable error in dirty block at 0x18ec0
+Unrecoverable error in dirty block at 0x19ec0
+Unrecoverable error in dirty block at 0x13ec0
+Verification after correction: mismatch at byte 39 for block 0x555774251588
+Unrecoverable error in dirty block at 0x17f00
+Unrecoverable error in dirty block at 0x18f00
+Unrecoverable error in dirty block at 0x15f40
+Unrecoverable error in dirty block at 0x16f40
+Unrecoverable error in dirty block at 0x17f40
+Verification after correction: mismatch at byte 10 for block 0x555774251a38
+Unrecoverable error in dirty block at 0x12f40
+Verification after correction: mismatch at byte 5 for block 0x555774251ba0
+Verification after correction: mismatch at byte 8 for block 0x555774251ee8
+Verification after correction: mismatch at byte 35 for block 0x555774251f60
+Unrecoverable error in dirty block at 0x15fc0
+Unrecoverable error in dirty block at 0x16fc0
+Unrecoverable error in dirty block at 0x18fc0
+Verification after correction: mismatch at byte 38 for block 0x5557742522a8
+Verification after correction: mismatch at byte 14 for block 0x555774252320
+Verification after correction: mismatch at byte 1 for block 0x555774252398
+Tightening scrub interval from 1617 cycles to 808 cycles

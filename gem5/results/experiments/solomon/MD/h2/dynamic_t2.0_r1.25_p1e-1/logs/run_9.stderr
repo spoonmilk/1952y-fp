@@ -41,9 +41,8 @@ Relaxing scrub interval from 10352 cycles to 12940 cycles
 Tightening scrub interval from 12940 cycles to 6470 cycles
 Tightening scrub interval from 6470 cycles to 3235 cycles
 Tightening scrub interval from 3235 cycles to 1617 cycles
+Unrecoverable error in block at 99776
+Unrecoverable error in dirty block at 0x185c0
+Unrecoverable error in block at 79680
+Unrecoverable error in dirty block at 0x13740
 Tightening scrub interval from 1617 cycles to 808 cycles
-Unrecoverable error in block at 72896
-Unrecoverable error in dirty block at 0x11cc0
-Unrecoverable error in block at 97728
-Unrecoverable error in dirty block at 0x17dc0
-Tightening scrub interval from 808 cycles to 404 cycles
