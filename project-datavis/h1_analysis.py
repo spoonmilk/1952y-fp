@@ -54,7 +54,7 @@ def plot_h1():
 
     combined = pd.concat([solomon_sum, hamming_sum], ignore_index=True)
 
-    figures_path = Path("./figures/h1/svg.png")
+    figures_path = Path("./figures/h1/h1.png")
     figures_path.parent.mkdir(parents=True, exist_ok=True)
 
     h1_chart = (
