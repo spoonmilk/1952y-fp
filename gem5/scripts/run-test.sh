@@ -70,7 +70,7 @@ mkdir -p "$OUTDIR"
 EXTRA=()
 [[ "$CACHE" == "solomon" ]] && EXTRA+=(--symbol-errors "$SYM_ERRORS")
 
-timeout --signal=KILL 50 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
+timeout --signal=KILL 15 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
     "$BINARY_REL" \
     --chaos-prob "$CHAOS_PROB" \
     --chaos-bits "$CHAOS_BITS" \

@@ -1,0 +1,6 @@
+Tick: 54257000, Cache Block Addr: 99200, Byte Offset: 63, FaultType: bit_flip, Mask: 00010000
+Tick: 58673000, Cache Block Addr: 105472, Byte Offset: 5, FaultType: bit_flip, Mask: 00000010
+Tick: 71077000, Cache Block Addr: 109632, Byte Offset: 53, FaultType: bit_flip, Mask: 00100000
+Tick: 81529000, Cache Block Addr: 110208, Byte Offset: 33, FaultType: bit_flip, Mask: 01000000
+Tick: 84738000, Cache Block Addr: 62592, Byte Offset: 0, FaultType: bit_flip, Mask: 00100000
+Tick: 116873000, Cache Block Addr: 125312, Byte Offset: 57, FaultType: bit_flip, Mask: 00001000
