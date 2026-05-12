@@ -1,47 +1,52 @@
 warn: No dot file generated. Please install pydot to generate the dot file and pdf.
 Scrubbing enabled with fixed interval of 0 cycles
 src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
-src/arch/riscv/linux/se_workload.cc:60: warn: Unknown operating system; assuming Linux.
 src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
 src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
 src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
-src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x2000000022dd0
-Memory Usage: 8529024 KBytes
-Program aborted at tick 105052000
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+      (further warnings will be suppressed)
+src/sim/syscall_emul.hh:1014: warn: readlink() called on '/proc/self/exe' may yield unexpected results in various settings.
+      Returning '/home/cs1952y-user/gem5/1952y-fp/gem5/tests/test-progs/cs1952y-fp/alt'
+src/sim/mem_state.cc:448: info: Increasing stack size by one page.
+src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 17327000
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x400000000832d0
+Memory Usage: 8530480 KBytes
+Program aborted at tick 239647000
 --- BEGIN LIBC BACKTRACE ---
-/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x55bee60e3061]
-/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x55bee6108ea8]
-/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7fb352524520]
-/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7fb3525789fc]
-/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7fb352524476]
-/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7fb35250a7f3]
-/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x55bee4619028]
-/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x55bee615df0b]
-/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x55bee51d2387]
-/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x55bee51c090f]
-/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x55bee51bedcc]
-/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x55bee51be49b]
-/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55bee51bcaee]
-/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x55bee51d0421]
-/gem5_build/gem5.debug(+0x351f903)[0x55bee51cd903]
-/gem5_build/gem5.debug(+0x35293a2)[0x55bee51d73a2]
-/gem5_build/gem5.debug(+0x3529134)[0x55bee51d7134]
-/gem5_build/gem5.debug(+0x3528f2e)[0x55bee51d6f2e]
-/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x55bee4703956]
-/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x55bee4702188]
-/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x55bee60f7015]
-/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x55bee611a7d7]
-/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x55bee611a26e]
-/gem5_build/gem5.debug(+0x4392cbe)[0x55bee6040cbe]
-/gem5_build/gem5.debug(+0x439111c)[0x55bee603f11c]
-/gem5_build/gem5.debug(+0x438cdcd)[0x55bee603adcd]
-/gem5_build/gem5.debug(+0x438ce38)[0x55bee603ae38]
-/gem5_build/gem5.debug(+0x297cb39)[0x55bee462ab39]
-/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7fb352e47033]
-/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7fb352e00ffc]
-/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7fb352d95776]
-/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7fb352ee14df]
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x56432c3500cb]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x56432c375f12]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7f52368a3520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7f52368f79fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7f52368a3476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7f52368897f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x56432a886028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x56432c3caf75]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x56432b43f387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x56432b42d90f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x56432b42bdcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x56432b42b49b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x56432b429aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x56432b43d421]
+/gem5_build/gem5.debug(+0x351f903)[0x56432b43a903]
+/gem5_build/gem5.debug(+0x35293a2)[0x56432b4443a2]
+/gem5_build/gem5.debug(+0x3529134)[0x56432b444134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x56432b443f2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x56432a970956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x56432a96f188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x56432c36407f]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x56432c387841]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x56432c3872d8]
+/gem5_build/gem5.debug(+0x4392d28)[0x56432c2add28]
+/gem5_build/gem5.debug(+0x4391186)[0x56432c2ac186]
+/gem5_build/gem5.debug(+0x438ce37)[0x56432c2a7e37]
+/gem5_build/gem5.debug(+0x438cea2)[0x56432c2a7ea2]
+/gem5_build/gem5.debug(+0x297cb39)[0x56432a897b39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7f52371c6033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7f523717fffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7f5237114776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7f52372604df]
 --- END LIBC BACKTRACE ---
 For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
 
-/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 27818 Killed                  timeout --signal=KILL 15 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 45334 Killed                  timeout --signal=KILL 60 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

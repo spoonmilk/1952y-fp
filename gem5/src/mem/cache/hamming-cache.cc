@@ -331,11 +331,11 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
   // operation will actually read data
   if (blk && blk->isValid() && operationReadsData(pkt)) {
     ECCResult result = checkAndCorrectECC(blk);
+    hammingStats.numAccessAttemptedCorrections++; // count the block checked
     static int refresh_count = 0;
 
     if (result.status == ECCStatus::Corrected) {
       // attempted: we entered the correction branch
-      hammingStats.numAccessAttemptedCorrections++;
       // successful: passed verification (or no copy available — see callee)
       if (result.verified) {
         hammingStats.numAccessCorrected++;
@@ -376,6 +376,7 @@ void HammingCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
         // recompute and store fresh ECC for the refreshed data
         recomputeAndStoreECC(blk);
+        hammingStats.totalSuccessfulCorrections++; // count this as a successful correction since we end up with correct data in the block, even though we couldn't correct it in-place 
       }
     }
     // for "clean" and "corrected", block data is now valid
@@ -447,12 +448,12 @@ HammingCache::scrubCache()
         }
         blocks_checked++;
         ECCResult result = checkAndCorrectECC(&blk);
+        hammingStats.numScrubAttemptedCorrections++; // count the block that's checked
         switch (result.status) {
             case ECCStatus::Clean:
                 hammingStats.numScrubClean++;
                 break;
             case ECCStatus::Corrected:
-                hammingStats.numScrubAttemptedCorrections++;
                 if (result.verified) {
                     hammingStats.numScrubCorrected++;
                     hammingStats.totalSuccessfulCorrections++;
@@ -483,6 +484,8 @@ HammingCache::scrubCache()
                       refresh_pkt.dataStatic(blk.data);
                       memSidePort.sendFunctional(&refresh_pkt);
                       recomputeAndStoreECC(&blk);
+                      hammingStats.totalSuccessfulCorrections++; // count this as a successful correction since we end up with correct data in the block, even though we couldn't correct it in-place
+                      hammingStats.numScrubCorrected++;
                     }
                 }
                 break;

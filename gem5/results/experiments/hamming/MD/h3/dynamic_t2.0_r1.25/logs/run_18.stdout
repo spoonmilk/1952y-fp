@@ -1,0 +1,13 @@
+Global frequency set at 1000000000000 ticks per second
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.1.0.0
+gem5 compiled May 12 2026 00:45:32
+gem5 started May 12 2026 01:06:36
+gem5 executing on 067fc61637b9, pid 73067
+command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/hamming/MD/h3/dynamic_t2.0_r1.25/run_18 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/example_of_chaos.py tests/test-progs/cs1952y-fp/alt --chaos-prob 0.0001 --chaos-bits 1 --delay 52077000 --scrub-interval 10000000000 --scrub-tighten-factor 2.0 --scrub-relax-factor 1.25 --cache-size 32kB
+
+info: Standard input is not a terminal, disabling listeners.
+Simulating HammingCache Workload: chaos_prob=0.0001, chaos_bits=1
+Exiting @ tick 1768494000 because exiting with last active thread context

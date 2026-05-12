@@ -35,8 +35,8 @@ RUN_TEST="$SCRIPTS_DIR/run-test.sh"
 # defaults & arg parsing
 HYPOTHESIS="h1"
 WORKLOAD="MD"
-RUNS=10
-JOBS=6
+RUNS=20
+JOBS=8
 CACHES=(hamming solomon)
 
 while [[ $# -gt 0 ]]; do

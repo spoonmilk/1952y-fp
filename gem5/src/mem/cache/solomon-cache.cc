@@ -262,9 +262,9 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
   if (blk && blk->isValid() && operationReadsData(pkt)) {
     ECCResult result = checkAndCorrectECC(blk);
+    solomonStats.numAccessAttemptedCorrections++; // general correction attempt
     if (result.status == ECCStatus::Corrected) {
       // attempted: decoder reported a correction
-      solomonStats.numAccessAttemptedCorrections++;
       // successful: passed verification or no copy
       if (result.verified) {
         solomonStats.numAccessCorrected++;
@@ -295,6 +295,7 @@ void SolomonCache::satisfyRequest(PacketPtr pkt, CacheBlk *blk,
 
         memSidePort.sendFunctional(&refresh_pkt);
         recomputeAndStoreECC(blk);
+        solomonStats.totalSuccessfulCorrections++; // count this as a successful correction since we end up with correct data in the block, even though we couldn't correct it in-place
       }
     }
   }
@@ -353,12 +354,12 @@ void SolomonCache::scrubCache() {
     }
     blocks_checked++;
     ECCResult result = checkAndCorrectECC(&blk);
+    solomonStats.numScrubAttemptedCorrections++; // general correction attempt
     switch (result.status) {
     case ECCStatus::Clean:
       solomonStats.numScrubClean++;
       break;
     case ECCStatus::Corrected:
-      solomonStats.numScrubAttemptedCorrections++;
       if (result.verified) {
         solomonStats.numScrubCorrected++;
         solomonStats.totalSuccessfulCorrections++;
@@ -384,6 +385,8 @@ void SolomonCache::scrubCache() {
         refresh_pkt.dataStatic(blk.data);
         memSidePort.sendFunctional(&refresh_pkt);
         recomputeAndStoreECC(&blk);
+        solomonStats.numScrubCorrected++;
+        solomonStats.totalSuccessfulCorrections++; // count this as a successful correction since we end up with correct data in the block, even though we couldn't correct it in-place
       }
       break;
     }

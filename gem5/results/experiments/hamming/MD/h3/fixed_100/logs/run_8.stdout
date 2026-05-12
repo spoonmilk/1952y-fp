@@ -3,12 +3,11 @@ gem5 Simulator System.  https://www.gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 version 23.1.0.0
-gem5 compiled May 10 2026 01:26:29
-gem5 started May 10 2026 02:40:40
-gem5 executing on 067fc61637b9, pid 24161
-command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/hamming/MD/h3/fixed_100/run_8 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/example_of_chaos.py microbench/MD/bench.RISCV --chaos-prob 0.0001 --chaos-bits 1 --delay 52077000 --scrub-interval 100 --scrub-tighten-factor 1.0 --scrub-relax-factor 1.0
+gem5 compiled May 12 2026 00:45:32
+gem5 started May 12 2026 00:55:34
+gem5 executing on 067fc61637b9, pid 65444
+command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/hamming/MD/h3/fixed_100/run_8 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/example_of_chaos.py tests/test-progs/cs1952y-fp/alt --chaos-prob 0.0001 --chaos-bits 1 --delay 52077000 --scrub-interval 100 --scrub-tighten-factor 1.0 --scrub-relax-factor 1.0 --cache-size 32kB
 
 info: Standard input is not a terminal, disabling listeners.
 Simulating HammingCache Workload: chaos_prob=0.0001, chaos_bits=1
-_ticks: 0
-Exiting @ tick 347353000 because exiting with last active thread context
+Exiting @ tick 1768494000 because exiting with last active thread context

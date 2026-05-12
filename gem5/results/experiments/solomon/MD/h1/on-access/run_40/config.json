@@ -1022,7 +1022,7 @@
                     "name": "workload",
                     "path": "system.cpu.workload",
                     "cmd": [
-                        "/home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/../../../microbench/MD/bench.RISCV"
+                        "/home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/../../../tests/test-progs/cs1952y-fp/alt"
                     ],
                     "cwd": "/home/cs1952y-user/gem5/1952y-fp/gem5",
                     "drivers": [],

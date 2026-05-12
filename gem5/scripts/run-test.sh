@@ -52,7 +52,7 @@ esac
 case "$BENCH" in
     DLP)     BINARY_REL="tests/test-progs/cs1952y-fp/vec.rvv" ;;
     DLP_NP)  BINARY_REL="tests/test-progs/cs1952y-fp/vec_no_parallel" ;;
-    *)       BINARY_REL="microbench/$BENCH/bench.RISCV" ;;
+    *)       BINARY_REL="tests/test-progs/cs1952y-fp/alt" ;;
 esac
 
 [[ -f "$GEM5_DIR/$BINARY_REL" ]] || {
@@ -70,7 +70,7 @@ mkdir -p "$OUTDIR"
 EXTRA=()
 [[ "$CACHE" == "solomon" ]] && EXTRA+=(--symbol-errors "$SYM_ERRORS")
 
-timeout --signal=KILL 15 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
+timeout --signal=KILL 300 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" \
     "$BINARY_REL" \
     --chaos-prob "$CHAOS_PROB" \
     --chaos-bits "$CHAOS_BITS" \

@@ -4,8 +4,8 @@ import pandas as pd
 import altair as alt
 import utils
 
-SOLOMON_HYP_DIRECTORY = "./data/solomon/MD/h2"
-HAMMING_HYP_DIRECTORY = "./data/hamming/MD/h2"
+SOLOMON_HYP_DIRECTORY = "../gem5/results/experiments/solomon/MD/h2"
+HAMMING_HYP_DIRECTORY = "../gem5/results/experiments/hamming/MD/h2"
 
 _CONFIG_TYPE_RE = re.compile(r"^(dynamic|low_scrub|on-access)")
 

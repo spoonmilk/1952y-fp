@@ -3,13 +3,13 @@ import pandas as pd
 import altair as alt
 import utils
 
-STAT_SOLOMON_SCRUB_CORRECTED = "system.cpu.dcache.solomon.numScrubCorrected"
+STAT_SOLOMON_SCRUB_CORRECTED = "system.cpu.dcache.solomon.numScrubCorrected" 
 STAT_HAMMING_SCRUB_CORRECTED = "system.cpu.dcache.hamming.numScrubCorrected"
 
-SOLOMON_HYP_VECTORIZED_DIRECTORY = "./data/solomon/DLP/h4"
-SOLOMON_HYP_NP_DIRECTORY = "./data/solomon/DLP_NP/h4"
-HAMMING_HYP_VECTORIZED_DIRECTORY = "./data/hamming/DLP/h4"
-HAMMING_HYP_NP_DIRECTORY = "./data/hamming/DLP_NP/h4"
+SOLOMON_HYP_VECTORIZED_DIRECTORY = "../gem5/results/experiments/solomon/DLP/h4"
+SOLOMON_HYP_NP_DIRECTORY = "../gem5/results/experiments/solomon/DLP_NP/h4"
+HAMMING_HYP_VECTORIZED_DIRECTORY = "../gem5/results/experiments/hamming/DLP/h4"
+HAMMING_HYP_NP_DIRECTORY = "../gem5/results/experiments/hamming/DLP_NP/h4"
 
 
 def create_summary_df(hyp_dir: Path, stat: str) -> pd.DataFrame:

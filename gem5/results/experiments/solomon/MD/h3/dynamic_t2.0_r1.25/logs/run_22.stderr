@@ -1,0 +1,115 @@
+warn: No dot file generated. Please install pydot to generate the dot file and pdf.
+Scrubbing enabled with adaptive interval starting at 10 cycles, tightening factor 2, relax factor 1.25
+src/arch/riscv/isa.cc:275: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/remote_gdb.cc:418: warn: Sockets disabled, not accepting gdb connections
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+Relaxing scrub interval from 10 cycles to 12 cycles
+Relaxing scrub interval from 12 cycles to 15 cycles
+Relaxing scrub interval from 15 cycles to 18 cycles
+Relaxing scrub interval from 18 cycles to 22 cycles
+Relaxing scrub interval from 22 cycles to 27 cycles
+Relaxing scrub interval from 27 cycles to 33 cycles
+Relaxing scrub interval from 33 cycles to 41 cycles
+Relaxing scrub interval from 41 cycles to 51 cycles
+Relaxing scrub interval from 51 cycles to 63 cycles
+Relaxing scrub interval from 63 cycles to 78 cycles
+Relaxing scrub interval from 78 cycles to 97 cycles
+Relaxing scrub interval from 97 cycles to 121 cycles
+Relaxing scrub interval from 121 cycles to 151 cycles
+Relaxing scrub interval from 151 cycles to 188 cycles
+Relaxing scrub interval from 188 cycles to 235 cycles
+Relaxing scrub interval from 235 cycles to 293 cycles
+Relaxing scrub interval from 293 cycles to 366 cycles
+Relaxing scrub interval from 366 cycles to 457 cycles
+Relaxing scrub interval from 457 cycles to 571 cycles
+Relaxing scrub interval from 571 cycles to 713 cycles
+Relaxing scrub interval from 713 cycles to 891 cycles
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+      (further warnings will be suppressed)
+Relaxing scrub interval from 891 cycles to 1113 cycles
+Relaxing scrub interval from 1113 cycles to 1391 cycles
+src/sim/syscall_emul.hh:1014: warn: readlink() called on '/proc/self/exe' may yield unexpected results in various settings.
+      Returning '/home/cs1952y-user/gem5/1952y-fp/gem5/tests/test-progs/cs1952y-fp/alt'
+src/sim/mem_state.cc:448: info: Increasing stack size by one page.
+Relaxing scrub interval from 1391 cycles to 1738 cycles
+Relaxing scrub interval from 1738 cycles to 2172 cycles
+Relaxing scrub interval from 2172 cycles to 2715 cycles
+Relaxing scrub interval from 2715 cycles to 3393 cycles
+Relaxing scrub interval from 3393 cycles to 4241 cycles
+src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 17327000
+Relaxing scrub interval from 4241 cycles to 5301 cycles
+Relaxing scrub interval from 5301 cycles to 6626 cycles
+Relaxing scrub interval from 6626 cycles to 8282 cycles
+Relaxing scrub interval from 8282 cycles to 10352 cycles
+Relaxing scrub interval from 10352 cycles to 12940 cycles
+Relaxing scrub interval from 12940 cycles to 16175 cycles
+Relaxing scrub interval from 16175 cycles to 20218 cycles
+Relaxing scrub interval from 20218 cycles to 25272 cycles
+Tightening scrub interval from 25272 cycles to 12636 cycles
+Relaxing scrub interval from 12636 cycles to 15795 cycles
+Tightening scrub interval from 15795 cycles to 7897 cycles
+Relaxing scrub interval from 7897 cycles to 9871 cycles
+Tightening scrub interval from 9871 cycles to 4935 cycles
+Relaxing scrub interval from 4935 cycles to 6168 cycles
+Relaxing scrub interval from 6168 cycles to 7710 cycles
+Tightening scrub interval from 7710 cycles to 3855 cycles
+Relaxing scrub interval from 3855 cycles to 4818 cycles
+Relaxing scrub interval from 4818 cycles to 6022 cycles
+Tightening scrub interval from 6022 cycles to 3011 cycles
+Relaxing scrub interval from 3011 cycles to 3763 cycles
+Relaxing scrub interval from 3763 cycles to 4703 cycles
+Relaxing scrub interval from 4703 cycles to 5878 cycles
+Relaxing scrub interval from 5878 cycles to 7347 cycles
+Relaxing scrub interval from 7347 cycles to 9183 cycles
+Relaxing scrub interval from 9183 cycles to 11478 cycles
+Tightening scrub interval from 11478 cycles to 5739 cycles
+Tightening scrub interval from 5739 cycles to 2869 cycles
+Relaxing scrub interval from 2869 cycles to 3586 cycles
+Relaxing scrub interval from 3586 cycles to 4482 cycles
+Relaxing scrub interval from 4482 cycles to 5602 cycles
+Relaxing scrub interval from 5602 cycles to 7002 cycles
+Relaxing scrub interval from 7002 cycles to 8752 cycles
+Tightening scrub interval from 8752 cycles to 4376 cycles
+Relaxing scrub interval from 4376 cycles to 5470 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x200000008cf90
+Memory Usage: 8529456 KBytes
+Program aborted at tick 289029000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x5575b3243105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x5575b3268f4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7f6518d72520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7f6518dc69fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7f6518d72476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7f6518d587f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x5575b1779028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x5575b32bdfaf]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x5575b2332387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x5575b232090f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x5575b231edcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x5575b231e49b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x5575b231caee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x5575b2330421]
+/gem5_build/gem5.debug(+0x351f903)[0x5575b232d903]
+/gem5_build/gem5.debug(+0x35293a2)[0x5575b23373a2]
+/gem5_build/gem5.debug(+0x3529134)[0x5575b2337134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x5575b2336f2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x5575b1863956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x5575b1862188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x5575b32570b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x5575b327a87b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x5575b327a312]
+/gem5_build/gem5.debug(+0x4392d62)[0x5575b31a0d62]
+/gem5_build/gem5.debug(+0x43911c0)[0x5575b319f1c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x5575b319ae71]
+/gem5_build/gem5.debug(+0x438cedc)[0x5575b319aedc]
+/gem5_build/gem5.debug(+0x297cb39)[0x5575b178ab39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7f6519695033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7f651964effc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7f65195e3776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7f651972f4df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 83856 Aborted                 timeout --signal=KILL 300 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

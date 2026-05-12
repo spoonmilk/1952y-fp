@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h> /* malloc, free, rand */
-#include "common.h"
 #define ASIZE 2048
 #define STEP 128
 #define ITERS 4
@@ -39,12 +38,10 @@ int main(int argc, char *argv[]) {
     cur->val = 100;
     cur->_next = NULL;
 
-    ROI_BEGIN();
     volatile int t;
     for (int r = 0; r < REPEATS; ++r) {
         t = loop(argc, n);
     }
-    ROI_END();
 
     volatile int a = t;
 }
