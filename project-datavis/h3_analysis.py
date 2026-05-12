@@ -106,7 +106,7 @@ def plot_h3():
 
     combined = pd.concat([solomon_sum, hamming_sum], ignore_index=True)
 
-    figures_path = Path("./figures/h3/h3.svg")
+    figures_path = Path("./figures/h3/h3.png")
     figures_path.parent.mkdir(parents=True, exist_ok=True)
 
     h3_chart = (
@@ -123,4 +123,4 @@ def plot_h3():
         )
         .properties(title="Successful Error Correction Rate by Configuration")
     )
-    h3_chart.save(figures_path)
+    h3_chart.save(figures_path, ppi=300)

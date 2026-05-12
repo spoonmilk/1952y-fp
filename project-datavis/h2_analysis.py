@@ -36,12 +36,7 @@ def create_summary_df(hyp_dir: Path) -> pd.DataFrame:
                 "numCrashes": crashes,
             }
         )
-    df = pd.DataFrame(rows)
-    return (
-        df.groupby(["configType", "faultProbability"])["numCrashes"]
-        .median()
-        .reset_index()
-    )
+    return pd.DataFrame(rows)
 
 
 def plot_h2():
@@ -51,17 +46,17 @@ def plot_h2():
     hamming_sum["scheme"] = "Hamming"
     combined = pd.concat([solomon_sum, hamming_sum], ignore_index=True)
 
-    figures_path = Path("./figures/h2/h2.svg")
-    figures_path.parent.mkdir(parents=True, exist_ok=True)
+    figure_path = Path("./figures/h2/h2.png")
+    figure_path.parent.mkdir(parents=True, exist_ok=True)
 
-    h2_chart = (
+    chart = (
         alt.Chart(combined)
         .mark_line(point=True)
         .encode(
             x=alt.X("faultProbability:O", title="Fault Probability"),
-            y=alt.Y("numCrashes:Q", title="Crashes (Median)"),
+            y=alt.Y("numCrashes:Q", title="Crashes"),
             color=alt.Color("configType:N", title="Config Type"),
         )
         .facet(column=alt.Column("scheme:N", title="ECC Scheme"))
     )
-    h2_chart.save(figures_path)
+    chart.save(figure_path, ppi=300)
