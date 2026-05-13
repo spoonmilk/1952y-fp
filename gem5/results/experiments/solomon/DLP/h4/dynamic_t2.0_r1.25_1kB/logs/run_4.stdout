@@ -3,12 +3,12 @@ gem5 Simulator System.  https://www.gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 version 23.1.0.0
-gem5 compiled May 10 2026 22:42:17
-gem5 started May 10 2026 23:20:35
-gem5 executing on 067fc61637b9, pid 84268
+gem5 compiled May 12 2026 02:15:53
+gem5 started May 12 2026 04:22:07
+gem5 executing on 067fc61637b9, pid 98735
 command line: /gem5_build/gem5.debug --outdir=/home/cs1952y-user/gem5/1952y-fp/gem5/results/experiments/solomon/DLP/h4/dynamic_t2.0_r1.25_1kB/run_4 /home/cs1952y-user/gem5/1952y-fp/gem5/configs/cs1952y-fp/example/solomon_cache_workload.py tests/test-progs/cs1952y-fp/vec.rvv --chaos-prob 0.00001 --chaos-bits 1 --delay 52077000 --scrub-interval 10000000000 --scrub-tighten-factor 2.0 --scrub-relax-factor 1.25 --cache-size 1kB --symbol-errors 4
 
 info: Standard input is not a terminal, disabling listeners.
 Simulating SolomonCache Workload:symbol_errors=4, chaos_prob=1e-05, chaos_bits=1
 nan
-Exiting @ tick 164272000 because exiting with last active thread context
+Exiting @ tick 2174214000 because exiting with last active thread context

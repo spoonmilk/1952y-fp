@@ -50,3 +50,76 @@ Relaxing scrub interval from 25272 cycles to 31590 cycles
 Relaxing scrub interval from 31590 cycles to 39487 cycles
 Relaxing scrub interval from 39487 cycles to 49358 cycles
 Relaxing scrub interval from 49358 cycles to 61697 cycles
+Relaxing scrub interval from 61697 cycles to 77121 cycles
+Tightening scrub interval from 77121 cycles to 38560 cycles
+Tightening scrub interval from 38560 cycles to 19280 cycles
+Relaxing scrub interval from 19280 cycles to 24100 cycles
+Relaxing scrub interval from 24100 cycles to 30125 cycles
+Relaxing scrub interval from 30125 cycles to 37656 cycles
+Relaxing scrub interval from 37656 cycles to 47070 cycles
+Relaxing scrub interval from 47070 cycles to 58837 cycles
+Relaxing scrub interval from 58837 cycles to 73546 cycles
+Relaxing scrub interval from 73546 cycles to 91932 cycles
+Relaxing scrub interval from 91932 cycles to 114915 cycles
+Relaxing scrub interval from 114915 cycles to 143643 cycles
+Relaxing scrub interval from 143643 cycles to 179553 cycles
+Relaxing scrub interval from 179553 cycles to 224441 cycles
+Tightening scrub interval from 224441 cycles to 112220 cycles
+Relaxing scrub interval from 112220 cycles to 140275 cycles
+Relaxing scrub interval from 140275 cycles to 175343 cycles
+Relaxing scrub interval from 175343 cycles to 219178 cycles
+Relaxing scrub interval from 219178 cycles to 273972 cycles
+Relaxing scrub interval from 273972 cycles to 342465 cycles
+Relaxing scrub interval from 342465 cycles to 428081 cycles
+Relaxing scrub interval from 428081 cycles to 535101 cycles
+Relaxing scrub interval from 535101 cycles to 668876 cycles
+Relaxing scrub interval from 668876 cycles to 836095 cycles
+Relaxing scrub interval from 836095 cycles to 1045118 cycles
+Tightening scrub interval from 1045118 cycles to 522559 cycles
+Tightening scrub interval from 522559 cycles to 261279 cycles
+Tightening scrub interval from 261279 cycles to 130639 cycles
+Relaxing scrub interval from 130639 cycles to 163298 cycles
+Tightening scrub interval from 163298 cycles to 81649 cycles
+Relaxing scrub interval from 81649 cycles to 102061 cycles
+Relaxing scrub interval from 102061 cycles to 127576 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x1
+Memory Usage: 8530780 KBytes
+Program aborted at tick 5997859000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x55de908f7105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x55de9091cf4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7fb368c31520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7fb368c859fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7fb368c31476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7fb368c177f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x55de8ee2d028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x55de90971faf]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x55de8f9e6387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x55de8f9d490f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x55de8f9d2dcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x55de8f9d249b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55de8f9d0aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x55de8f9e4421]
+/gem5_build/gem5.debug(+0x351f903)[0x55de8f9e1903]
+/gem5_build/gem5.debug(+0x35293a2)[0x55de8f9eb3a2]
+/gem5_build/gem5.debug(+0x3529134)[0x55de8f9eb134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x55de8f9eaf2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x55de8ef17956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x55de8ef16188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x55de9090b0b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x55de9092e87b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x55de9092e312]
+/gem5_build/gem5.debug(+0x4392d62)[0x55de90854d62]
+/gem5_build/gem5.debug(+0x43911c0)[0x55de908531c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x55de9084ee71]
+/gem5_build/gem5.debug(+0x438cedc)[0x55de9084eedc]
+/gem5_build/gem5.debug(+0x297cb39)[0x55de8ee3eb39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7fb369554033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7fb36950dffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7fb3694a2776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7fb3695ee4df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82:  4107 Aborted                 timeout --signal=KILL 1200 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

@@ -48,5 +48,10 @@ Relaxing scrub interval from 16175 cycles to 20218 cycles
 Relaxing scrub interval from 20218 cycles to 25272 cycles
 Relaxing scrub interval from 25272 cycles to 31590 cycles
 Relaxing scrub interval from 31590 cycles to 39487 cycles
-Relaxing scrub interval from 39487 cycles to 49358 cycles
-Relaxing scrub interval from 49358 cycles to 61697 cycles
+Tightening scrub interval from 39487 cycles to 19743 cycles
+Relaxing scrub interval from 19743 cycles to 24678 cycles
+Relaxing scrub interval from 24678 cycles to 30847 cycles
+Tightening scrub interval from 30847 cycles to 15423 cycles
+Relaxing scrub interval from 15423 cycles to 19278 cycles
+Tightening scrub interval from 19278 cycles to 9639 cycles
+Tightening scrub interval from 9639 cycles to 4819 cycles

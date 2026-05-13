@@ -22,8 +22,8 @@ Relaxing scrub interval from 188 cycles to 235 cycles
 Relaxing scrub interval from 235 cycles to 293 cycles
 Relaxing scrub interval from 293 cycles to 366 cycles
 Relaxing scrub interval from 366 cycles to 457 cycles
+src/sim/syscall_emul.cc:75: warn: ignoring syscall riscv_flush_icache(...) at tick 2271000
 Relaxing scrub interval from 457 cycles to 571 cycles
-src/sim/syscall_emul.cc:75: warn: ignoring syscall riscv_flush_icache(...) at tick 2331000
 Relaxing scrub interval from 571 cycles to 713 cycles
 Relaxing scrub interval from 713 cycles to 891 cycles
 Relaxing scrub interval from 891 cycles to 1113 cycles
@@ -31,7 +31,7 @@ Relaxing scrub interval from 1113 cycles to 1391 cycles
 Relaxing scrub interval from 1391 cycles to 1738 cycles
 src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
       (further warnings will be suppressed)
-src/sim/syscall_emul.cc:75: warn: ignoring syscall rseq(...) at tick 7824000
+src/sim/syscall_emul.cc:75: warn: ignoring syscall rseq(...) at tick 7787000
 Relaxing scrub interval from 1738 cycles to 2172 cycles
 Relaxing scrub interval from 2172 cycles to 2715 cycles
 Relaxing scrub interval from 2715 cycles to 3393 cycles
@@ -41,12 +41,49 @@ src/sim/mem_state.cc:448: info: Increasing stack size by one page.
 Relaxing scrub interval from 3393 cycles to 4241 cycles
 Relaxing scrub interval from 4241 cycles to 5301 cycles
 Relaxing scrub interval from 5301 cycles to 6626 cycles
-src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 29265000
+src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 29515000
 Relaxing scrub interval from 6626 cycles to 8282 cycles
 Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
 Relaxing scrub interval from 12940 cycles to 16175 cycles
-Relaxing scrub interval from 16175 cycles to 20218 cycles
-Relaxing scrub interval from 20218 cycles to 25272 cycles
-Relaxing scrub interval from 25272 cycles to 31590 cycles
-Relaxing scrub interval from 31590 cycles to 39487 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x6ffffffffffffdb8
+Memory Usage: 8530944 KBytes
+Program aborted at tick 76461000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x560e42d73105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x560e42d98f4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7feec417d520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7feec41d19fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7feec417d476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7feec41637f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x560e412a9028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x560e42dedfaf]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x560e41e62387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x560e41e5090f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x560e41e4edcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x560e41e4e49b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x560e41e4caee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x560e41e60421]
+/gem5_build/gem5.debug(+0x351f903)[0x560e41e5d903]
+/gem5_build/gem5.debug(+0x35293a2)[0x560e41e673a2]
+/gem5_build/gem5.debug(+0x3529134)[0x560e41e67134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x560e41e66f2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x560e41393956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x560e41392188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x560e42d870b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x560e42daa87b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x560e42daa312]
+/gem5_build/gem5.debug(+0x4392d62)[0x560e42cd0d62]
+/gem5_build/gem5.debug(+0x43911c0)[0x560e42ccf1c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x560e42ccae71]
+/gem5_build/gem5.debug(+0x438cedc)[0x560e42ccaedc]
+/gem5_build/gem5.debug(+0x297cb39)[0x560e412bab39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7feec4aa0033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7feec4a59ffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7feec49ee776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7feec4b3a4df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 56292 Aborted                 timeout --signal=KILL 600 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

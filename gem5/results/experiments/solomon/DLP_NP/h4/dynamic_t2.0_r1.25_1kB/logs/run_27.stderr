@@ -46,7 +46,14 @@ Relaxing scrub interval from 10352 cycles to 12940 cycles
 Relaxing scrub interval from 12940 cycles to 16175 cycles
 Relaxing scrub interval from 16175 cycles to 20218 cycles
 Relaxing scrub interval from 20218 cycles to 25272 cycles
-Relaxing scrub interval from 25272 cycles to 31590 cycles
-Relaxing scrub interval from 31590 cycles to 39487 cycles
-Relaxing scrub interval from 39487 cycles to 49358 cycles
-Relaxing scrub interval from 49358 cycles to 61697 cycles
+Tightening scrub interval from 25272 cycles to 12636 cycles
+Relaxing scrub interval from 12636 cycles to 15795 cycles
+Relaxing scrub interval from 15795 cycles to 19743 cycles
+Relaxing scrub interval from 19743 cycles to 24678 cycles
+Tightening scrub interval from 24678 cycles to 12339 cycles
+Relaxing scrub interval from 12339 cycles to 15423 cycles
+Relaxing scrub interval from 15423 cycles to 19278 cycles
+Relaxing scrub interval from 19278 cycles to 24097 cycles
+Relaxing scrub interval from 24097 cycles to 30121 cycles
+Relaxing scrub interval from 30121 cycles to 37651 cycles
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 79268 Killed                  timeout --signal=KILL 600 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

@@ -28,7 +28,7 @@ RUN_TEST="$SCRIPTS_DIR/run-test.sh"
 #  defaults & arg parsing
 HYPOTHESIS="h4"
 RUNS=20
-JOBS=6
+JOBS=8
 CACHES=(hamming solomon)
 WORKLOADS=(DLP DLP_NP)
 

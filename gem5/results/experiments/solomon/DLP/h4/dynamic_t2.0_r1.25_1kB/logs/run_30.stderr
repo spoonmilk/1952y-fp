@@ -22,8 +22,8 @@ Relaxing scrub interval from 188 cycles to 235 cycles
 Relaxing scrub interval from 235 cycles to 293 cycles
 Relaxing scrub interval from 293 cycles to 366 cycles
 Relaxing scrub interval from 366 cycles to 457 cycles
+src/sim/syscall_emul.cc:75: warn: ignoring syscall riscv_flush_icache(...) at tick 2271000
 Relaxing scrub interval from 457 cycles to 571 cycles
-src/sim/syscall_emul.cc:75: warn: ignoring syscall riscv_flush_icache(...) at tick 2331000
 Relaxing scrub interval from 571 cycles to 713 cycles
 Relaxing scrub interval from 713 cycles to 891 cycles
 Relaxing scrub interval from 891 cycles to 1113 cycles
@@ -31,7 +31,7 @@ Relaxing scrub interval from 1113 cycles to 1391 cycles
 Relaxing scrub interval from 1391 cycles to 1738 cycles
 src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
       (further warnings will be suppressed)
-src/sim/syscall_emul.cc:75: warn: ignoring syscall rseq(...) at tick 7824000
+src/sim/syscall_emul.cc:75: warn: ignoring syscall rseq(...) at tick 7787000
 Relaxing scrub interval from 1738 cycles to 2172 cycles
 Relaxing scrub interval from 2172 cycles to 2715 cycles
 Relaxing scrub interval from 2715 cycles to 3393 cycles
@@ -41,7 +41,7 @@ src/sim/mem_state.cc:448: info: Increasing stack size by one page.
 Relaxing scrub interval from 3393 cycles to 4241 cycles
 Relaxing scrub interval from 4241 cycles to 5301 cycles
 Relaxing scrub interval from 5301 cycles to 6626 cycles
-src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 29265000
+src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 29515000
 Relaxing scrub interval from 6626 cycles to 8282 cycles
 Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
@@ -50,3 +50,66 @@ Relaxing scrub interval from 16175 cycles to 20218 cycles
 Relaxing scrub interval from 20218 cycles to 25272 cycles
 Relaxing scrub interval from 25272 cycles to 31590 cycles
 Relaxing scrub interval from 31590 cycles to 39487 cycles
+Relaxing scrub interval from 39487 cycles to 49358 cycles
+Tightening scrub interval from 49358 cycles to 24679 cycles
+Relaxing scrub interval from 24679 cycles to 30848 cycles
+Relaxing scrub interval from 30848 cycles to 38560 cycles
+Tightening scrub interval from 38560 cycles to 19280 cycles
+Relaxing scrub interval from 19280 cycles to 24100 cycles
+Relaxing scrub interval from 24100 cycles to 30125 cycles
+Relaxing scrub interval from 30125 cycles to 37656 cycles
+Relaxing scrub interval from 37656 cycles to 47070 cycles
+Relaxing scrub interval from 47070 cycles to 58837 cycles
+Relaxing scrub interval from 58837 cycles to 73546 cycles
+Tightening scrub interval from 73546 cycles to 36773 cycles
+Relaxing scrub interval from 36773 cycles to 45966 cycles
+Relaxing scrub interval from 45966 cycles to 57457 cycles
+Relaxing scrub interval from 57457 cycles to 71821 cycles
+Relaxing scrub interval from 71821 cycles to 89776 cycles
+Relaxing scrub interval from 89776 cycles to 112220 cycles
+Tightening scrub interval from 112220 cycles to 56110 cycles
+Relaxing scrub interval from 56110 cycles to 70137 cycles
+Tightening scrub interval from 70137 cycles to 35068 cycles
+Relaxing scrub interval from 35068 cycles to 43835 cycles
+Relaxing scrub interval from 43835 cycles to 54793 cycles
+Tightening scrub interval from 54793 cycles to 27396 cycles
+Relaxing scrub interval from 27396 cycles to 34245 cycles
+Relaxing scrub interval from 34245 cycles to 42806 cycles
+Relaxing scrub interval from 42806 cycles to 53507 cycles
+Relaxing scrub interval from 53507 cycles to 66883 cycles
+Relaxing scrub interval from 66883 cycles to 83603 cycles
+Tightening scrub interval from 83603 cycles to 41801 cycles
+Relaxing scrub interval from 41801 cycles to 52251 cycles
+Relaxing scrub interval from 52251 cycles to 65313 cycles
+Tightening scrub interval from 65313 cycles to 32656 cycles
+Relaxing scrub interval from 32656 cycles to 40820 cycles
+Relaxing scrub interval from 40820 cycles to 51025 cycles
+Relaxing scrub interval from 51025 cycles to 63781 cycles
+Relaxing scrub interval from 63781 cycles to 79726 cycles
+Relaxing scrub interval from 79726 cycles to 99657 cycles
+Relaxing scrub interval from 99657 cycles to 124571 cycles
+Tightening scrub interval from 124571 cycles to 62285 cycles
+Relaxing scrub interval from 62285 cycles to 77856 cycles
+Relaxing scrub interval from 77856 cycles to 97320 cycles
+Relaxing scrub interval from 97320 cycles to 121650 cycles
+Relaxing scrub interval from 121650 cycles to 152062 cycles
+Relaxing scrub interval from 152062 cycles to 190077 cycles
+Tightening scrub interval from 190077 cycles to 95038 cycles
+Relaxing scrub interval from 95038 cycles to 118797 cycles
+Tightening scrub interval from 118797 cycles to 59398 cycles
+Relaxing scrub interval from 59398 cycles to 74247 cycles
+Tightening scrub interval from 74247 cycles to 37123 cycles
+Relaxing scrub interval from 37123 cycles to 46403 cycles
+Relaxing scrub interval from 46403 cycles to 58003 cycles
+Tightening scrub interval from 58003 cycles to 29001 cycles
+Relaxing scrub interval from 29001 cycles to 36251 cycles
+Tightening scrub interval from 36251 cycles to 18125 cycles
+Tightening scrub interval from 18125 cycles to 9062 cycles
+Relaxing scrub interval from 9062 cycles to 11327 cycles
+Relaxing scrub interval from 11327 cycles to 14158 cycles
+Relaxing scrub interval from 14158 cycles to 17697 cycles
+Relaxing scrub interval from 17697 cycles to 22121 cycles
+Relaxing scrub interval from 22121 cycles to 27651 cycles
+Relaxing scrub interval from 27651 cycles to 34563 cycles
+Relaxing scrub interval from 34563 cycles to 43203 cycles
+Relaxing scrub interval from 43203 cycles to 54003 cycles

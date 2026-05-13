@@ -22,8 +22,8 @@ Relaxing scrub interval from 188 cycles to 235 cycles
 Relaxing scrub interval from 235 cycles to 293 cycles
 Relaxing scrub interval from 293 cycles to 366 cycles
 Relaxing scrub interval from 366 cycles to 457 cycles
+src/sim/syscall_emul.cc:75: warn: ignoring syscall riscv_flush_icache(...) at tick 2271000
 Relaxing scrub interval from 457 cycles to 571 cycles
-src/sim/syscall_emul.cc:75: warn: ignoring syscall riscv_flush_icache(...) at tick 2331000
 Relaxing scrub interval from 571 cycles to 713 cycles
 Relaxing scrub interval from 713 cycles to 891 cycles
 Relaxing scrub interval from 891 cycles to 1113 cycles
@@ -31,7 +31,7 @@ Relaxing scrub interval from 1113 cycles to 1391 cycles
 Relaxing scrub interval from 1391 cycles to 1738 cycles
 src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
       (further warnings will be suppressed)
-src/sim/syscall_emul.cc:75: warn: ignoring syscall rseq(...) at tick 7824000
+src/sim/syscall_emul.cc:75: warn: ignoring syscall rseq(...) at tick 7787000
 Relaxing scrub interval from 1738 cycles to 2172 cycles
 Relaxing scrub interval from 2172 cycles to 2715 cycles
 Relaxing scrub interval from 2715 cycles to 3393 cycles
@@ -41,12 +41,136 @@ src/sim/mem_state.cc:448: info: Increasing stack size by one page.
 Relaxing scrub interval from 3393 cycles to 4241 cycles
 Relaxing scrub interval from 4241 cycles to 5301 cycles
 Relaxing scrub interval from 5301 cycles to 6626 cycles
-src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 29265000
+src/sim/syscall_emul.cc:75: warn: ignoring syscall mprotect(...) at tick 29515000
 Relaxing scrub interval from 6626 cycles to 8282 cycles
 Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
-Relaxing scrub interval from 12940 cycles to 16175 cycles
-Relaxing scrub interval from 16175 cycles to 20218 cycles
-Relaxing scrub interval from 20218 cycles to 25272 cycles
-Relaxing scrub interval from 25272 cycles to 31590 cycles
-Relaxing scrub interval from 31590 cycles to 39487 cycles
+Tightening scrub interval from 12940 cycles to 6470 cycles
+Relaxing scrub interval from 6470 cycles to 8087 cycles
+Relaxing scrub interval from 8087 cycles to 10108 cycles
+Relaxing scrub interval from 10108 cycles to 12635 cycles
+Tightening scrub interval from 12635 cycles to 6317 cycles
+Relaxing scrub interval from 6317 cycles to 7896 cycles
+Relaxing scrub interval from 7896 cycles to 9870 cycles
+Relaxing scrub interval from 9870 cycles to 12337 cycles
+Relaxing scrub interval from 12337 cycles to 15421 cycles
+Relaxing scrub interval from 15421 cycles to 19276 cycles
+Relaxing scrub interval from 19276 cycles to 24095 cycles
+Relaxing scrub interval from 24095 cycles to 30118 cycles
+Tightening scrub interval from 30118 cycles to 15059 cycles
+Relaxing scrub interval from 15059 cycles to 18823 cycles
+Relaxing scrub interval from 18823 cycles to 23528 cycles
+Relaxing scrub interval from 23528 cycles to 29410 cycles
+Relaxing scrub interval from 29410 cycles to 36762 cycles
+Relaxing scrub interval from 36762 cycles to 45952 cycles
+Tightening scrub interval from 45952 cycles to 22976 cycles
+Relaxing scrub interval from 22976 cycles to 28720 cycles
+Tightening scrub interval from 28720 cycles to 14360 cycles
+Relaxing scrub interval from 14360 cycles to 17950 cycles
+Relaxing scrub interval from 17950 cycles to 22437 cycles
+Relaxing scrub interval from 22437 cycles to 28046 cycles
+Relaxing scrub interval from 28046 cycles to 35057 cycles
+Relaxing scrub interval from 35057 cycles to 43821 cycles
+Relaxing scrub interval from 43821 cycles to 54776 cycles
+Relaxing scrub interval from 54776 cycles to 68470 cycles
+Relaxing scrub interval from 68470 cycles to 85587 cycles
+Relaxing scrub interval from 85587 cycles to 106983 cycles
+Relaxing scrub interval from 106983 cycles to 133728 cycles
+Tightening scrub interval from 133728 cycles to 66864 cycles
+Tightening scrub interval from 66864 cycles to 33432 cycles
+Relaxing scrub interval from 33432 cycles to 41790 cycles
+Tightening scrub interval from 41790 cycles to 20895 cycles
+Relaxing scrub interval from 20895 cycles to 26118 cycles
+Relaxing scrub interval from 26118 cycles to 32647 cycles
+Relaxing scrub interval from 32647 cycles to 40808 cycles
+Relaxing scrub interval from 40808 cycles to 51010 cycles
+Relaxing scrub interval from 51010 cycles to 63762 cycles
+Relaxing scrub interval from 63762 cycles to 79702 cycles
+Tightening scrub interval from 79702 cycles to 39851 cycles
+Tightening scrub interval from 39851 cycles to 19925 cycles
+Tightening scrub interval from 19925 cycles to 9962 cycles
+Relaxing scrub interval from 9962 cycles to 12452 cycles
+Tightening scrub interval from 12452 cycles to 6226 cycles
+Relaxing scrub interval from 6226 cycles to 7782 cycles
+Relaxing scrub interval from 7782 cycles to 9727 cycles
+Relaxing scrub interval from 9727 cycles to 12158 cycles
+Relaxing scrub interval from 12158 cycles to 15197 cycles
+Relaxing scrub interval from 15197 cycles to 18996 cycles
+Relaxing scrub interval from 18996 cycles to 23745 cycles
+Relaxing scrub interval from 23745 cycles to 29681 cycles
+Relaxing scrub interval from 29681 cycles to 37101 cycles
+Relaxing scrub interval from 37101 cycles to 46376 cycles
+Relaxing scrub interval from 46376 cycles to 57970 cycles
+Relaxing scrub interval from 57970 cycles to 72462 cycles
+Tightening scrub interval from 72462 cycles to 36231 cycles
+Relaxing scrub interval from 36231 cycles to 45288 cycles
+Tightening scrub interval from 45288 cycles to 22644 cycles
+Relaxing scrub interval from 22644 cycles to 28305 cycles
+Relaxing scrub interval from 28305 cycles to 35381 cycles
+Relaxing scrub interval from 35381 cycles to 44226 cycles
+Relaxing scrub interval from 44226 cycles to 55282 cycles
+Relaxing scrub interval from 55282 cycles to 69102 cycles
+Relaxing scrub interval from 69102 cycles to 86377 cycles
+Relaxing scrub interval from 86377 cycles to 107971 cycles
+Relaxing scrub interval from 107971 cycles to 134963 cycles
+Tightening scrub interval from 134963 cycles to 67481 cycles
+Tightening scrub interval from 67481 cycles to 33740 cycles
+Relaxing scrub interval from 33740 cycles to 42175 cycles
+Tightening scrub interval from 42175 cycles to 21087 cycles
+Relaxing scrub interval from 21087 cycles to 26358 cycles
+Relaxing scrub interval from 26358 cycles to 32947 cycles
+Relaxing scrub interval from 32947 cycles to 41183 cycles
+Relaxing scrub interval from 41183 cycles to 51478 cycles
+Tightening scrub interval from 51478 cycles to 25739 cycles
+Relaxing scrub interval from 25739 cycles to 32173 cycles
+Relaxing scrub interval from 32173 cycles to 40216 cycles
+Relaxing scrub interval from 40216 cycles to 50270 cycles
+Relaxing scrub interval from 50270 cycles to 62837 cycles
+Relaxing scrub interval from 62837 cycles to 78546 cycles
+Relaxing scrub interval from 78546 cycles to 98182 cycles
+Relaxing scrub interval from 98182 cycles to 122727 cycles
+Tightening scrub interval from 122727 cycles to 61363 cycles
+Tightening scrub interval from 61363 cycles to 30681 cycles
+Relaxing scrub interval from 30681 cycles to 38351 cycles
+Relaxing scrub interval from 38351 cycles to 47938 cycles
+src/arch/riscv/faults.cc:213: panic: Illegal instruction 0x400040d000000000 at pc (0x90d2e=>0x90d30).(0=>1): immediate = 0
+Memory Usage: 8532860 KBytes
+Program aborted at tick 2867311000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x55aa5c108105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x55aa5c12df4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7fc9c8931520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7fc9c89859fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7fc9c8931476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7fc9c89177f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x55aa5a63e028]
+/gem5_build/gem5.debug(_ZN4gem58RiscvISA16IllegalInstFault8invokeSEEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0xe7)[0x55aa5a6b907f]
+/gem5_build/gem5.debug(_ZN4gem58RiscvISA10RiscvFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x9dc)[0x55aa5a6b87d4]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x55aa5b1f7387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x55aa5b1e590f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x55aa5b1e3dcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x55aa5b1e349b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55aa5b1e1aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x55aa5b1f5421]
+/gem5_build/gem5.debug(+0x351f903)[0x55aa5b1f2903]
+/gem5_build/gem5.debug(+0x35293a2)[0x55aa5b1fc3a2]
+/gem5_build/gem5.debug(+0x3529134)[0x55aa5b1fc134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x55aa5b1fbf2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x55aa5a728956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x55aa5a727188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x55aa5c11c0b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x55aa5c13f87b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x55aa5c13f312]
+/gem5_build/gem5.debug(+0x4392d62)[0x55aa5c065d62]
+/gem5_build/gem5.debug(+0x43911c0)[0x55aa5c0641c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x55aa5c05fe71]
+/gem5_build/gem5.debug(+0x438cedc)[0x55aa5c05fedc]
+/gem5_build/gem5.debug(+0x297cb39)[0x55aa5a64fb39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7fc9c9254033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7fc9c920dffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7fc9c91a2776]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 70591 Aborted                 timeout --signal=KILL 600 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

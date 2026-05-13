@@ -50,3 +50,65 @@ Relaxing scrub interval from 25272 cycles to 31590 cycles
 Relaxing scrub interval from 31590 cycles to 39487 cycles
 Relaxing scrub interval from 39487 cycles to 49358 cycles
 Relaxing scrub interval from 49358 cycles to 61697 cycles
+Relaxing scrub interval from 61697 cycles to 77121 cycles
+Relaxing scrub interval from 77121 cycles to 96401 cycles
+Relaxing scrub interval from 96401 cycles to 120501 cycles
+Relaxing scrub interval from 120501 cycles to 150626 cycles
+Relaxing scrub interval from 150626 cycles to 188282 cycles
+Relaxing scrub interval from 188282 cycles to 235352 cycles
+Relaxing scrub interval from 235352 cycles to 294190 cycles
+Relaxing scrub interval from 294190 cycles to 367737 cycles
+Relaxing scrub interval from 367737 cycles to 459671 cycles
+Relaxing scrub interval from 459671 cycles to 574588 cycles
+Relaxing scrub interval from 574588 cycles to 718235 cycles
+Relaxing scrub interval from 718235 cycles to 897793 cycles
+Tightening scrub interval from 897793 cycles to 448896 cycles
+Relaxing scrub interval from 448896 cycles to 561120 cycles
+Tightening scrub interval from 561120 cycles to 280560 cycles
+Relaxing scrub interval from 280560 cycles to 350700 cycles
+Tightening scrub interval from 350700 cycles to 175350 cycles
+Relaxing scrub interval from 175350 cycles to 219187 cycles
+Relaxing scrub interval from 219187 cycles to 273983 cycles
+Relaxing scrub interval from 273983 cycles to 342478 cycles
+Relaxing scrub interval from 342478 cycles to 428097 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x2010840
+Memory Usage: 8530848 KBytes
+Program aborted at tick 6003127000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x5638ecfe7105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x5638ed00cf4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7f5cf2b74520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7f5cf2bc89fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7f5cf2b74476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7f5cf2b5a7f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x5638eb51d028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x5638ed061faf]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x5638ec0d6387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x5638ec0c490f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x5638ec0c2dcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x5638ec0c249b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x5638ec0c0aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x5638ec0d4421]
+/gem5_build/gem5.debug(+0x351f903)[0x5638ec0d1903]
+/gem5_build/gem5.debug(+0x35293a2)[0x5638ec0db3a2]
+/gem5_build/gem5.debug(+0x3529134)[0x5638ec0db134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x5638ec0daf2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x5638eb607956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x5638eb606188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x5638ecffb0b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x5638ed01e87b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x5638ed01e312]
+/gem5_build/gem5.debug(+0x4392d62)[0x5638ecf44d62]
+/gem5_build/gem5.debug(+0x43911c0)[0x5638ecf431c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x5638ecf3ee71]
+/gem5_build/gem5.debug(+0x438cedc)[0x5638ecf3eedc]
+/gem5_build/gem5.debug(+0x297cb39)[0x5638eb52eb39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7f5cf3497033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7f5cf3450ffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7f5cf33e5776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7f5cf35314df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82:   613 Aborted                 timeout --signal=KILL 1200 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

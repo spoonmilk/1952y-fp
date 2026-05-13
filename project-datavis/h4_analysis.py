@@ -3,7 +3,7 @@ import pandas as pd
 import altair as alt
 import utils
 
-STAT_SOLOMON_SCRUB_CORRECTED = "system.cpu.dcache.solomon.numScrubCorrected" 
+STAT_SOLOMON_SCRUB_CORRECTED = "system.cpu.dcache.solomon.numScrubCorrected"
 STAT_HAMMING_SCRUB_CORRECTED = "system.cpu.dcache.hamming.numScrubCorrected"
 
 SOLOMON_HYP_VECTORIZED_DIRECTORY = "../gem5/results/experiments/solomon/DLP/h4"
@@ -12,17 +12,29 @@ HAMMING_HYP_VECTORIZED_DIRECTORY = "../gem5/results/experiments/hamming/DLP/h4"
 HAMMING_HYP_NP_DIRECTORY = "../gem5/results/experiments/hamming/DLP_NP/h4"
 
 
+def _get_stat(run_df: pd.DataFrame, stat_name: str) -> float:
+    """Look up a stat's value in a single run's stats.csv dataframe."""
+    match = run_df.loc[run_df["stat"] == stat_name, "value"]
+    return float(match.iloc[0]) if not match.empty else 0.0
+
+
 def create_summary_df(hyp_dir: Path, stat: str) -> pd.DataFrame:
     rows = []
     for config_dir in hyp_dir.iterdir():
         if not config_dir.is_dir():
             continue
-        median_df = utils.form_median_dataframe(config_dir)
-        value: int = median_df.loc[stat, "value"] if stat in median_df.index else 0
+
+        run_dfs = utils.runs_dataframe(config_dir)
+        per_run_values = [_get_stat(run_df, stat) for run_df in run_dfs]
+
+        if not per_run_values:
+            continue
+
         rows.append(
             {
                 "config": config_dir.name,
-                "numScrubCorrected": value,
+                "numScrubCorrected": pd.Series(per_run_values).mean(),
+                "num_runs_used": len(per_run_values),
             }
         )
     return pd.DataFrame(rows)
@@ -42,7 +54,6 @@ def plot_h4():
         Path(HAMMING_HYP_NP_DIRECTORY), STAT_HAMMING_SCRUB_CORRECTED
     )
 
-    # Add scheme and workload labels
     solomon_vec["scheme"] = "Solomon"
     solomon_vec["workload"] = "Vectorized"
 
@@ -60,7 +71,7 @@ def plot_h4():
     )
 
     agg_data = (
-        combined.groupby(["scheme", "workload"])["numScrubCorrected"]
+        combined.groupby(["workload", "scheme"])["numScrubCorrected"]
         .mean()
         .reset_index()
     )
@@ -72,12 +83,12 @@ def plot_h4():
         alt.Chart(agg_data)
         .mark_bar()
         .encode(
-            x=alt.X("scheme:N", title="Error Correction Scheme"),
-            xOffset=alt.XOffset("workload:N").scale(paddingInner=0.1),
+            x=alt.X("workload:N", title="Workload Type"),
+            xOffset=alt.XOffset("scheme:N").scale(paddingInner=0.1),
             y=alt.Y("numScrubCorrected:Q", title="Mean Number of Scrub Corrections"),
-            color=alt.Color("workload:N", title="Workload Type"),
-            tooltip=["scheme", "workload", "numScrubCorrected"],
+            color=alt.Color("scheme:N", title="Error Correction Scheme"),
+            tooltip=["workload", "scheme", "numScrubCorrected"],
         )
-        .properties(title="Scrub Corrections by Scheme and Workload")
+        .properties(title="Scrub Corrections by Workload and Scheme")
     )
     h4_chart.save(figures_path)

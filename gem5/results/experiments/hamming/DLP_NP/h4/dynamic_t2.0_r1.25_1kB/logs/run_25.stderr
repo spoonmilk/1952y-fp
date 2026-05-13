@@ -45,8 +45,228 @@ Relaxing scrub interval from 8282 cycles to 10352 cycles
 Relaxing scrub interval from 10352 cycles to 12940 cycles
 Relaxing scrub interval from 12940 cycles to 16175 cycles
 Relaxing scrub interval from 16175 cycles to 20218 cycles
-Relaxing scrub interval from 20218 cycles to 25272 cycles
-Relaxing scrub interval from 25272 cycles to 31590 cycles
-Relaxing scrub interval from 31590 cycles to 39487 cycles
-Relaxing scrub interval from 39487 cycles to 49358 cycles
-Relaxing scrub interval from 49358 cycles to 61697 cycles
+Tightening scrub interval from 20218 cycles to 10109 cycles
+Relaxing scrub interval from 10109 cycles to 12636 cycles
+Relaxing scrub interval from 12636 cycles to 15795 cycles
+Relaxing scrub interval from 15795 cycles to 19743 cycles
+Relaxing scrub interval from 19743 cycles to 24678 cycles
+Relaxing scrub interval from 24678 cycles to 30847 cycles
+Relaxing scrub interval from 30847 cycles to 38558 cycles
+Tightening scrub interval from 38558 cycles to 19279 cycles
+Relaxing scrub interval from 19279 cycles to 24098 cycles
+Relaxing scrub interval from 24098 cycles to 30122 cycles
+Tightening scrub interval from 30122 cycles to 15061 cycles
+Relaxing scrub interval from 15061 cycles to 18826 cycles
+Relaxing scrub interval from 18826 cycles to 23532 cycles
+Relaxing scrub interval from 23532 cycles to 29415 cycles
+Relaxing scrub interval from 29415 cycles to 36768 cycles
+Relaxing scrub interval from 36768 cycles to 45960 cycles
+Relaxing scrub interval from 45960 cycles to 57450 cycles
+Tightening scrub interval from 57450 cycles to 28725 cycles
+Relaxing scrub interval from 28725 cycles to 35906 cycles
+Relaxing scrub interval from 35906 cycles to 44882 cycles
+Relaxing scrub interval from 44882 cycles to 56102 cycles
+Tightening scrub interval from 56102 cycles to 28051 cycles
+Relaxing scrub interval from 28051 cycles to 35063 cycles
+Relaxing scrub interval from 35063 cycles to 43828 cycles
+Relaxing scrub interval from 43828 cycles to 54785 cycles
+Relaxing scrub interval from 54785 cycles to 68481 cycles
+Tightening scrub interval from 68481 cycles to 34240 cycles
+Relaxing scrub interval from 34240 cycles to 42800 cycles
+Relaxing scrub interval from 42800 cycles to 53500 cycles
+Relaxing scrub interval from 53500 cycles to 66875 cycles
+Relaxing scrub interval from 66875 cycles to 83593 cycles
+Relaxing scrub interval from 83593 cycles to 104491 cycles
+Tightening scrub interval from 104491 cycles to 52245 cycles
+Relaxing scrub interval from 52245 cycles to 65306 cycles
+Tightening scrub interval from 65306 cycles to 32653 cycles
+Relaxing scrub interval from 32653 cycles to 40816 cycles
+Tightening scrub interval from 40816 cycles to 20408 cycles
+Relaxing scrub interval from 20408 cycles to 25510 cycles
+Relaxing scrub interval from 25510 cycles to 31887 cycles
+Tightening scrub interval from 31887 cycles to 15943 cycles
+Relaxing scrub interval from 15943 cycles to 19928 cycles
+Tightening scrub interval from 19928 cycles to 9964 cycles
+Relaxing scrub interval from 9964 cycles to 12455 cycles
+Relaxing scrub interval from 12455 cycles to 15568 cycles
+Tightening scrub interval from 15568 cycles to 7784 cycles
+Relaxing scrub interval from 7784 cycles to 9730 cycles
+Relaxing scrub interval from 9730 cycles to 12162 cycles
+Relaxing scrub interval from 12162 cycles to 15202 cycles
+Relaxing scrub interval from 15202 cycles to 19002 cycles
+Relaxing scrub interval from 19002 cycles to 23752 cycles
+Relaxing scrub interval from 23752 cycles to 29690 cycles
+Relaxing scrub interval from 29690 cycles to 37112 cycles
+Relaxing scrub interval from 37112 cycles to 46390 cycles
+Tightening scrub interval from 46390 cycles to 23195 cycles
+Tightening scrub interval from 23195 cycles to 11597 cycles
+Relaxing scrub interval from 11597 cycles to 14496 cycles
+Relaxing scrub interval from 14496 cycles to 18120 cycles
+Relaxing scrub interval from 18120 cycles to 22650 cycles
+Relaxing scrub interval from 22650 cycles to 28312 cycles
+Tightening scrub interval from 28312 cycles to 14156 cycles
+Relaxing scrub interval from 14156 cycles to 17695 cycles
+Relaxing scrub interval from 17695 cycles to 22118 cycles
+Relaxing scrub interval from 22118 cycles to 27647 cycles
+Relaxing scrub interval from 27647 cycles to 34558 cycles
+Relaxing scrub interval from 34558 cycles to 43197 cycles
+Tightening scrub interval from 43197 cycles to 21598 cycles
+Relaxing scrub interval from 21598 cycles to 26997 cycles
+Relaxing scrub interval from 26997 cycles to 33746 cycles
+Tightening scrub interval from 33746 cycles to 16873 cycles
+Relaxing scrub interval from 16873 cycles to 21091 cycles
+Relaxing scrub interval from 21091 cycles to 26363 cycles
+Relaxing scrub interval from 26363 cycles to 32953 cycles
+Relaxing scrub interval from 32953 cycles to 41191 cycles
+Tightening scrub interval from 41191 cycles to 20595 cycles
+Relaxing scrub interval from 20595 cycles to 25743 cycles
+Tightening scrub interval from 25743 cycles to 12871 cycles
+Relaxing scrub interval from 12871 cycles to 16088 cycles
+Relaxing scrub interval from 16088 cycles to 20110 cycles
+Relaxing scrub interval from 20110 cycles to 25137 cycles
+Relaxing scrub interval from 25137 cycles to 31421 cycles
+Tightening scrub interval from 31421 cycles to 15710 cycles
+Tightening scrub interval from 15710 cycles to 7855 cycles
+Relaxing scrub interval from 7855 cycles to 9818 cycles
+Relaxing scrub interval from 9818 cycles to 12272 cycles
+Tightening scrub interval from 12272 cycles to 6136 cycles
+Relaxing scrub interval from 6136 cycles to 7670 cycles
+Relaxing scrub interval from 7670 cycles to 9587 cycles
+Relaxing scrub interval from 9587 cycles to 11983 cycles
+Tightening scrub interval from 11983 cycles to 5991 cycles
+Relaxing scrub interval from 5991 cycles to 7488 cycles
+Relaxing scrub interval from 7488 cycles to 9360 cycles
+Relaxing scrub interval from 9360 cycles to 11700 cycles
+Relaxing scrub interval from 11700 cycles to 14625 cycles
+Relaxing scrub interval from 14625 cycles to 18281 cycles
+Relaxing scrub interval from 18281 cycles to 22851 cycles
+Relaxing scrub interval from 22851 cycles to 28563 cycles
+Tightening scrub interval from 28563 cycles to 14281 cycles
+Relaxing scrub interval from 14281 cycles to 17851 cycles
+Relaxing scrub interval from 17851 cycles to 22313 cycles
+Relaxing scrub interval from 22313 cycles to 27891 cycles
+Relaxing scrub interval from 27891 cycles to 34863 cycles
+Relaxing scrub interval from 34863 cycles to 43578 cycles
+Relaxing scrub interval from 43578 cycles to 54472 cycles
+Tightening scrub interval from 54472 cycles to 27236 cycles
+Tightening scrub interval from 27236 cycles to 13618 cycles
+Relaxing scrub interval from 13618 cycles to 17022 cycles
+Relaxing scrub interval from 17022 cycles to 21277 cycles
+Tightening scrub interval from 21277 cycles to 10638 cycles
+Relaxing scrub interval from 10638 cycles to 13297 cycles
+Relaxing scrub interval from 13297 cycles to 16621 cycles
+Relaxing scrub interval from 16621 cycles to 20776 cycles
+Relaxing scrub interval from 20776 cycles to 25970 cycles
+Relaxing scrub interval from 25970 cycles to 32462 cycles
+Tightening scrub interval from 32462 cycles to 16231 cycles
+Relaxing scrub interval from 16231 cycles to 20288 cycles
+Relaxing scrub interval from 20288 cycles to 25360 cycles
+Relaxing scrub interval from 25360 cycles to 31700 cycles
+Tightening scrub interval from 31700 cycles to 15850 cycles
+Relaxing scrub interval from 15850 cycles to 19812 cycles
+Relaxing scrub interval from 19812 cycles to 24765 cycles
+Relaxing scrub interval from 24765 cycles to 30956 cycles
+Tightening scrub interval from 30956 cycles to 15478 cycles
+Relaxing scrub interval from 15478 cycles to 19347 cycles
+Relaxing scrub interval from 19347 cycles to 24183 cycles
+Tightening scrub interval from 24183 cycles to 12091 cycles
+Relaxing scrub interval from 12091 cycles to 15113 cycles
+Relaxing scrub interval from 15113 cycles to 18891 cycles
+Relaxing scrub interval from 18891 cycles to 23613 cycles
+Relaxing scrub interval from 23613 cycles to 29516 cycles
+Relaxing scrub interval from 29516 cycles to 36895 cycles
+Relaxing scrub interval from 36895 cycles to 46118 cycles
+Relaxing scrub interval from 46118 cycles to 57647 cycles
+Relaxing scrub interval from 57647 cycles to 72058 cycles
+Relaxing scrub interval from 72058 cycles to 90072 cycles
+Tightening scrub interval from 90072 cycles to 45036 cycles
+Relaxing scrub interval from 45036 cycles to 56295 cycles
+Tightening scrub interval from 56295 cycles to 28147 cycles
+Relaxing scrub interval from 28147 cycles to 35183 cycles
+Relaxing scrub interval from 35183 cycles to 43978 cycles
+Relaxing scrub interval from 43978 cycles to 54972 cycles
+Relaxing scrub interval from 54972 cycles to 68715 cycles
+Relaxing scrub interval from 68715 cycles to 85893 cycles
+Tightening scrub interval from 85893 cycles to 42946 cycles
+Tightening scrub interval from 42946 cycles to 21473 cycles
+Relaxing scrub interval from 21473 cycles to 26841 cycles
+Relaxing scrub interval from 26841 cycles to 33551 cycles
+Relaxing scrub interval from 33551 cycles to 41938 cycles
+Relaxing scrub interval from 41938 cycles to 52422 cycles
+Tightening scrub interval from 52422 cycles to 26211 cycles
+Relaxing scrub interval from 26211 cycles to 32763 cycles
+Tightening scrub interval from 32763 cycles to 16381 cycles
+Relaxing scrub interval from 16381 cycles to 20476 cycles
+Relaxing scrub interval from 20476 cycles to 25595 cycles
+Relaxing scrub interval from 25595 cycles to 31993 cycles
+Relaxing scrub interval from 31993 cycles to 39991 cycles
+Relaxing scrub interval from 39991 cycles to 49988 cycles
+Tightening scrub interval from 49988 cycles to 24994 cycles
+Relaxing scrub interval from 24994 cycles to 31242 cycles
+Tightening scrub interval from 31242 cycles to 15621 cycles
+Relaxing scrub interval from 15621 cycles to 19526 cycles
+Relaxing scrub interval from 19526 cycles to 24407 cycles
+Relaxing scrub interval from 24407 cycles to 30508 cycles
+Relaxing scrub interval from 30508 cycles to 38135 cycles
+Relaxing scrub interval from 38135 cycles to 47668 cycles
+Tightening scrub interval from 47668 cycles to 23834 cycles
+Tightening scrub interval from 23834 cycles to 11917 cycles
+Relaxing scrub interval from 11917 cycles to 14896 cycles
+Relaxing scrub interval from 14896 cycles to 18620 cycles
+Relaxing scrub interval from 18620 cycles to 23275 cycles
+Relaxing scrub interval from 23275 cycles to 29093 cycles
+Relaxing scrub interval from 29093 cycles to 36366 cycles
+Tightening scrub interval from 36366 cycles to 18183 cycles
+Relaxing scrub interval from 18183 cycles to 22728 cycles
+Relaxing scrub interval from 22728 cycles to 28410 cycles
+Tightening scrub interval from 28410 cycles to 14205 cycles
+Relaxing scrub interval from 14205 cycles to 17756 cycles
+Relaxing scrub interval from 17756 cycles to 22195 cycles
+Relaxing scrub interval from 22195 cycles to 27743 cycles
+Relaxing scrub interval from 27743 cycles to 34678 cycles
+Tightening scrub interval from 34678 cycles to 17339 cycles
+Relaxing scrub interval from 17339 cycles to 21673 cycles
+Relaxing scrub interval from 21673 cycles to 27091 cycles
+Relaxing scrub interval from 27091 cycles to 33863 cycles
+Relaxing scrub interval from 33863 cycles to 42328 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0x201008000000840
+Memory Usage: 8530676 KBytes
+Program aborted at tick 4262290000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x55f48ae3e105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x55f48ae63f4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7f9ac181b520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7f9ac186f9fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7f9ac181b476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7f9ac18017f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x55f489374028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x55f48aeb8faf]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x55f489f2d387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x55f489f1b90f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x55f489f19dcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x55f489f1949b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55f489f17aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x55f489f2b421]
+/gem5_build/gem5.debug(+0x351f903)[0x55f489f28903]
+/gem5_build/gem5.debug(+0x35293a2)[0x55f489f323a2]
+/gem5_build/gem5.debug(+0x3529134)[0x55f489f32134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x55f489f31f2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x55f48945e956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x55f48945d188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x55f48ae520b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x55f48ae7587b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x55f48ae75312]
+/gem5_build/gem5.debug(+0x4392d62)[0x55f48ad9bd62]
+/gem5_build/gem5.debug(+0x43911c0)[0x55f48ad9a1c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x55f48ad95e71]
+/gem5_build/gem5.debug(+0x438cedc)[0x55f48ad95edc]
+/gem5_build/gem5.debug(+0x297cb39)[0x55f489385b39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7f9ac213e033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7f9ac20f7ffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7f9ac208c776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7f9ac21d84df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 64297 Aborted                 timeout --signal=KILL 600 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

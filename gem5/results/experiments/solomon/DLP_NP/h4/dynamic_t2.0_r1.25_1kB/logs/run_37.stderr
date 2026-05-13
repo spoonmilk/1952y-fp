@@ -48,8 +48,52 @@ Tightening scrub interval from 16175 cycles to 8087 cycles
 Relaxing scrub interval from 8087 cycles to 10108 cycles
 Relaxing scrub interval from 10108 cycles to 12635 cycles
 Relaxing scrub interval from 12635 cycles to 15793 cycles
-Relaxing scrub interval from 15793 cycles to 19741 cycles
-Relaxing scrub interval from 19741 cycles to 24676 cycles
-Relaxing scrub interval from 24676 cycles to 30845 cycles
-Relaxing scrub interval from 30845 cycles to 38556 cycles
-Relaxing scrub interval from 38556 cycles to 48195 cycles
+Tightening scrub interval from 15793 cycles to 7896 cycles
+Relaxing scrub interval from 7896 cycles to 9870 cycles
+Relaxing scrub interval from 9870 cycles to 12337 cycles
+Relaxing scrub interval from 12337 cycles to 15421 cycles
+Relaxing scrub interval from 15421 cycles to 19276 cycles
+Relaxing scrub interval from 19276 cycles to 24095 cycles
+Relaxing scrub interval from 24095 cycles to 30118 cycles
+Relaxing scrub interval from 30118 cycles to 37647 cycles
+src/sim/faults.cc:102: panic: panic condition !handled && !tc->getSystemPtr()->trapToGdb(GDBSignal::SEGV, tc->contextId()) occurred: Page table fault when accessing virtual address 0
+Memory Usage: 8530980 KBytes
+Program aborted at tick 249198000
+--- BEGIN LIBC BACKTRACE ---
+/gem5_build/gem5.debug(_ZN4gem515print_backtraceEv+0x32)[0x55860e04d105]
+/gem5_build/gem5.debug(_ZN4gem512abortHandlerEi+0x7e)[0x55860e072f4c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7fe49517c520]
+/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7fe4951d09fc]
+/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7fe49517c476]
+/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7fe4951627f3]
+/gem5_build/gem5.debug(_ZNSt12__shared_ptrIN4gem59FaultBaseELN9__gnu_cxx12_Lock_policyE2EED1Ev+0x0)[0x55860c583028]
+/gem5_build/gem5.debug(_ZN4gem521GenericPageTableFault6invokeEPNS_13ThreadContextERKNS_14RefCountingPtrINS_10StaticInstEEE+0x139)[0x55860e0c7faf]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4trapERKSt10shared_ptrINS_9FaultBaseEEsRKNS_14RefCountingPtrINS_10StaticInstEEE+0x65)[0x55860d13c387]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit10commitHeadERKNS_14RefCountingPtrINS0_7DynInstEEEj+0xc3f)[0x55860d12a90f]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit11commitInstsEv+0x54a)[0x55860d128dcc]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit6commitEv+0xaf9)[0x55860d12849b]
+/gem5_build/gem5.debug(_ZN4gem52o36Commit4tickEv+0x2aa)[0x55860d126aee]
+/gem5_build/gem5.debug(_ZN4gem52o33CPU4tickEv+0x1d7)[0x55860d13a421]
+/gem5_build/gem5.debug(+0x351f903)[0x55860d137903]
+/gem5_build/gem5.debug(+0x35293a2)[0x55860d1413a2]
+/gem5_build/gem5.debug(+0x3529134)[0x55860d141134]
+/gem5_build/gem5.debug(+0x3528f2e)[0x55860d140f2e]
+/gem5_build/gem5.debug(_ZNKSt8functionIFvvEEclEv+0x36)[0x55860c66d956]
+/gem5_build/gem5.debug(_ZN4gem520EventFunctionWrapper7processEv+0x20)[0x55860c66c188]
+/gem5_build/gem5.debug(_ZN4gem510EventQueue10serviceOneEv+0x121)[0x55860e0610b9]
+/gem5_build/gem5.debug(_ZN4gem59doSimLoopEPNS_10EventQueueE+0x240)[0x55860e08487b]
+/gem5_build/gem5.debug(_ZN4gem58simulateEm+0x23e)[0x55860e084312]
+/gem5_build/gem5.debug(+0x4392d62)[0x55860dfaad62]
+/gem5_build/gem5.debug(+0x43911c0)[0x55860dfa91c0]
+/gem5_build/gem5.debug(+0x438ce71)[0x55860dfa4e71]
+/gem5_build/gem5.debug(+0x438cedc)[0x55860dfa4edc]
+/gem5_build/gem5.debug(+0x297cb39)[0x55860c594b39]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x128033)[0x7fe495a9f033]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyObject_Call+0x5c)[0x7fe495a58ffc]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(_PyEval_EvalFrameDefault+0x4b16)[0x7fe4959ed776]
+/lib/x86_64-linux-gnu/libpython3.10.so.1.0(+0x1c24df)[0x7fe495b394df]
+--- END LIBC BACKTRACE ---
+For more info on how to address this issue, please visit https://www.gem5.org/documentation/general_docs/common-errors/ 
+
+timeout: the monitored command dumped core
+/home/cs1952y-user/gem5/1952y-fp/gem5/scripts/run-test.sh: line 82: 34313 Aborted                 timeout --signal=KILL 300 "$GEM5_BIN" --outdir="$OUTDIR" "$CONFIG" "$BINARY_REL" --chaos-prob "$CHAOS_PROB" --chaos-bits "$CHAOS_BITS" --delay "$DELAY" --scrub-interval "$SCRUB_INTERVAL" --scrub-tighten-factor "$SCRUB_TIGHTEN_FACTOR" --scrub-relax-factor "$SCRUB_RELAX_FACTOR" --cache-size "$CACHE_SIZE" "${EXTRA[@]}"

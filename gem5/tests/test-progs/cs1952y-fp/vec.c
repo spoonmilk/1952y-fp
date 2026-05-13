@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #define N 256 // fills 1kb, but leaves no room for anything else, so cache lines will be evicted and reloaded
-#define ITERS 50 // was 500
+#define ITERS 1500
 
 static float a[N] __attribute__((aligned(64)));
 static float b[N] __attribute__((aligned(64)));
